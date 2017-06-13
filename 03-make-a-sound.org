@@ -1,0 +1,17 @@
+#+TITLE: Make a Sound
+
+* First Sound
+
+Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
+
+#+BEGIN_SRC common-lisp
+(proxy :foo (sin-osc.ar 440 0 0.2))
+#+END_SRC
+
+When you evaluate this line, you should hear a sine wave from your left speaker.
+
+* Architecture
+
+This one small line of code is actually just a very convenient way of doing many things at once, however 
+
+* 

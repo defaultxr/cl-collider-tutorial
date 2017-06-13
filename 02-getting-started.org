@@ -1,0 +1,19 @@
+#+TITLE: Getting Started
+
+This chapter will
+
+* Requirements
+
+To interact with the SuperCollider sound server, you will need the following software:
+
+** SuperCollider
+
+
+** Emacs
+Emacs has facilities to enhance Lisp coding, but you can use another editor instead if you want.
+
+** SBCL
+SBCL is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your lisp code and causes it to produce output.
+
+*** test
+*** test

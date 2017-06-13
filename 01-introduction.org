@@ -12,4 +12,11 @@ This tutorial will only be using the sound server provided by the SuperCollider 
 
 This tutorial typically gives code examples like so:
 
-WIP (FIX)
+#+BEGIN_SRC lisp
+  (defun foo (a b)
+    (+ a b))
+#+END_SRC
+
+Inline code will be colored as well: src_lisp[:exports code]{(defun foo () (+ a b))}.
+
+Keywords will be monospace: ~defun~

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-11 Sun 19:31 -->
+<!-- 2017-06-12 Mon 22:34 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Introduction</title>
+<title>Make a Sound</title>
 <meta name="generator" content="Org mode">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -225,55 +225,18 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Introduction</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org67602dc">1. About this tutorial</a></li>
-<li><a href="#org216f68c">2. Format of this tutorial</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org67602dc" class="outline-2">
-<h2 id="org67602dc"><span class="section-number-2">1</span> About this tutorial</h2>
-<div class="outline-text-2" id="text-1">
+<h1 class="title">Make a Sound</h1>
 <p>
-This tutorial is written as an introduction and overview of the <a href="https://github.com/byulparan/cl-collider">cl-collider</a> library for Common Lisp. The format is based on the <a href="http://doc.sccode.org/Tutorials/Getting-Started/00-Getting-Started-With-SC.html">official SuperCollider tutorial</a> and will cover similar topics, though it isn't a direct translation.
-</p>
-
-<p>
-cl-collider is a library for Common Lisp written by Park Sungmin and contributors as an interface to the <a href="https://supercollider.github.io/">SuperCollider</a> ("SC") sound server. cl-collider is just one of many such interfaces that exist; other interfaces have already been written in languages such as Clojure (<a href="https://overtone.github.io/">Overtone</a>), Javascript (<a href="https://github.com/crucialfelix/supercolliderjs">supercollider.js</a>), etc. The "official" SuperCollider interface is through a language often referred to as sclang, which is provided with the SuperCollider package itself. The SuperCollider package also provides an integrated development environment ("SCIDE") which aims to make writing SuperCollider code in sclang easier.
-</p>
-
-<p>
-This tutorial will only be using the sound server provided by the SuperCollider package and will not utilize the language or the IDE. Therefore, this tutorial does not require previous experience with SuperCollider. Knowledge of Common Lisp is required, as teaching it is out of the scope of this document, but the next chapter does give basic information on how to set up a basic Lisp environment to work with cl-collider. Instead of SCIDE, we will be assuming use of Emacs as a text editor and development environment, but it is possible to use another editor such as Vim to write and interact with the Lisp process instead if you choose, and most of the information contained in this tutorial should be applicable regardless of the editor in use.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org216f68c" class="outline-2">
-<h2 id="org216f68c"><span class="section-number-2">2</span> Format of this tutorial</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-This tutorial typically gives code examples like so:
+Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">foo</span> (a b)
-  (+ a b))
+<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (sin-osc.ar 440 0 0.2))
 </pre>
-</div>
-
-<p>
-Inline code will look similar: <code class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">foo</span> () (+ a b))</code>. Inline keywords will be monospace but not in color: <code>defun</code>
-</p>
-</div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-06-11 Sun 19:31</p>
+<p class="date">Created: 2017-06-12 Mon 22:34</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
