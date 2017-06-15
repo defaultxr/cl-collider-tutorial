@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-12 Mon 22:34 -->
+<!-- 2017-06-14 Wed 21:25 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make a Sound</title>
@@ -226,6 +226,20 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">Make a Sound</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgb215673">1. First Sounds</a></li>
+<li><a href="#org31315c0">2. Architecture</a></li>
+<li><a href="#orgc8f6e3c">3. </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb215673" class="outline-2">
+<h2 id="orgb215673"><span class="section-number-2">1</span> First Sounds</h2>
+<div class="outline-text-2" id="text-1">
 <p>
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
 </p>
@@ -234,9 +248,101 @@ Once your Lisp and cl-collider environment is set up and loaded and the server b
 <pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (sin-osc.ar 440 0 0.2))
 </pre>
 </div>
+
+<p>
+When you evaluate this line, you should hear a sine wave from your left speaker.
+</p>
+
+<p>
+The <code>proxy</code> function basically starts a synthesis process on the server for you. In order to refer back to the synth process, we give it a name: <code>:foo</code>. The next argument is the "body" of the proxy. This defines the sound that the proxy generates.
+</p>
+
+<p>
+In order to define a sound we use unit generators, or "UGens" for short. A unit generator is the most basic building block of sound available to us in cl-collider. Each UGen is specialized to generate or affect sound in a particular way. In this case, <code>sin-osc.ar</code> means a sine wave oscillator (<code>sin-osc</code>) at audio rate (<code>.ar</code>). The arguments to the sin-osc are, in order: frequency (in cycles per second), phase, and an amount to multiply the sin-osc's output by (commonly referred to as "mul"). In this case, we provide <code>0.2</code> to reduce the volume of the sin-osc from its default of <code>1</code>. In addition, <code>sin-osc.ar</code> accepts another argument after mul, which is "add"&#x2013;a number to add to the sin-osc's output. It defaults to <code>0</code>.
+</p>
+
+<p>
+If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (sin-osc.ar 300 0 0.2))
+</pre>
+</div>
+
+<p>
+Evaluating the new snippet should result in the sound output being replaced with another sine wave of a lower pitch.
+</p>
+
+<p>
+If you want to stop the sound, you can simply remove the body to the proxy. It will default to <code>nil</code> which stops the sound:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span>)
+</pre>
+</div>
+
+<p>
+To restart the sound, just add the body back into the proxy and re-evaluate.
+</p>
+
+<p>
+Aside from <code>sin-osc</code>, SuperCollider provides many other kinds of unit generators. For example, here's a saw wave:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (saw.ar 300 0.2))
+</pre>
+</div>
+
+<p>
+The <code>saw</code> UGen doesn't have a phase argument, so this time we only have to provide two: <code>300</code> for the frequency, and <code>0.2</code> for mul.
+</p>
+
+<p>
+It's also possible to control the parameters of one UGen with another:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (saw.ar (sin-osc.kr 0.5 0 150 300) 0.2))
+</pre>
+</div>
+
+<p>
+In this case, instead of providing a number for the saw's frequency, we supply a <code>sin-osc</code>. The <code>sin-osc</code> is set to have a frequency of <code>0.5</code>. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of <code>sin-osc</code> is from <code>-1</code> to <code>1</code>, multiplying it by 150 changes its range to <code>-150</code> to <code>150</code>. Then adding 300 produces the final range of <code>150</code> to <code>450</code>. That means that the <code>saw</code>'s frequency is being modulated from 150 to 450.
+</p>
+
+<p>
+If we want to actually start having fun, we can give ourselves more immediate control over the UGen by using the <code>mouse-y</code> UGen for one of its parameters:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (saw.ar (mouse-y.kr 20 10000 <span style="color: #859900;">:exponential</span>) 0.2))
+</pre>
+</div>
+
+<p>
+After evaluating this code, try moving your mouse up and down. You should hear that the pitch of the saw wave increases as you go up, and decreases as you go down. The parameters of <code>mouse-y</code> are the bottom of the range (<code>20</code>), the top of the range (<code>10000</code>), and the "warp" (<code>:exponential</code>). The first two should be self-explanatory: when the mouse is at the bottom of the screen, the <code>mouse-y</code> UGen outputs 20. When the mouse is at the top, <code>mouse-y</code> outputs 10000. The warp parameter specifies the slope of the range from the bottom to the top. Here we use <code>:exponential</code> because the human brain perceives pitch exponentially. If you want, you can change the warp to <code>:linear</code> instead, which is the default.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org31315c0" class="outline-2">
+<h2 id="org31315c0"><span class="section-number-2">2</span> Architecture</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+This one small line of code is actually just a very convenient way of doing many things at once, however 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc8f6e3c" class="outline-2">
+<h2 id="orgc8f6e3c"><span class="section-number-2">3</span> </h2>
+</div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-06-12 Mon 22:34</p>
+<p class="date">Created: 2017-06-14 Wed 21:25</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
