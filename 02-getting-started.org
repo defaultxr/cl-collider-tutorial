@@ -49,7 +49,7 @@ So far, so good. Position your cursor after the ~>~ and then type the following 
 #+BEGIN_SRC lisp
   (ql:quickload :sc)
 
-  (in-package :sc)
+  (in-package :sc-user)
 
   (setf *s* (make-external-server "localhost" :port 4444))
 
@@ -68,11 +68,11 @@ For reference, here's an example of what it might look like when you run these e
   ; Loading "sc"
   ..
   (:SC)
-  CL-USER> (in-package :sc)
-  #<PACKAGE "SC">
-  SC> (setf *s* (make-external-server "localhost" :port 4444))
+  CL-USER> (in-package :sc-user)
+  #<PACKAGE "SC-USER">
+  SC-USER> (setf *s* (make-external-server "localhost" :port 4444))
   #<SC-SYNTH localhost-127.0.0.1:4444>
-  SC> (server-boot *s*)
+  SC-USER> (server-boot *s*)
   VST_PATH not set, defaulting to /home/modula/vst:/usr/local/lib/vst:/usr/lib/vst
   Found 278 LADSPA plugins
   JackDriver: client name is 'SuperCollider'
@@ -81,7 +81,7 @@ For reference, here's an example of what it might look like when you run these e
   Zeroconf: failed to create client: Daemon not running
   #<SC-SYNTH localhost-127.0.0.1:4444>
   JackDriver: max output latency 11.6 ms
-  SC> 
+  SC-USER> 
 #+END_SRC
 
 ...Of course, it may be slightly different for you. As long as you don't get any errors, you're good to go.
