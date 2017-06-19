@@ -1,19 +1,87 @@
 #+TITLE: Getting Started
 
-This chapter will
+This chapter gives an explanation of the requirements for this guide, as well as some information on how to set them up.
 
 * Requirements
 
-To interact with the SuperCollider sound server, you will need the following software:
+To interact with SuperCollider, you will need the following software:
 
 ** SuperCollider
-
+The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth, which is the SuperCollider sound server that we will be using. This is the program that actually produces sound.
 
 ** Emacs
-Emacs has facilities to enhance Lisp coding, but you can use another editor instead if you want.
+[[https://www.gnu.org/software/emacs/][Emacs]] is a well-known text editor. It is specialized for writing Lisp code, and can even be extended using its own dialect of Lisp called Emacs Lisp or Elisp. Emacs is recommended because it has facilities to enhance writing and interacting with Lisp programs. It is possible to use another editor instead, but for the purposes of this guide we are assuming that Emacs is being used.
 
 ** SBCL
-SBCL is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your lisp code and causes it to produce output.
+[[https://www.sbcl.org/][SBCL]] is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
 
-*** test
-*** test
+** Slime
+[[https://common-lisp.net/project/slime/][Slime]] is the "Superior Lisp Interaction Mode for Emacs". It provides many advanced features for interacting with a Lisp program.
+
+** Quicklisp
+[[https://www.quicklisp.org/beta/][Quicklisp]] is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
+
+** cl-collider
+[[https://github.com/byulparan/cl-collider][cl-collider]] is the Lisp library that provides an interface to SuperCollider.
+
+** scheduler
+[[https://github.com/byulparan/scheduler][scheduler]] is the scheduling library for Lisp. It is used by cl-collider to accurately schedule musical events in time.
+
+* Setting Up
+It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
+
+Your package manager may provide Slime, but if not, it's possible to install it using Emacs' package manager. You can run the package manager in Emacs by typing ~M-x list-packages RET~. Then use ~C-s~ to search for ~slime~. With your cursor over ~slime~, press ~i~ to mark it for installation, and then ~x~ to install it.
+
+[[https://www.quicklisp.org/beta/][The Quicklisp site]] provides a guide on how to install it on Mac OS or Linux. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
+
+To install the [[https://github.com/byulparan/cl-collider][cl-collider]] and [[https://github.com/byulparan/scheduler][scheduler]] libraries, you just need to download them from their GitHub pages. If you aren't familiar with Git, you can download a zip of each library by clicking the green "Clone or download" button on the project page, and then click "Download ZIP". After downloading, extract the zip files and put the respective folders in your Quicklisp ~local-projects~ directory. Typically this is created in ~$HOME/quicklisp/local-projects~.
+
+* Starting Up
+
+Once you've successfully installed all of the above software, start Emacs, open a new lisp file using ~C-x C-f FILENAME.lisp RET~ where FILENAME is the name you want to give to your file. Then, you can start slime using ~M-x slime RET~. If all goes well, you should see a Lisp REPL that looks something like this:
+
+#+BEGIN_SRC
+  CL-USER>
+#+END_SRC
+
+So far, so good. Position your cursor after the ~>~ and then type the following Lisp expressions, one at a time. After each expression, you may see some output before getting a prompt back again.
+
+#+BEGIN_SRC lisp
+  (ql:quickload :sc)
+
+  (in-package :sc)
+
+  (setf *s* (make-external-server "localhost" :port 4444))
+
+  (server-boot *s*)
+#+END_SRC
+
+Once you run that last line, you're ready to make sound!
+
+For reference, here's an example of what it might look like when you run these expressions:
+
+#+BEGIN_SRC lisp
+  CL-USER> (ql:quickload :sc)
+  To load "sc":
+    Load 1 ASDF system:
+      sc
+  ; Loading "sc"
+  ..
+  (:SC)
+  CL-USER> (in-package :sc)
+  #<PACKAGE "SC">
+  SC> (setf *s* (make-external-server "localhost" :port 4444))
+  #<SC-SYNTH localhost-127.0.0.1:4444>
+  SC> (server-boot *s*)
+  VST_PATH not set, defaulting to /home/modula/vst:/usr/local/lib/vst:/usr/lib/vst
+  Found 278 LADSPA plugins
+  JackDriver: client name is 'SuperCollider'
+  SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
+  SuperCollider 3 server ready.
+  Zeroconf: failed to create client: Daemon not running
+  #<SC-SYNTH localhost-127.0.0.1:4444>
+  JackDriver: max output latency 11.6 ms
+  SC> 
+#+END_SRC
+
+...Of course, it may be slightly different for you. As long as you don't get any errors, you're good to go.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-11 Sun 00:22 -->
+<!-- 2017-06-18 Sun 22:11 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Getting Started</title>
@@ -230,67 +230,186 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf27fece">1. Requirements</a>
+<li><a href="#org41e5c2b">1. Requirements</a>
 <ul>
-<li><a href="#org69ddafb">1.1. SuperCollider</a></li>
-<li><a href="#org41dbbd0">1.2. Emacs</a></li>
-<li><a href="#org8c90430">1.3. SBCL</a>
-<ul>
-<li><a href="#org9245351">1.3.1. test</a></li>
-<li><a href="#orgbf3bd66">1.3.2. test</a></li>
+<li><a href="#orgd156267">1.1. SuperCollider</a></li>
+<li><a href="#org7d6813b">1.2. Emacs</a></li>
+<li><a href="#org2070f7f">1.3. SBCL</a></li>
+<li><a href="#org5ecb632">1.4. Slime</a></li>
+<li><a href="#org1944cf1">1.5. Quicklisp</a></li>
+<li><a href="#orgf2c7a4d">1.6. cl-collider</a></li>
+<li><a href="#org16c48d3">1.7. scheduler</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li><a href="#org1b6e699">2. Setting Up</a></li>
+<li><a href="#org38ef886">3. Starting Up</a></li>
 </ul>
 </div>
 </div>
 <p>
-This chapter will
+This chapter gives an explanation of the requirements for this guide, as well as some information on how to set them up.
 </p>
 
-<div id="outline-container-orgf27fece" class="outline-2">
-<h2 id="orgf27fece"><span class="section-number-2">1</span> Requirements</h2>
+<div id="outline-container-org41e5c2b" class="outline-2">
+<h2 id="org41e5c2b"><span class="section-number-2">1</span> Requirements</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-To interact with the SuperCollider sound server, you will need the following software:
+To interact with SuperCollider, you will need the following software:
 </p>
 </div>
 
-<div id="outline-container-org69ddafb" class="outline-3">
-<h3 id="org69ddafb"><span class="section-number-3">1.1</span> SuperCollider</h3>
+<div id="outline-container-orgd156267" class="outline-3">
+<h3 id="orgd156267"><span class="section-number-3">1.1</span> SuperCollider</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
-The SuperCollider package provides scsynth, sclang, scide, etc. For this, we only need scsynth.
+The <a href="https://supercollider.github.io/">SuperCollider</a> package provides scsynth, which is the SuperCollider sound server that we will be using. This is the program that actually produces sound.
 </p>
 </div>
 </div>
-<div id="outline-container-org41dbbd0" class="outline-3">
-<h3 id="org41dbbd0"><span class="section-number-3">1.2</span> Emacs</h3>
+
+<div id="outline-container-org7d6813b" class="outline-3">
+<h3 id="org7d6813b"><span class="section-number-3">1.2</span> Emacs</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-Emacs has facilities to enhance Lisp coding, but you can use another editor instead if you want.
+<a href="https://www.gnu.org/software/emacs/">Emacs</a> is a well-known text editor. It is specialized for writing Lisp code, and can even be extended using its own dialect of Lisp called Emacs Lisp or Elisp. Emacs is recommended because it has facilities to enhance writing and interacting with Lisp programs. It is possible to use another editor instead, but for the purposes of this guide we are assuming that Emacs is being used.
 </p>
 </div>
 </div>
-<div id="outline-container-org8c90430" class="outline-3">
-<h3 id="org8c90430"><span class="section-number-3">1.3</span> SBCL</h3>
+
+<div id="outline-container-org2070f7f" class="outline-3">
+<h3 id="org2070f7f"><span class="section-number-3">1.3</span> SBCL</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
-SBCL is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your lisp code and causes it to produce output.
+<a href="https://www.sbcl.org/">SBCL</a> is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
 </p>
 </div>
-<div id="outline-container-org9245351" class="outline-4">
-<h4 id="org9245351"><span class="section-number-4">1.3.1</span> test</h4>
 </div>
-<div id="outline-container-orgbf3bd66" class="outline-4">
-<h4 id="orgbf3bd66"><span class="section-number-4">1.3.2</span> test</h4>
+
+<div id="outline-container-org5ecb632" class="outline-3">
+<h3 id="org5ecb632"><span class="section-number-3">1.4</span> Slime</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+<a href="https://common-lisp.net/project/slime/">Slime</a> is the "Superior Lisp Interaction Mode for Emacs". It provides many advanced features for interacting with a Lisp program.
+</p>
 </div>
+</div>
+
+<div id="outline-container-org1944cf1" class="outline-3">
+<h3 id="org1944cf1"><span class="section-number-3">1.5</span> Quicklisp</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+<a href="https://www.quicklisp.org/beta/">Quicklisp</a> is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf2c7a4d" class="outline-3">
+<h3 id="orgf2c7a4d"><span class="section-number-3">1.6</span> cl-collider</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+<a href="https://github.com/byulparan/cl-collider">cl-collider</a> is the Lisp library that provides an interface to SuperCollider.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org16c48d3" class="outline-3">
+<h3 id="org16c48d3"><span class="section-number-3">1.7</span> scheduler</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+<a href="https://github.com/byulparan/scheduler">scheduler</a> is the scheduling library for Lisp. It is used by cl-collider to accurately schedule musical events in time.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1b6e699" class="outline-2">
+<h2 id="org1b6e699"><span class="section-number-2">2</span> Setting Up</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
+</p>
+
+<p>
+Your package manager may provide Slime, but if not, it's possible to install it using Emacs' package manager. You can run the package manager in Emacs by typing <code>M-x list-packages RET</code>. Then use <code>C-s</code> to search for <code>slime</code>. With your cursor over <code>slime</code>, press <code>i</code> to mark it for installation, and then <code>x</code> to install it.
+</p>
+
+<p>
+<a href="https://www.quicklisp.org/beta/">The Quicklisp site</a> provides a guide on how to install it on Mac OS or Linux. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
+</p>
+
+<p>
+To install the <a href="https://github.com/byulparan/cl-collider">cl-collider</a> and <a href="https://github.com/byulparan/scheduler">scheduler</a> libraries, you just need to download them from their GitHub pages. If you aren't familiar with Git, you can download a zip of each library by clicking the green "Clone or download" button on the project page, and then click "Download ZIP". After downloading, extract the zip files and put the respective folders in your Quicklisp <code>local-projects</code> directory. Typically this is created in <code>$HOME/quicklisp/local-projects</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org38ef886" class="outline-2">
+<h2 id="org38ef886"><span class="section-number-2">3</span> Starting Up</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Once you've successfully installed all of the above software, start Emacs, open a new lisp file using <code>C-x C-f FILENAME.lisp RET</code> where FILENAME is the name you want to give to your file. Then, you can start slime using <code>M-x slime RET</code>. If all goes well, you should see a Lisp REPL that looks something like this:
+</p>
+
+<pre class="example">
+CL-USER&gt;
+</pre>
+
+<p>
+So far, so good. Position your cursor after the <code>&gt;</code> and then type the following Lisp expressions, one at a time. After each expression, you may see some output before getting a prompt back again.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(ql:quickload <span style="color: #859900;">:sc</span>)
+
+(<span style="color: #859900;">in-package</span> <span style="color: #859900;">:sc</span>)
+
+(setf *s* (make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #859900;">:port</span> 4444))
+
+(server-boot *s*)
+</pre>
+</div>
+
+<p>
+Once you run that last line, you're ready to make sound!
+</p>
+
+<p>
+For reference, here's an example of what it might look like when you run these expressions:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">CL-USER&gt; (ql:quickload <span style="color: #859900;">:sc</span>)
+To load <span style="color: #2aa198;">"sc"</span>:
+  Load 1 ASDF system:
+    sc
+<span style="color: #586e75; font-style: italic;">; </span><span style="color: #586e75; font-style: italic;">Loading "sc"</span>
+..
+(<span style="color: #859900;">:SC</span>)
+CL-USER&gt; (<span style="color: #859900;">in-package</span> <span style="color: #859900;">:sc</span>)
+#&lt;PACKAGE <span style="color: #2aa198;">"SC"</span>&gt;
+SC&gt; (setf *s* (make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #859900;">:port</span> 4444))
+#&lt;SC-SYNTH localhost-127.0.0.1:4444&gt;
+SC&gt; (server-boot *s*)
+VST_PATH not set, defaulting to /home/modula/vst:/usr/local/lib/vst:/usr/lib/vst
+Found 278 LADSPA plugins
+JackDriver: client name is 'SuperCollider'
+SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
+SuperCollider 3 server ready.
+Zeroconf: failed to create client: Daemon not running
+#&lt;SC-SYNTH localhost-127.0.0.1:4444&gt;
+JackDriver: max output latency 11.6 ms
+SC&gt; 
+</pre>
+</div>
+
+<p>
+&#x2026;Of course, it may be slightly different for you. As long as you don't get any errors, you're good to go.
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-06-11 Sun 00:22</p>
+<p class="date">Created: 2017-06-18 Sun 22:11</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
