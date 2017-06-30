@@ -1,4 +1,5 @@
 #+TITLE: Contents
+#+OPTIONS: toc:nil
 
 * [[file:00-contents.org][Contents]]
 
