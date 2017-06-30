@@ -1,0 +1,36 @@
+#+TITLE: Further Soundmaking
+
+We've been using the ~proxy~ macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
+
+~proxy~ is good for testing out sounds, but once we've made something that we want to use, we define it with ~defsynth~. Here's a basic example:
+
+#+BEGIN_SRC lisp
+  (defsynth drum ((freq 3000))
+    (let* ((env (env-gen.kr (perc 0.001 0.1) :act :free))
+           (sig (lpf.ar (white-noise.ar) (* freq env))))
+      (out.ar 0 (pan2.ar sig 0 0.2))))
+
+  (drum 3000)
+#+END_SRC
+
+It's not the most exciting drum sound of all time, but now at least you can re-trigger it. To do so, just evaluate ~(drum 3000)~.
+
+Notice that ~defsynth~ is very similar to ~defun~. With ~defsynth~ you provide the name of the synth (~drum~), its parameters (~(freq 3000)~), and the body, which describes how it generates its sound.
+
+In the case of this synth, we create two variables, ~env~ and ~sig~. ~env~ is set to an envelope generator UGen, ~env-gen.kr~, which takes an envelope specification and generates a control signal from that specification. ~(perc 0.001 0.1)~ is the function generating the specification; its first parameter is the time in seconds to rise from ~0~ to ~1~, and the second parameter is the time to fall back to ~0~. The ~:act :free~ keywords for ~env-gen.kr~ specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
+
+The signal (~sig~) being generated is white noise (~white-noise.ar~) with its high frequencies dampened by the ~lpf~ low pass filter. The filter's frequency (~lpf~'s second argument) is the envelope generator multiplied by the synth's ~freq~ argument. Since the ~perc~ function generates an envelope that goes from ~0~ to ~1~ and then to ~0~ again, multiplying it by frequency is a simple way to change the brightness of the sound. Try the ~drum~ function with different arguments, from ~20~ to ~10000~ to get a feel for how it affects the sound.
+
+The last line of the synth definition contains the ~out.ar~ UGen. When we use the ~proxy~ function, this UGen is automatically inserted for us for convenience, but when we define a synth manually, we have to specify it. ~out~'s first argument is the index of the bus that you want to write to--in this case we just use ~0~ since we want the sound to go to our speakers. ~out~'s second argument is a UGen or list of UGens that are generating the sound. Up to this point, we've only been generating mono (single channel) sounds. The ~pan2~ UGen accepts a mono signal as input (~sig~ in our case) and converts it into a stereo signal based on its second argument, which specifies the panning position (here we use ~0~ to position it centrally). Finally, ~pan2~'s third argument is an amplitude input, so we multiply the overall volume of the synth by ~0.2~.
+
+blah blah
+
+basic template synth
+
+#+BEGIN_SRC lisp
+  (defsynth saw ((gate 1) (freq 440) (width 0) (pan 0) (out 0))
+    (let* ((env (env-gen.kr (adsr 0.001 0.1 0.5 0.1) :gate gate :act :free))
+           (sig (var-saw.ar freq 0 width)))
+      (out.ar out (pan2.ar sig pan 0.1))))
+#+END_SRC
+

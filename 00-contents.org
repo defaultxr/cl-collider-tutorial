@@ -1,9 +1,24 @@
 #+TITLE: Contents
 
-* Contents
+* [[file:00-contents.org][Contents]]
 
 * [[file:01-introduction.org][Introduction]]
 
 * [[file:02-getting-started.org][Getting Started]]
 
 * [[file:03-make-a-sound.org][Make a Sound]]
+
+* [[file:04-further-soundmaking.org][Further Soundmaking]]
+
+* Sampling
+
+* Sequencing
+
+* Effects
+
+* Architecture
+
+* Appendix A: UGens
+
+* Appendix B: Other Libraries
+

@@ -1,11 +1,9 @@
 #+TITLE: Make a Sound
 
-* First Sounds
-
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
 
 #+BEGIN_SRC common-lisp
-(proxy :foo (sin-osc.ar 440 0 0.2))
+  (proxy :foo (sin-osc.ar 440 0 0.2))
 #+END_SRC
 
 When you evaluate this line, you should hear a sine wave from your left speaker.
@@ -17,7 +15,7 @@ In order to define a sound we use unit generators, or "UGens" for short. A unit 
 If we want to change the sound being generated, we can simply edit the body of the ~proxy~. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
 
 #+BEGIN_SRC common-lisp
-(proxy :foo (sin-osc.ar 300 0 0.2))
+  (proxy :foo (sin-osc.ar 300 0 0.2))
 #+END_SRC
 
 Evaluating the new snippet should result in the sound output being replaced with another sine wave of a lower pitch.
@@ -25,7 +23,7 @@ Evaluating the new snippet should result in the sound output being replaced with
 If you want to stop the sound, you can simply remove the body to the proxy. It will default to ~nil~ which stops the sound:
 
 #+BEGIN_SRC common-lisp
-(proxy :foo)
+  (proxy :foo)
 #+END_SRC
 
 To restart the sound, just add the body back into the proxy and re-evaluate.
@@ -33,7 +31,7 @@ To restart the sound, just add the body back into the proxy and re-evaluate.
 Aside from ~sin-osc~, SuperCollider provides many other kinds of unit generators. For example, here's a saw wave:
 
 #+BEGIN_SRC common-lisp
-(proxy :foo (saw.ar 300 0.2))
+  (proxy :foo (saw.ar 300 0.2))
 #+END_SRC
 
 The ~saw~ UGen doesn't have a phase argument, so this time we only have to provide two: ~300~ for the frequency, and ~0.2~ for mul.
@@ -41,7 +39,7 @@ The ~saw~ UGen doesn't have a phase argument, so this time we only have to provi
 It's also possible to control the parameters of one UGen with another:
 
 #+BEGIN_SRC common-lisp
-(proxy :foo (saw.ar (sin-osc.kr 0.5 0 150 300) 0.2))
+  (proxy :foo (saw.ar (sin-osc.kr 0.5 0 150 300) 0.2))
 #+END_SRC
 
 In this case, instead of providing a number for the saw's frequency, we supply a ~sin-osc~. The ~sin-osc~ is set to have a frequency of ~0.5~. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of ~sin-osc~ is from ~-1~ to ~1~, multiplying it by 150 changes its range to ~-150~ to ~150~. Then adding 300 produces the final range of ~150~ to ~450~. That means that the ~saw~'s frequency is being modulated from 150 to 450.
@@ -54,8 +52,7 @@ If we want to actually start having fun, we can give ourselves more immediate co
 
 After evaluating this code, try moving your mouse up and down. You should hear that the pitch of the saw wave increases as you go up, and decreases as you go down. The parameters of ~mouse-y~ are the bottom of the range (~20~), the top of the range (~10000~), and the "warp" (~:exponential~). The first two should be self-explanatory: when the mouse is at the bottom of the screen, the ~mouse-y~ UGen outputs 20. When the mouse is at the top, ~mouse-y~ outputs 10000. The warp parameter specifies the slope of the range from the bottom to the top. Here we use ~:exponential~ because the human brain perceives pitch exponentially. If you want, you can change the warp to ~:linear~ instead, which is the default.
 
-* Architecture
+By now you may have noticed that some of the UGens we've been using have had ~.kr~ instead of ~.ar~. As mentioned before, ~ar~ specifies to run the UGen at audio rate. ~kr~, on the other hand, is for control rate, which means that the server processes that UGen less often, and thus uses less CPU power. Generally you would want to use ~.kr~ when the signal that the UGen is processing or generating isn't going to be heard, and doesn't exceed frequencies around 30Hz.
 
-This one small line of code is actually just a very convenient way of doing many things at once, however 
+Note that not all UGens are available in both control- and audio-rate versions. ~mouse-x~ and ~mouse-y~, for example, both only provide control rate output. So ~mouse-x.ar~ is invalid and would give you an error.
 
-* 

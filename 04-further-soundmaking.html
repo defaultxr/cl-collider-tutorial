@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-30 Fri 01:18 -->
+<!-- 2017-06-30 Fri 01:17 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Make a Sound</title>
+<title>Further Soundmaking</title>
 <meta name="generator" content="Org mode">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -225,103 +225,63 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Make a Sound</h1>
+<h1 class="title">Further Soundmaking</h1>
 <p>
-Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
+We've been using the <code>proxy</code> macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
+</p>
+
+<p>
+<code>proxy</code> is good for testing out sounds, but once we've made something that we want to use, we define it with <code>defsynth</code>. Here's a basic example:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (sin-osc.ar 440 0 0.2))
+<pre class="src src-lisp">(defsynth drum ((freq 3000))
+  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (perc 0.001 0.1) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+         (sig (lpf.ar (white-noise.ar) (* freq env))))
+    (out.ar 0 (pan2.ar sig 0 0.2))))
+
+(drum 3000)
 </pre>
 </div>
 
 <p>
-When you evaluate this line, you should hear a sine wave from your left speaker.
+It's not the most exciting drum sound of all time, but now at least you can re-trigger it. To do so, just evaluate <code>(drum 3000)</code>.
 </p>
 
 <p>
-The <code>proxy</code> function basically starts a synthesis process on the server for you. In order to refer back to the synth process, we give it a name: <code>:foo</code>. The next argument is the "body" of the proxy. This defines the sound that the proxy generates.
+Notice that <code>defsynth</code> is very similar to <code>defun</code>. With <code>defsynth</code> you provide the name of the synth (<code>drum</code>), its parameters (<code>(freq 3000)</code>), and the body, which describes how it generates its sound.
 </p>
 
 <p>
-In order to define a sound we use unit generators, or "UGens" for short. A unit generator is the most basic building block of sound available to us in cl-collider. Each UGen is specialized to generate or affect sound in a particular way. In this case, <code>sin-osc.ar</code> means a sine wave oscillator (<code>sin-osc</code>) at audio rate (<code>.ar</code>). The arguments to the sin-osc are, in order: frequency (in cycles per second), phase, and an amount to multiply the sin-osc's output by (commonly referred to as "mul"). In this case, we provide <code>0.2</code> to reduce the volume of the sin-osc from its default of <code>1</code>. In addition, <code>sin-osc.ar</code> accepts another argument after mul, which is "add"&#x2013;a number to add to the sin-osc's output. It defaults to <code>0</code>.
+In the case of this synth, we create two variables, <code>env</code> and <code>sig</code>. <code>env</code> is set to an envelope generator UGen, <code>env-gen.kr</code>, which takes an envelope specification and generates a control signal from that specification. <code>(perc 0.001 0.1)</code> is the function generating the specification; its first parameter is the time in seconds to rise from <code>0</code> to <code>1</code>, and the second parameter is the time to fall back to <code>0</code>. The <code>:act :free</code> keywords for <code>env-gen.kr</code> specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
 </p>
 
 <p>
-If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
+The signal (<code>sig</code>) being generated is white noise (<code>white-noise.ar</code>) with its high frequencies dampened by the <code>lpf</code> low pass filter. The filter's frequency (<code>lpf</code>'s second argument) is the envelope generator multiplied by the synth's <code>freq</code> argument. Since the <code>perc</code> function generates an envelope that goes from <code>0</code> to <code>1</code> and then to <code>0</code> again, multiplying it by frequency is a simple way to change the brightness of the sound. Try the <code>drum</code> function with different arguments, from <code>20</code> to <code>10000</code> to get a feel for how it affects the sound.
+</p>
+
+<p>
+The last line of the synth definition contains the <code>out.ar</code> UGen. When we use the <code>proxy</code> function, this UGen is automatically inserted for us for convenience, but when we define a synth manually, we have to specify it. <code>out</code>'s first argument is the index of the bus that you want to write to&#x2013;in this case we just use <code>0</code> since we want the sound to go to our speakers. <code>out</code>'s second argument is a UGen or list of UGens that are generating the sound. Up to this point, we've only been generating mono (single channel) sounds. The <code>pan2</code> UGen accepts a mono signal as input (<code>sig</code> in our case) and converts it into a stereo signal based on its second argument, which specifies the panning position (here we use <code>0</code> to position it centrally). Finally, <code>pan2</code>'s third argument is an amplitude input, so we multiply the overall volume of the synth by <code>0.2</code>.
+</p>
+
+<p>
+blah blah
+</p>
+
+<p>
+basic template synth
 </p>
 
 <div class="org-src-container">
-<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (sin-osc.ar 300 0 0.2))
+<pre class="src src-lisp">(defsynth saw ((gate 1) (freq 440) (width 0) (pan 0) (out 0))
+  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (adsr 0.001 0.1 0.5 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+         (sig (var-saw.ar freq 0 width)))
+    (out.ar out (pan2.ar sig pan 0.1))))
 </pre>
 </div>
-
-<p>
-Evaluating the new snippet should result in the sound output being replaced with another sine wave of a lower pitch.
-</p>
-
-<p>
-If you want to stop the sound, you can simply remove the body to the proxy. It will default to <code>nil</code> which stops the sound:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span>)
-</pre>
-</div>
-
-<p>
-To restart the sound, just add the body back into the proxy and re-evaluate.
-</p>
-
-<p>
-Aside from <code>sin-osc</code>, SuperCollider provides many other kinds of unit generators. For example, here's a saw wave:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (saw.ar 300 0.2))
-</pre>
-</div>
-
-<p>
-The <code>saw</code> UGen doesn't have a phase argument, so this time we only have to provide two: <code>300</code> for the frequency, and <code>0.2</code> for mul.
-</p>
-
-<p>
-It's also possible to control the parameters of one UGen with another:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (saw.ar (sin-osc.kr 0.5 0 150 300) 0.2))
-</pre>
-</div>
-
-<p>
-In this case, instead of providing a number for the saw's frequency, we supply a <code>sin-osc</code>. The <code>sin-osc</code> is set to have a frequency of <code>0.5</code>. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of <code>sin-osc</code> is from <code>-1</code> to <code>1</code>, multiplying it by 150 changes its range to <code>-150</code> to <code>150</code>. Then adding 300 produces the final range of <code>150</code> to <code>450</code>. That means that the <code>saw</code>'s frequency is being modulated from 150 to 450.
-</p>
-
-<p>
-If we want to actually start having fun, we can give ourselves more immediate control over the UGen by using the <code>mouse-y</code> UGen for one of its parameters:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-common-lisp">(proxy <span style="color: #859900;">:foo</span> (saw.ar (mouse-y.kr 20 10000 <span style="color: #859900;">:exponential</span>) 0.2))
-</pre>
-</div>
-
-<p>
-After evaluating this code, try moving your mouse up and down. You should hear that the pitch of the saw wave increases as you go up, and decreases as you go down. The parameters of <code>mouse-y</code> are the bottom of the range (<code>20</code>), the top of the range (<code>10000</code>), and the "warp" (<code>:exponential</code>). The first two should be self-explanatory: when the mouse is at the bottom of the screen, the <code>mouse-y</code> UGen outputs 20. When the mouse is at the top, <code>mouse-y</code> outputs 10000. The warp parameter specifies the slope of the range from the bottom to the top. Here we use <code>:exponential</code> because the human brain perceives pitch exponentially. If you want, you can change the warp to <code>:linear</code> instead, which is the default.
-</p>
-
-<p>
-By now you may have noticed that some of the UGens we've been using have had <code>.kr</code> instead of <code>.ar</code>. As mentioned before, <code>ar</code> specifies to run the UGen at audio rate. <code>kr</code>, on the other hand, is for control rate, which means that the server processes that UGen less often, and thus uses less CPU power. Generally you would want to use <code>.kr</code> when the signal that the UGen is processing or generating isn't going to be heard, and doesn't exceed frequencies around 30Hz.
-</p>
-
-<p>
-Note that not all UGens are available in both control- and audio-rate versions. <code>mouse-x</code> and <code>mouse-y</code>, for example, both only provide control rate output. So <code>mouse-x.ar</code> is invalid and would give you an error.
-</p>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-06-30 Fri 01:18</p>
+<p class="date">Created: 2017-06-30 Fri 01:17</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
