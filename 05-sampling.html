@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-07-25 Tue 03:48 -->
+<!-- 2017-07-25 Tue 03:47 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contents</title>
+<title>Sampling</title>
 <meta name="generator" content="Org mode">
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -225,54 +225,94 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Contents</h1>
+<h1 class="title">Sampling</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge554bc2">1. Loading Sounds</a></li>
+<li><a href="#org77282c4">2. Playing Sounds</a></li>
+</ul>
+</div>
+</div>
+<p>
+In addition to its powerful library of oscillators and sound generators, SuperCollider also gives us the ability to use recorded sounds in our synths. In SuperCollider, a recorded sound is stored in a buffer object on the server. A buffer is effectively an array of numbers which can be of any length and can have one or more channels. It's possible to load a sound into a buffer from your hard drive, but it's also possible to record the output of a synth or UGen into a buffer directly on the server. A buffer can be played back normally, or you can control its rate and the playhead position with a UGen.
+</p>
 
-<div id="outline-container-org4f0064c" class="outline-2">
-<h2 id="org4f0064c"><span class="section-number-2">1</span> <a href="00-contents.html">Contents</a></h2>
+<div id="outline-container-orge554bc2" class="outline-2">
+<h2 id="orge554bc2"><span class="section-number-2">1</span> Loading Sounds</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+To load a sound from the drive, use the <code>buffer-read</code> function, like so:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span>)
+</pre>
 </div>
 
-<div id="outline-container-org29d3cee" class="outline-2">
-<h2 id="org29d3cee"><span class="section-number-2">2</span> <a href="01-introduction.html">Introduction</a></h2>
+<p>
+This should be pretty self-explanatory; the only required parameter to <code>buffer-read</code> is the path to the file you want to load. SuperCollider has support for wav and aiff files, of any sample rate and any number of channels.
+</p>
+</div>
 </div>
 
-<div id="outline-container-orgf313dbb" class="outline-2">
-<h2 id="orgf313dbb"><span class="section-number-2">3</span> <a href="02-getting-started.html">Getting Started</a></h2>
+<div id="outline-container-org77282c4" class="outline-2">
+<h2 id="org77282c4"><span class="section-number-2">2</span> Playing Sounds</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Once you've loaded a sound, you'll probably want to play it. Here's an example SynthDef which illustrates the UGens you'd use to do that:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-common-lisp">(defsynth <span style="color: #859900;">:sample</span> ((bufnum 0) (rate 1) (start 0) (amp 0.5) (out 0))
+  (<span style="color: #859900;">let</span> ((sig (play-buf.ar 2 bufnum (* rate (buf-rate-scale.ir bufnum))
+                          <span style="color: #859900;">:start-pos</span> (* start (buf-frames.ir bufnum))
+                          <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>)))
+    (out.ar out (* amp sig))))
+</pre>
 </div>
 
-<div id="outline-container-orga32c482" class="outline-2">
-<h2 id="orga32c482"><span class="section-number-2">4</span> <a href="03-make-a-sound.html">Make a Sound</a></h2>
-</div>
+<p>
+For this synth, we use <code>bufnum</code> as a parameter so we can specify the buffer to play when the synth is started. We call it <code>bufnum</code> because the server only sees buffer numbers, not the buffer object that <code>buffer-read</code> returns to represent the buffer. <code>bufnum</code> is also fairly standardized and some libraries expect synths that use buffers to have that as the parameter name.
+</p>
 
-<div id="outline-container-org42de0db" class="outline-2">
-<h2 id="org42de0db"><span class="section-number-2">5</span> <a href="04-further-soundmaking.html">Further Soundmaking</a></h2>
-</div>
+<p>
+After <code>bufnum</code>, we provide a parameter for the playback rate. <code>rate</code> is the number to multiply the buffer's original speed by. So <code>1</code> would play the buffer back at its normal speed, while <code>2</code> would play it twice as fast, and <code>0.5</code> would play it half as fast.
+</p>
 
-<div id="outline-container-org828cb81" class="outline-2">
-<h2 id="org828cb81"><span class="section-number-2">6</span> <a href="05-sampling.html">Sampling</a></h2>
-</div>
+<p>
+In this SynthDef, we also include a <code>start</code> parameter, which lets us pick where in the sample to start playing from. In the SynthDef, a <code>start</code> value of <code>0</code> means start from the beginning, while <code>0.5</code> means start playing halfway through the buffer. Most SuperCollider UGens that use buffers take the playback position as a frame number, but it's often more convenient to be able to specify the relative position in the file regardless of its sample rate, so we multiply <code>start</code> by the number of frames in the sample to make this possible.
+</p>
 
-<div id="outline-container-orgc987dc3" class="outline-2">
-<h2 id="orgc987dc3"><span class="section-number-2">7</span> Sequencing</h2>
-</div>
+<p>
+The body of the SynthDef is fairly simple; the main UGen is <code>play-buf</code> which, as the name suggests, plays the buffer. Its first argument is the number of channels the buffer has. This is required by SuperCollider, and can't be modified while the synth is playing, or used as a parameter. It has to be a static number when the synth is compiled.
+</p>
 
-<div id="outline-container-org7f62ac1" class="outline-2">
-<h2 id="org7f62ac1"><span class="section-number-2">8</span> Effects</h2>
-</div>
+<p>
+The second argument to <code>play-buf</code> is the buffer number. After that, the playback rate. Here we multiply our <code>rate</code> parameter by <code>(buf-rate-scale.ir bufnum)</code>. <code>buf-rate-scale</code> is a UGen that outputs a number that we can multiply by in order to play a sample at its original speed regardless of the original file's sampling rate. If we just supplied our <code>rate</code> parameter directly, any sample that you load would play at the wrong speed if it doesn't match the sampling rate of the server itself.
+</p>
 
-<div id="outline-container-orga9f1ed7" class="outline-2">
-<h2 id="orga9f1ed7"><span class="section-number-2">9</span> Architecture</h2>
-</div>
+<p>
+You might also notice the <code>.ir</code> on the end of <code>buf-rate-scale</code>. <code>.ir</code> specifies that the UGen should "initialization rate": processed only once, when the synth is started. This frees up CPU usage, but it also gives us the disadvantage of not being able to change the buffer that the synth is playing while it's playing. Typically it's not necessary to change the buffer of an already-playing synth, but if you want that ability, you can just change the <code>.ir</code> to a <code>.kr</code>.
+</p>
 
-<div id="outline-container-orgc38532a" class="outline-2">
-<h2 id="orgc38532a"><span class="section-number-2">10</span> Appendix A: UGens</h2>
-</div>
+<p>
+<code>start-pos</code> is the argument <code>play-buf</code> takes to specify where to start playing the sample from. Since <code>play-buf</code> expects a frame number for that parameter, we multiply our <code>start</code> parameter by the <code>buf-frames</code> UGen, which gives the total number of frames of the buffer. This is another <code>.ir</code> UGen for the same reason as above.
+</p>
 
-<div id="outline-container-orge6bc7ec" class="outline-2">
-<h2 id="orge6bc7ec"><span class="section-number-2">11</span> Appendix B: Other Libraries</h2>
+<p>
+Finally, the <code>act</code> parameter specifies what action should be taken when <code>play-buf</code> finishes playing the sound. In our case, we provide <code>:free</code> so that the synth will stop playing and be freed. Without this, the synth would continue running in the background and continue using CPU resources even though it's making no sound. 
+</p>
+
+<p>
+Of course, you may want to have the sound loop instead, in which case <code>act</code> would be left to its default value, so no special action is taken when the sound reaches its end. You would also have to provide <code>play-buf</code>'s <code>loop</code> parameter a value of <code>1</code>.
+</p>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-07-25 Tue 03:48</p>
+<p class="date">Created: 2017-07-25 Tue 03:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

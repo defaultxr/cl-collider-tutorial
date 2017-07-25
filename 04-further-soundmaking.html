@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-30 Fri 01:17 -->
+<!-- 2017-07-25 Tue 03:47 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Further Soundmaking</title>
@@ -226,6 +226,19 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">Further Soundmaking</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgd3fbb10">1. <code>defsynth</code></a></li>
+<li><a href="#org70c28a7">2. </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd3fbb10" class="outline-2">
+<h2 id="orgd3fbb10"><span class="section-number-2">1</span> <code>defsynth</code></h2>
+<div class="outline-text-2" id="text-1">
 <p>
 We've been using the <code>proxy</code> macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
 </p>
@@ -239,8 +252,6 @@ We've been using the <code>proxy</code> macro to define and redefine sounds, but
   (<span style="color: #859900;">let*</span> ((env (env-gen.kr (perc 0.001 0.1) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
          (sig (lpf.ar (white-noise.ar) (* freq env))))
     (out.ar 0 (pan2.ar sig 0 0.2))))
-
-(drum 3000)
 </pre>
 </div>
 
@@ -263,7 +274,12 @@ The signal (<code>sig</code>) being generated is white noise (<code>white-noise.
 <p>
 The last line of the synth definition contains the <code>out.ar</code> UGen. When we use the <code>proxy</code> function, this UGen is automatically inserted for us for convenience, but when we define a synth manually, we have to specify it. <code>out</code>'s first argument is the index of the bus that you want to write to&#x2013;in this case we just use <code>0</code> since we want the sound to go to our speakers. <code>out</code>'s second argument is a UGen or list of UGens that are generating the sound. Up to this point, we've only been generating mono (single channel) sounds. The <code>pan2</code> UGen accepts a mono signal as input (<code>sig</code> in our case) and converts it into a stereo signal based on its second argument, which specifies the panning position (here we use <code>0</code> to position it centrally). Finally, <code>pan2</code>'s third argument is an amplitude input, so we multiply the overall volume of the synth by <code>0.2</code>.
 </p>
+</div>
+</div>
 
+<div id="outline-container-org70c28a7" class="outline-2">
+<h2 id="org70c28a7"><span class="section-number-2">2</span> </h2>
+<div class="outline-text-2" id="text-2">
 <p>
 blah blah
 </p>
@@ -280,8 +296,10 @@ basic template synth
 </pre>
 </div>
 </div>
+</div>
+</div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-06-30 Fri 01:17</p>
+<p class="date">Created: 2017-07-25 Tue 03:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

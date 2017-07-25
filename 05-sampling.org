@@ -1,0 +1,43 @@
+#+TITLE: Sampling
+
+In addition to its powerful library of oscillators and sound generators, SuperCollider also gives us the ability to use recorded sounds in our synths. In SuperCollider, a recorded sound is stored in a buffer object on the server. A buffer is effectively an array of numbers which can be of any length and can have one or more channels. It's possible to load a sound into a buffer from your hard drive, but it's also possible to record the output of a synth or UGen into a buffer directly on the server. A buffer can be played back normally, or you can control its rate and the playhead position with a UGen.
+
+* Loading Sounds
+
+To load a sound from the drive, use the ~buffer-read~ function, like so:
+
+#+BEGIN_SRC common-lisp
+  (buffer-read "/path/to/your/file.wav")
+#+END_SRC
+
+This should be pretty self-explanatory; the only required parameter to ~buffer-read~ is the path to the file you want to load. SuperCollider has support for wav and aiff files, of any sample rate and any number of channels.
+
+* Playing Sounds
+
+Once you've loaded a sound, you'll probably want to play it. Here's an example SynthDef which illustrates the UGens you'd use to do that:
+
+#+BEGIN_SRC common-lisp
+  (defsynth :sample ((bufnum 0) (rate 1) (start 0) (amp 0.5) (out 0))
+    (let ((sig (play-buf.ar 2 bufnum (* rate (buf-rate-scale.ir bufnum))
+                            :start-pos (* start (buf-frames.ir bufnum))
+                            :act :free)))
+      (out.ar out (* amp sig))))
+#+END_SRC
+
+For this synth, we use ~bufnum~ as a parameter so we can specify the buffer to play when the synth is started. We call it ~bufnum~ because the server only sees buffer numbers, not the buffer object that ~buffer-read~ returns to represent the buffer. ~bufnum~ is also fairly standardized and some libraries expect synths that use buffers to have that as the parameter name.
+
+After ~bufnum~, we provide a parameter for the playback rate. ~rate~ is the number to multiply the buffer's original speed by. So ~1~ would play the buffer back at its normal speed, while ~2~ would play it twice as fast, and ~0.5~ would play it half as fast.
+
+In this SynthDef, we also include a ~start~ parameter, which lets us pick where in the sample to start playing from. In the SynthDef, a ~start~ value of ~0~ means start from the beginning, while ~0.5~ means start playing halfway through the buffer. Most SuperCollider UGens that use buffers take the playback position as a frame number, but it's often more convenient to be able to specify the relative position in the file regardless of its sample rate, so we multiply ~start~ by the number of frames in the sample to make this possible.
+
+The body of the SynthDef is fairly simple; the main UGen is ~play-buf~ which, as the name suggests, plays the buffer. Its first argument is the number of channels the buffer has. This is required by SuperCollider, and can't be modified while the synth is playing, or used as a parameter. It has to be a static number when the synth is compiled.
+
+The second argument to ~play-buf~ is the buffer number. After that, the playback rate. Here we multiply our ~rate~ parameter by ~(buf-rate-scale.ir bufnum)~. ~buf-rate-scale~ is a UGen that outputs a number that we can multiply by in order to play a sample at its original speed regardless of the original file's sampling rate. If we just supplied our ~rate~ parameter directly, any sample that you load would play at the wrong speed if it doesn't match the sampling rate of the server itself.
+
+You might also notice the ~.ir~ on the end of ~buf-rate-scale~. ~.ir~ specifies that the UGen should "initialization rate": processed only once, when the synth is started. This frees up CPU usage, but it also gives us the disadvantage of not being able to change the buffer that the synth is playing while it's playing. Typically it's not necessary to change the buffer of an already-playing synth, but if you want that ability, you can just change the ~.ir~ to a ~.kr~.
+
+~start-pos~ is the argument ~play-buf~ takes to specify where to start playing the sample from. Since ~play-buf~ expects a frame number for that parameter, we multiply our ~start~ parameter by the ~buf-frames~ UGen, which gives the total number of frames of the buffer. This is another ~.ir~ UGen for the same reason as above.
+
+Finally, the ~act~ parameter specifies what action should be taken when ~play-buf~ finishes playing the sound. In our case, we provide ~:free~ so that the synth will stop playing and be freed. Without this, the synth would continue running in the background and continue using CPU resources even though it's making no sound. 
+
+Of course, you may want to have the sound loop instead, in which case ~act~ would be left to its default value, so no special action is taken when the sound reaches its end. You would also have to provide ~play-buf~'s ~loop~ parameter a value of ~1~.

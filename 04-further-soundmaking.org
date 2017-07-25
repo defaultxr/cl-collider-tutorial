@@ -1,5 +1,7 @@
 #+TITLE: Further Soundmaking
 
+* ~defsynth~
+
 We've been using the ~proxy~ macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
 
 ~proxy~ is good for testing out sounds, but once we've made something that we want to use, we define it with ~defsynth~. Here's a basic example:
@@ -9,8 +11,6 @@ We've been using the ~proxy~ macro to define and redefine sounds, but this limit
     (let* ((env (env-gen.kr (perc 0.001 0.1) :act :free))
            (sig (lpf.ar (white-noise.ar) (* freq env))))
       (out.ar 0 (pan2.ar sig 0 0.2))))
-
-  (drum 3000)
 #+END_SRC
 
 It's not the most exciting drum sound of all time, but now at least you can re-trigger it. To do so, just evaluate ~(drum 3000)~.
@@ -22,6 +22,8 @@ In the case of this synth, we create two variables, ~env~ and ~sig~. ~env~ is se
 The signal (~sig~) being generated is white noise (~white-noise.ar~) with its high frequencies dampened by the ~lpf~ low pass filter. The filter's frequency (~lpf~'s second argument) is the envelope generator multiplied by the synth's ~freq~ argument. Since the ~perc~ function generates an envelope that goes from ~0~ to ~1~ and then to ~0~ again, multiplying it by frequency is a simple way to change the brightness of the sound. Try the ~drum~ function with different arguments, from ~20~ to ~10000~ to get a feel for how it affects the sound.
 
 The last line of the synth definition contains the ~out.ar~ UGen. When we use the ~proxy~ function, this UGen is automatically inserted for us for convenience, but when we define a synth manually, we have to specify it. ~out~'s first argument is the index of the bus that you want to write to--in this case we just use ~0~ since we want the sound to go to our speakers. ~out~'s second argument is a UGen or list of UGens that are generating the sound. Up to this point, we've only been generating mono (single channel) sounds. The ~pan2~ UGen accepts a mono signal as input (~sig~ in our case) and converts it into a stereo signal based on its second argument, which specifies the panning position (here we use ~0~ to position it centrally). Finally, ~pan2~'s third argument is an amplitude input, so we multiply the overall volume of the synth by ~0.2~.
+
+* 
 
 blah blah
 

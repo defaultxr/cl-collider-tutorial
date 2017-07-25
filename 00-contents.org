@@ -11,7 +11,7 @@
 
 * [[file:04-further-soundmaking.org][Further Soundmaking]]
 
-* Sampling
+* [[file:05-sampling.org][Sampling]]
 
 * Sequencing
 

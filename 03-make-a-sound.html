@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-06-30 Fri 01:18 -->
+<!-- 2017-07-25 Tue 03:47 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make a Sound</title>
@@ -226,6 +226,20 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">Make a Sound</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc4414d1">1. First Sound</a></li>
+<li><a href="#org4210f95">2. Change the Sound</a></li>
+<li><a href="#orgc673879">3. UGens Controlling UGens</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc4414d1" class="outline-2">
+<h2 id="orgc4414d1"><span class="section-number-2">1</span> First Sound</h2>
+<div class="outline-text-2" id="text-1">
 <p>
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
 </p>
@@ -246,7 +260,12 @@ The <code>proxy</code> function basically starts a synthesis process on the serv
 <p>
 In order to define a sound we use unit generators, or "UGens" for short. A unit generator is the most basic building block of sound available to us in cl-collider. Each UGen is specialized to generate or affect sound in a particular way. In this case, <code>sin-osc.ar</code> means a sine wave oscillator (<code>sin-osc</code>) at audio rate (<code>.ar</code>). The arguments to the sin-osc are, in order: frequency (in cycles per second), phase, and an amount to multiply the sin-osc's output by (commonly referred to as "mul"). In this case, we provide <code>0.2</code> to reduce the volume of the sin-osc from its default of <code>1</code>. In addition, <code>sin-osc.ar</code> accepts another argument after mul, which is "add"&#x2013;a number to add to the sin-osc's output. It defaults to <code>0</code>.
 </p>
+</div>
+</div>
 
+<div id="outline-container-org4210f95" class="outline-2">
+<h2 id="org4210f95"><span class="section-number-2">2</span> Change the Sound</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
 </p>
@@ -285,7 +304,12 @@ Aside from <code>sin-osc</code>, SuperCollider provides many other kinds of unit
 <p>
 The <code>saw</code> UGen doesn't have a phase argument, so this time we only have to provide two: <code>300</code> for the frequency, and <code>0.2</code> for mul.
 </p>
+</div>
+</div>
 
+<div id="outline-container-orgc673879" class="outline-2">
+<h2 id="orgc673879"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 It's also possible to control the parameters of one UGen with another:
 </p>
@@ -320,8 +344,10 @@ By now you may have noticed that some of the UGens we've been using have had <co
 Note that not all UGens are available in both control- and audio-rate versions. <code>mouse-x</code> and <code>mouse-y</code>, for example, both only provide control rate output. So <code>mouse-x.ar</code> is invalid and would give you an error.
 </p>
 </div>
+</div>
+</div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-06-30 Fri 01:18</p>
+<p class="date">Created: 2017-07-25 Tue 03:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

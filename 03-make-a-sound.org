@@ -1,5 +1,7 @@
 #+TITLE: Make a Sound
 
+* First Sound
+
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
 
 #+BEGIN_SRC common-lisp
@@ -11,6 +13,8 @@ When you evaluate this line, you should hear a sine wave from your left speaker.
 The ~proxy~ function basically starts a synthesis process on the server for you. In order to refer back to the synth process, we give it a name: ~:foo~. The next argument is the "body" of the proxy. This defines the sound that the proxy generates.
 
 In order to define a sound we use unit generators, or "UGens" for short. A unit generator is the most basic building block of sound available to us in cl-collider. Each UGen is specialized to generate or affect sound in a particular way. In this case, ~sin-osc.ar~ means a sine wave oscillator (~sin-osc~) at audio rate (~.ar~). The arguments to the sin-osc are, in order: frequency (in cycles per second), phase, and an amount to multiply the sin-osc's output by (commonly referred to as "mul"). In this case, we provide ~0.2~ to reduce the volume of the sin-osc from its default of ~1~. In addition, ~sin-osc.ar~ accepts another argument after mul, which is "add"--a number to add to the sin-osc's output. It defaults to ~0~.
+
+* Change the Sound
 
 If we want to change the sound being generated, we can simply edit the body of the ~proxy~. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
 
@@ -35,6 +39,8 @@ Aside from ~sin-osc~, SuperCollider provides many other kinds of unit generators
 #+END_SRC
 
 The ~saw~ UGen doesn't have a phase argument, so this time we only have to provide two: ~300~ for the frequency, and ~0.2~ for mul.
+
+* UGens Controlling UGens
 
 It's also possible to control the parameters of one UGen with another:
 
