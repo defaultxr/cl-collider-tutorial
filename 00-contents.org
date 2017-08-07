@@ -1,25 +1,25 @@
 #+TITLE: Contents
 #+OPTIONS: toc:nil
 
-* [[file:00-contents.org][Contents]]
+0. [@0] [[file:00-contents.org][Contents]]
 
-* [[file:01-introduction.org][Introduction]]
+1. [[file:01-introduction.org][Introduction]]
 
-* [[file:02-getting-started.org][Getting Started]]
+2. [[file:02-getting-started.org][Getting Started]]
 
-* [[file:03-make-a-sound.org][Make a Sound]]
+3. [[file:03-make-a-sound.org][Make a Sound]]
 
-* [[file:04-further-soundmaking.org][Further Soundmaking]]
+4. [[file:04-further-soundmaking.org][Further Soundmaking]]
 
-* [[file:05-sampling.org][Sampling]]
+5. [[file:05-sampling.org][Sampling]]
 
-* Sequencing
+6. Sequencing
 
-* Effects
+7. Effects
 
-* Architecture
+8. Architecture
 
-* Appendix A: UGens
+9. Appendix A: UGens
 
-* Appendix B: Other Libraries
+10. Appendix B: Other Libraries
 
