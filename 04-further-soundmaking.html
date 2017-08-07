@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-07-25 Tue 03:47 -->
+<!-- 2017-08-03 Thu 17:09 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Further Soundmaking</title>
@@ -230,14 +230,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd3fbb10">1. <code>defsynth</code></a></li>
-<li><a href="#org70c28a7">2. </a></li>
+<li><a href="#orgc1996fe">1. <code>defsynth</code></a></li>
+<li><a href="#orgf90c5ea">2. Best Practices</a></li>
+<li><a href="#org31a28ca">3. More UGens</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd3fbb10" class="outline-2">
-<h2 id="orgd3fbb10"><span class="section-number-2">1</span> <code>defsynth</code></h2>
+<div id="outline-container-orgc1996fe" class="outline-2">
+<h2 id="orgc1996fe"><span class="section-number-2">1</span> <code>defsynth</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 We've been using the <code>proxy</code> macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
@@ -277,29 +278,52 @@ The last line of the synth definition contains the <code>out.ar</code> UGen. Whe
 </div>
 </div>
 
-<div id="outline-container-org70c28a7" class="outline-2">
-<h2 id="org70c28a7"><span class="section-number-2">2</span> </h2>
+<div id="outline-container-orgf90c5ea" class="outline-2">
+<h2 id="orgf90c5ea"><span class="section-number-2">2</span> Best Practices</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-blah blah
+If you're going to make music with cl-collider, you're likely to end up writing a lot of ~defsynth~s. Because of this, it may be a good idea to use a template system for your editor. For example, Emacs users can use skeleton or yasnippet. Both of these allow you to create a template and easily insert it into a file so you don't have to do as much manual typing.
 </p>
 
 <p>
-basic template synth
+You may want to use something like the following as your basic template synth:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth saw ((gate 1) (freq 440) (width 0) (pan 0) (out 0))
+<pre class="src src-lisp">(defsynth newsynth ((gate 1) (freq 440) (amp 0.5) (pan 0) (out 0))
   (<span style="color: #859900;">let*</span> ((env (env-gen.kr (adsr 0.001 0.1 0.5 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
-         (sig (var-saw.ar freq 0 width)))
-    (out.ar out (pan2.ar sig pan 0.1))))
+         (sig (saw.ar freq)))
+    (out.ar out (pan2.ar sig pan (* amp env)))))
+</pre>
+</div>
+
+<p>
+This is a good synthdef to start from because it includes most of what you'll need to get started: standard arguments, an envelope that frees the synth when complete, and of course, UGens to generate and output sound.
+</p>
+
+<p>
+<code>gate</code>, <code>freq</code>, <code>amp</code>, <code>pan</code>, and <code>out</code> are all fairly common and standard arguments for synthdefs. <code>gate</code> is used to tell the synth whether it should play or release. If you were playing on a piano, <code>gate</code> would be <code>1</code> when you press a key, and would become <code>0</code> when you release the key. Because we provide <code>gate</code> to the <code>env-gen</code>, the envelope will start when the gate is 1 and will proceed to the release section when the gate becomes 0. Then, when the release section ends, the envelope will free itself.
+</p>
+
+<p>
+<code>freq</code> is the standard argument name for sending pitch information to a synthdef. If you want to control the pitch of a synth using a midi note number instead, you can use the <code>midicps</code> function to convert the midi note number to a frequency. Like so:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(newsynth 1 (midicps 40) 0.5 0 0)
 </pre>
 </div>
 </div>
 </div>
+
+
+
+<div id="outline-container-org31a28ca" class="outline-2">
+<h2 id="org31a28ca"><span class="section-number-2">3</span> More UGens</h2>
+</div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-07-25 Tue 03:47</p>
+<p class="date">Created: 2017-08-03 Thu 17:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

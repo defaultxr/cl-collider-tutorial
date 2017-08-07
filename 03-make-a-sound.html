@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-07-25 Tue 03:47 -->
+<!-- 2017-08-03 Thu 15:59 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make a Sound</title>
@@ -230,15 +230,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc4414d1">1. First Sound</a></li>
-<li><a href="#org4210f95">2. Change the Sound</a></li>
-<li><a href="#orgc673879">3. UGens Controlling UGens</a></li>
+<li><a href="#orgb76bbd6">1. First Sound</a></li>
+<li><a href="#orgd5dcbee">2. Change the Sound</a></li>
+<li><a href="#orgb156e58">3. UGens Controlling UGens</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc4414d1" class="outline-2">
-<h2 id="orgc4414d1"><span class="section-number-2">1</span> First Sound</h2>
+<div id="outline-container-orgb76bbd6" class="outline-2">
+<h2 id="orgb76bbd6"><span class="section-number-2">1</span> First Sound</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
@@ -263,8 +263,8 @@ In order to define a sound we use unit generators, or "UGens" for short. A unit 
 </div>
 </div>
 
-<div id="outline-container-org4210f95" class="outline-2">
-<h2 id="org4210f95"><span class="section-number-2">2</span> Change the Sound</h2>
+<div id="outline-container-orgd5dcbee" class="outline-2">
+<h2 id="orgd5dcbee"><span class="section-number-2">2</span> Change the Sound</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
@@ -307,8 +307,8 @@ The <code>saw</code> UGen doesn't have a phase argument, so this time we only ha
 </div>
 </div>
 
-<div id="outline-container-orgc673879" class="outline-2">
-<h2 id="orgc673879"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
+<div id="outline-container-orgb156e58" class="outline-2">
+<h2 id="orgb156e58"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 It's also possible to control the parameters of one UGen with another:
@@ -341,13 +341,13 @@ By now you may have noticed that some of the UGens we've been using have had <co
 </p>
 
 <p>
-Note that not all UGens are available in both control- and audio-rate versions. <code>mouse-x</code> and <code>mouse-y</code>, for example, both only provide control rate output. So <code>mouse-x.ar</code> is invalid and would give you an error.
+Note that not all UGens are available in both control- and audio-rate versions. <code>mouse-x</code> and <code>mouse-y</code>, for example, only provide control rate output. So <code>mouse-x.ar</code> is invalid and would give you an error.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2017-07-25 Tue 03:47</p>
+<p class="date">Created: 2017-08-03 Thu 15:59</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

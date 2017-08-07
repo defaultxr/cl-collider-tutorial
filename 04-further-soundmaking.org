@@ -23,16 +23,31 @@ The signal (~sig~) being generated is white noise (~white-noise.ar~) with its hi
 
 The last line of the synth definition contains the ~out.ar~ UGen. When we use the ~proxy~ function, this UGen is automatically inserted for us for convenience, but when we define a synth manually, we have to specify it. ~out~'s first argument is the index of the bus that you want to write to--in this case we just use ~0~ since we want the sound to go to our speakers. ~out~'s second argument is a UGen or list of UGens that are generating the sound. Up to this point, we've only been generating mono (single channel) sounds. The ~pan2~ UGen accepts a mono signal as input (~sig~ in our case) and converts it into a stereo signal based on its second argument, which specifies the panning position (here we use ~0~ to position it centrally). Finally, ~pan2~'s third argument is an amplitude input, so we multiply the overall volume of the synth by ~0.2~.
 
-* 
+* Best Practices
 
-blah blah
+If you're going to make music with cl-collider, you're likely to end up writing a lot of ~defsynth~s. Because of this, it may be a good idea to use a template system for your editor. For example, Emacs users can use skeleton or yasnippet. Both of these allow you to create a template and easily insert it into a file so you don't have to do as much manual typing.
 
-basic template synth
+You may want to use something like the following as your basic template synth:
 
 #+BEGIN_SRC lisp
-  (defsynth saw ((gate 1) (freq 440) (width 0) (pan 0) (out 0))
+  (defsynth newsynth ((gate 1) (freq 440) (amp 0.5) (pan 0) (out 0))
     (let* ((env (env-gen.kr (adsr 0.001 0.1 0.5 0.1) :gate gate :act :free))
-           (sig (var-saw.ar freq 0 width)))
-      (out.ar out (pan2.ar sig pan 0.1))))
+           (sig (saw.ar freq)))
+      (out.ar out (pan2.ar sig pan (* amp env)))))
 #+END_SRC
 
+This is a good synthdef to start from because it includes most of what you'll need to get started: standard arguments, an envelope that frees the synth when complete, and of course, UGens to generate and output sound.
+
+~gate~, ~freq~, ~amp~, ~pan~, and ~out~ are all fairly common and standard arguments for synthdefs. ~gate~ is used to tell the synth whether it should play or release. If you were playing on a piano, ~gate~ would be ~1~ when you press a key, and would become ~0~ when you release the key. Because we provide ~gate~ to the ~env-gen~, the envelope will start when the gate is 1 and will proceed to the release section when the gate becomes 0. Then, when the release section ends, the envelope will free itself.
+
+~freq~ is the standard argument name for sending pitch information to a synthdef. If you want to control the pitch of a synth using a midi note number instead, you can use the ~midicps~ function to convert the midi note number to a frequency. Like so:
+
+#+BEGIN_SRC lisp
+  (newsynth 1 (midicps 40) 0.5 0 0)
+#+END_SRC
+
+# FIX: describe other note conversion functions.
+
+
+
+* More UGens
