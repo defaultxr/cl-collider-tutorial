@@ -1,0 +1,47 @@
+#+TITLE: Sequencing
+
+Up to this point, we've been testing sounds by playing them manually using their functions defined by ~defsynth~, or by using ~proxy~. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
+
+cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
+
+#+BEGIN_SRC common-lisp
+(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
+  (let* ((env (env-gen.kr (asr 0.01 1 0.1) :gate gate :act :free))
+         (sig (sin-osc.ar freq 0 0.2)))
+    (out.ar 0 (pan2.ar sig pan (* env amp)))))
+#+END_SRC
+
+Then, we can define a function to start playing this synth:
+
+#+BEGIN_SRC common-lisp
+(defun testing ()
+  (let ((syn (synth 'simple (list :freq (midicps (+ 30 (random 40)))))))
+    (callback (+ (now) 0.7) #'release syn))
+  (callback (+ (now) 1) #'testing))
+#+END_SRC
+
+The first thing the ~testing~ function does is start a new ~simple~ synth. The ~synth~ function immediately starts the synth named by its first argument, and returns a ~node~ object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the ~midicps~ function.
+
+Below that, we use the ~callback~ function to schedule the release of the synth 0.7 seconds in the future. The ~now~ function returns the current time, so adding 0.7 to it means "0.7 seconds from now". ~callback~ effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case ~release~), and (optionally) the arguments to that function. Here we provide the node returned by ~synth~ so it will be released.
+
+After that, we use ~callback~ again to re-schedule the ~testing~ function. That way, we continue to hear notes playing. To give some space between notes, we schedule it to trigger again after one second.
+
+Once you define that function, you can call it using ~(testing)~ and you should hear random notes being played. Since this is a standard Common Lisp function, you can re-define it on the fly and the next time it's called it will automatically use the new definition. For example, if we want multiple notes simultaneously:
+
+#+BEGIN_SRC common-lisp
+(defun testing ()
+  (let* ((note (+ 40 (random 40)))
+         (syns (loop :for i :in '(0 12 24)
+                  :collect (synth 'simple (list :freq (midicps (+ i note)))))))
+    (loop :for i :in syns
+       :do (callback (+ (now) 0.7) #'release i)))
+  (callback (+ (now) 1) #'testing))
+#+END_SRC
+
+This version of ~testing~ generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself if you so choose.
+
+Using closures, we can write functions that perform different actions each time they're called:
+
+#+BEGIN_SRC 
+
+#+END_SRC
