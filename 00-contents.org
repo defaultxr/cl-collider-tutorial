@@ -13,13 +13,13 @@
 
 5. [[file:05-sampling.org][Sampling]]
 
-6. Sequencing
+6. [[file:06-sequencing.org][Sequencing]]
 
-7. Effects
+7. [[file:07-effects.org][Effects]]
 
-8. Architecture
+8. [[file:08-architecture.org][Architecture]]
 
-9. Appendix A: UGens
+9. [[file:09-ugens.org][Appendix A: UGens]]
 
-10. Appendix B: Other Libraries
+10. [[file:10-other-libraries.org][Appendix B: Other Libraries]]
 
