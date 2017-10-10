@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <!-- 2017-10-10 Tue 03:51 -->
+  <!-- 2017-10-10 Tue 04:02 -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sequencing</title>
@@ -11,75 +11,94 @@
   <div id="content">
    <header>
     <h1 class="title">Sequencing</h1>
-   </header><p>
+   </header><nav id="table-of-contents">
+    <h2>Table of Contents</h2>
+    <div id="text-table-of-contents">
+     <ul>
+      <li><a href="#org4491185">1. <code>callback</code></a></li>
+      <li><a href="#org7e3434f">2. Closures</a></li>
+     </ul>
+    </div>
+   </nav>
+   <p>
     Up to this point, we've been testing sounds by playing them manually using their functions defined by <code>defsynth</code>, or by using <code>proxy</code>. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
    </p>
 
-   <p>
-    cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
-   </p>
+   <div id="outline-container-org4491185" class="outline-2">
+    <h2 id="org4491185"><span class="section-number-2">1</span> <code>callback</code></h2>
+    <div class="outline-text-2" id="text-1">
+     <p>
+      cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
+     </p>
 
-   <div class="org-src-container">
-    <pre class="src src-common-lisp">(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
-     (<span style="color: #859900;">let*</span> ((env (env-gen.kr (asr 0.01 1 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
-     (sig (sin-osc.ar freq 0 0.2)))
-     (out.ar 0 (pan2.ar sig pan (* env amp)))))
-    </pre>
+     <div class="org-src-container">
+      <pre class="src src-common-lisp">(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
+       (<span style="color: #859900;">let*</span> ((env (env-gen.kr (asr 0.01 1 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+       (sig (sin-osc.ar freq 0 0.2)))
+       (out.ar 0 (pan2.ar sig pan (* env amp)))))
+      </pre>
+     </div>
+
+     <p>
+      Then, we can define a function to start playing this synth:
+     </p>
+
+     <div class="org-src-container">
+      <pre class="src src-common-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
+       (<span style="color: #859900;">let</span> ((syn (synth 'simple (list <span style="color: #859900;">:freq</span> (midicps (+ 30 (random 40)))))))
+       (callback (+ (now) 0.7) #'release syn))
+       (callback (+ (now) 1) #'testing))
+      </pre>
+     </div>
+
+     <p>
+      The first thing the <code>testing</code> function does is start a new <code>simple</code> synth. The <code>synth</code> function immediately starts the synth named by its first argument, and returns a <code>node</code> object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the <code>midicps</code> function.
+     </p>
+
+     <p>
+      Below that, we use the <code>callback</code> function to schedule the release of the synth 0.7 seconds in the future. The <code>now</code> function returns the current time, so adding 0.7 to it means "0.7 seconds from now". <code>callback</code> effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case <code>release</code>), and (optionally) the arguments to that function. Here we provide the node returned by <code>synth</code> so it will be released.
+     </p>
+
+     <p>
+      After that, we use <code>callback</code> again to re-schedule the <code>testing</code> function. That way, we continue to hear notes playing. To give some space between notes, we schedule it to trigger again after one second.
+     </p>
+
+     <p>
+      Once you define that function, you can call it using <code>(testing)</code> and you should hear random notes being played. Since this is a standard Common Lisp function, you can re-define it on the fly and the next time it's called it will automatically use the new definition. For example, if we want multiple notes simultaneously:
+     </p>
+
+     <div class="org-src-container">
+      <pre class="src src-common-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
+       (<span style="color: #859900;">let*</span> ((note (+ 40 (random 40)))
+       (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
+       <span style="color: #859900;">:collect</span> (synth 'simple (list <span style="color: #859900;">:freq</span> (midicps (+ i note)))))))
+       (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> syns
+       <span style="color: #859900;">:do</span> (callback (+ (now) 0.7) #'release i)))
+       (callback (+ (now) 1) #'testing))
+      </pre>
+     </div>
+
+     <p>
+      This version of <code>testing</code> generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself if you so choose.
+     </p>
+    </div>
    </div>
 
-   <p>
-    Then, we can define a function to start playing this synth:
-   </p>
+   <div id="outline-container-org7e3434f" class="outline-2">
+    <h2 id="org7e3434f"><span class="section-number-2">2</span> Closures</h2>
+    <div class="outline-text-2" id="text-2">
+     <p>
+      Using closures, we can write functions that perform different actions each time they're called:
+     </p>
 
-   <div class="org-src-container">
-    <pre class="src src-common-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-     (<span style="color: #859900;">let</span> ((syn (synth 'simple (list <span style="color: #859900;">:freq</span> (midicps (+ 30 (random 40)))))))
-     (callback (+ (now) 0.7) #'release syn))
-     (callback (+ (now) 1) #'testing))
-    </pre>
+     <pre class="example">
+
+     </pre>
+    </div>
    </div>
-
-   <p>
-    The first thing the <code>testing</code> function does is start a new <code>simple</code> synth. The <code>synth</code> function immediately starts the synth named by its first argument, and returns a <code>node</code> object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the <code>midicps</code> function.
-   </p>
-
-   <p>
-    Below that, we use the <code>callback</code> function to schedule the release of the synth 0.7 seconds in the future. The <code>now</code> function returns the current time, so adding 0.7 to it means "0.7 seconds from now". <code>callback</code> effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case <code>release</code>), and (optionally) the arguments to that function. Here we provide the node returned by <code>synth</code> so it will be released.
-   </p>
-
-   <p>
-    After that, we use <code>callback</code> again to re-schedule the <code>testing</code> function. That way, we continue to hear notes playing. To give some space between notes, we schedule it to trigger again after one second.
-   </p>
-
-   <p>
-    Once you define that function, you can call it using <code>(testing)</code> and you should hear random notes being played. Since this is a standard Common Lisp function, you can re-define it on the fly and the next time it's called it will automatically use the new definition. For example, if we want multiple notes simultaneously:
-   </p>
-
-   <div class="org-src-container">
-    <pre class="src src-common-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-     (<span style="color: #859900;">let*</span> ((note (+ 40 (random 40)))
-     (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
-     <span style="color: #859900;">:collect</span> (synth 'simple (list <span style="color: #859900;">:freq</span> (midicps (+ i note)))))))
-     (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> syns
-     <span style="color: #859900;">:do</span> (callback (+ (now) 0.7) #'release i)))
-     (callback (+ (now) 1) #'testing))
-    </pre>
-   </div>
-
-   <p>
-    This version of <code>testing</code> generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself if you so choose.
-   </p>
-
-   <p>
-    Using closures, we can write functions that perform different actions each time they're called:
-   </p>
-
-   <pre class="example">
-
-   </pre>
   </div>
   <div id="postamble" class="status">
-   <p class="date">Last updated: 2017-10-10 Tue 03:51</p>
+   <p class="date">Last updated: 2017-10-10 Tue 04:02</p>
   </div>
  </body>
 </html>
