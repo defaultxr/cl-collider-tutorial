@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <!-- 2017-10-10 Tue 04:02 -->
+  <!-- 2017-10-10 Tue 04:03 -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sequencing</title>
@@ -15,8 +15,8 @@
     <h2>Table of Contents</h2>
     <div id="text-table-of-contents">
      <ul>
-      <li><a href="#org4491185">1. <code>callback</code></a></li>
-      <li><a href="#org7e3434f">2. Closures</a></li>
+      <li><a href="#org0d38293">1. <code>callback</code></a></li>
+      <li><a href="#org74789e3">2. Closures</a></li>
      </ul>
     </div>
    </nav>
@@ -24,15 +24,15 @@
     Up to this point, we've been testing sounds by playing them manually using their functions defined by <code>defsynth</code>, or by using <code>proxy</code>. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
    </p>
 
-   <div id="outline-container-org4491185" class="outline-2">
-    <h2 id="org4491185"><span class="section-number-2">1</span> <code>callback</code></h2>
+   <div id="outline-container-org0d38293" class="outline-2">
+    <h2 id="org0d38293"><span class="section-number-2">1</span> <code>callback</code></h2>
     <div class="outline-text-2" id="text-1">
      <p>
       cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
      </p>
 
      <div class="org-src-container">
-      <pre class="src src-common-lisp">(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
+      <pre class="src src-lisp">(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
        (<span style="color: #859900;">let*</span> ((env (env-gen.kr (asr 0.01 1 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
        (sig (sin-osc.ar freq 0 0.2)))
        (out.ar 0 (pan2.ar sig pan (* env amp)))))
@@ -44,7 +44,7 @@
      </p>
 
      <div class="org-src-container">
-      <pre class="src src-common-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
+      <pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
        (<span style="color: #859900;">let</span> ((syn (synth 'simple (list <span style="color: #859900;">:freq</span> (midicps (+ 30 (random 40)))))))
        (callback (+ (now) 0.7) #'release syn))
        (callback (+ (now) 1) #'testing))
@@ -68,7 +68,7 @@
      </p>
 
      <div class="org-src-container">
-      <pre class="src src-common-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
+      <pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
        (<span style="color: #859900;">let*</span> ((note (+ 40 (random 40)))
        (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
        <span style="color: #859900;">:collect</span> (synth 'simple (list <span style="color: #859900;">:freq</span> (midicps (+ i note)))))))
@@ -84,8 +84,8 @@
     </div>
    </div>
 
-   <div id="outline-container-org7e3434f" class="outline-2">
-    <h2 id="org7e3434f"><span class="section-number-2">2</span> Closures</h2>
+   <div id="outline-container-org74789e3" class="outline-2">
+    <h2 id="org74789e3"><span class="section-number-2">2</span> Closures</h2>
     <div class="outline-text-2" id="text-2">
      <p>
       Using closures, we can write functions that perform different actions each time they're called:
@@ -98,7 +98,7 @@
    </div>
   </div>
   <div id="postamble" class="status">
-   <p class="date">Last updated: 2017-10-10 Tue 04:02</p>
+   <p class="date">Last updated: 2017-10-10 Tue 04:03</p>
   </div>
  </body>
 </html>
