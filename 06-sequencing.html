@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-10-10 Tue 04:07 -->
+<!-- 2017-10-15 Sun 20:58 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sequencing</title>
@@ -15,8 +15,8 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb404857">1. <code>callback</code></a></li>
-<li><a href="#org35b23fc">2. Closures</a></li>
+<li><a href="#org65fcab5">1. <code>callback</code></a></li>
+<li><a href="#org047a8e4">2. Closures</a></li>
 </ul>
 </div>
 </nav>
@@ -24,8 +24,8 @@
 Up to this point, we've been testing sounds by playing them manually using their functions defined by <code>defsynth</code>, or by using <code>proxy</code>. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
 </p>
 
-<div id="outline-container-orgb404857" class="outline-2">
-<h2 id="orgb404857"><span class="section-number-2">1</span> <code>callback</code></h2>
+<div id="outline-container-org65fcab5" class="outline-2">
+<h2 id="org65fcab5"><span class="section-number-2">1</span> <code>callback</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
@@ -79,13 +79,17 @@ Once you define that function, you can call it using <code>(testing)</code> and 
 </div>
 
 <p>
-This version of <code>testing</code> generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself if you so choose.
+This version of <code>testing</code> generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
+</p>
+
+<p>
+However, 
 </p>
 </div>
 </div>
 
-<div id="outline-container-org35b23fc" class="outline-2">
-<h2 id="org35b23fc"><span class="section-number-2">2</span> Closures</h2>
+<div id="outline-container-org047a8e4" class="outline-2">
+<h2 id="org047a8e4"><span class="section-number-2">2</span> Closures</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Using closures, we can write functions that perform different actions each time they're called:
@@ -98,7 +102,7 @@ Using closures, we can write functions that perform different actions each time 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2017-10-10 Tue 04:07</p>
+<p class="date">Last updated: 2017-10-15 Sun 20:58</p>
 </div>
 </body>
 </html>

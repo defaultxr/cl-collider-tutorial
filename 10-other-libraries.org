@@ -1,3 +1,5 @@
 #+TITLE: Other Libraries
 
+* cl-patterns
 
+* Incudine

@@ -6,7 +6,7 @@ In addition to its powerful library of oscillators and sound generators, SuperCo
 
 To load a sound from the drive, use the ~buffer-read~ function, like so:
 
-#+BEGIN_SRC common-lisp
+#+BEGIN_SRC lisp
   (buffer-read "/path/to/your/file.wav")
 #+END_SRC
 
@@ -16,7 +16,7 @@ This should be pretty self-explanatory; the only required parameter to ~buffer-r
 
 Once you've loaded a sound, you'll probably want to play it. Here's an example SynthDef which illustrates the UGens you'd use to do that:
 
-#+BEGIN_SRC common-lisp
+#+BEGIN_SRC lisp
   (defsynth :sample ((bufnum 0) (rate 1) (start 0) (amp 0.5) (out 0))
     (let ((sig (play-buf.ar 2 bufnum (* rate (buf-rate-scale.ir bufnum))
                             :start-pos (* start (buf-frames.ir bufnum))

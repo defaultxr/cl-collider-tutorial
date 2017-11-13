@@ -40,7 +40,9 @@ Once you define that function, you can call it using ~(testing)~ and you should 
     (callback (+ (now) 1) #'testing))
 #+END_SRC
 
-This version of ~testing~ generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself if you so choose.
+This version of ~testing~ generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
+
+However, 
 
 * Closures
 
