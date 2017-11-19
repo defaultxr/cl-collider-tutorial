@@ -22,9 +22,9 @@ Then, we can define a function to start playing this synth:
     (callback (+ (now) 1) #'testing))
 #+END_SRC
 
-The first thing the ~testing~ function does is start a new ~simple~ synth. The ~synth~ function immediately starts the synth named by its first argument, and returns a ~node~ object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the ~midicps~ function.
+The first thing the ~testing~ function does is start a new ~simple~ synth. Calling ~simple~ returns a ~node~ object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the ~midicps~ function.
 
-Below that, we use the ~callback~ function to schedule the release of the synth 0.7 seconds in the future. The ~now~ function returns the current time, so adding 0.7 to it means "0.7 seconds from now". ~callback~ effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case ~release~), and (optionally) the arguments to that function. Here we provide the node returned by ~synth~ so it will be released.
+Below that, we use the ~callback~ function to schedule the release of the synth 0.7 seconds in the future. The ~now~ function returns the current time, so adding 0.7 to it means "0.7 seconds from now". ~callback~ effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case ~release~), and (optionally) the arguments to that function. Here we provide the node returned by ~simple~ so it will be released.
 
 After that, we use ~callback~ again to re-schedule the ~testing~ function. That way, we continue to hear notes playing. To give some space between notes, we schedule it to trigger again after one second.
 
@@ -34,7 +34,7 @@ Once you define that function, you can call it using ~(testing)~ and you should 
   (defun testing ()
     (let* ((note (+ 40 (random 40)))
            (syns (loop :for i :in '(0 12 24)
-                    :collect (synth 'simple (list :freq (midicps (+ i note)))))))
+                    :collect (simple :freq (midicps (+ i note))))))
       (loop :for i :in syns
          :do (callback (+ (now) 0.7) #'release i)))
     (callback (+ (now) 1) #'testing))
