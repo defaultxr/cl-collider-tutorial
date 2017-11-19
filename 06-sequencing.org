@@ -7,7 +7,7 @@ Up to this point, we've been testing sounds by playing them manually using their
 cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
 
 #+BEGIN_SRC lisp
-  (defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
+  (defsynth simple (&key (gate 1) (freq 440) (pan 0) (amp 0.5))
     (let* ((env (env-gen.kr (asr 0.01 1 0.1) :gate gate :act :free))
            (sig (sin-osc.ar freq 0 0.2)))
       (out.ar 0 (pan2.ar sig pan (* env amp)))))
@@ -17,7 +17,7 @@ Then, we can define a function to start playing this synth:
 
 #+BEGIN_SRC lisp
   (defun testing ()
-    (let ((syn (synth 'simple (list :freq (midicps (+ 30 (random 40)))))))
+    (let ((syn (simple :freq (midicps (+ 30 (random 40))))))
       (callback (+ (now) 0.7) #'release syn))
     (callback (+ (now) 1) #'testing))
 #+END_SRC
