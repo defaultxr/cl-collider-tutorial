@@ -28,7 +28,14 @@ Below that, we use the ~callback~ function to schedule the release of the synth 
 
 After that, we use ~callback~ again to re-schedule the ~testing~ function. That way, we continue to hear notes playing. To give some space between notes, we schedule it to trigger again after one second.
 
-Once you define that function, you can call it using ~(testing)~ and you should hear random notes being played. Since this is a standard Common Lisp function, you can re-define it on the fly and the next time it's called it will automatically use the new definition. For example, if we want multiple notes simultaneously:
+Once you define that function, you can call it using ~(testing)~ and you should hear random notes being played. Since this is a standard Common Lisp function, you can re-define it on the fly and the next time it's called it will automatically use the new definition. So if we wanted the function to stop playing, we could simply evaluate the following:
+
+#+BEGIN_SRC lisp
+  (defun testing ()
+    nil)
+#+END_SRC
+
+Another example; if we want multiple notes simultaneously:
 
 #+BEGIN_SRC lisp
   (defun testing ()
@@ -42,12 +49,27 @@ Once you define that function, you can call it using ~(testing)~ and you should 
 
 This version of ~testing~ generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
 
-However, 
-
 * Closures
 
 Using closures, we can write functions that perform different actions each time they're called:
 
-#+BEGIN_SRC 
-
+#+BEGIN_SRC lisp
+  (let ((index 0)
+        (list (list 0 2 4 6)))
+    (defun testing ()
+      (let* ((note (+ 40 (nth index list)))
+             (syns (loop :for i :in '(0 12 24)
+                      :collect (simple :freq (midicps (+ i note))))))
+        (loop :for i :in syns
+           :do (callback (+ (now) 0.7) #'release i)))
+      (setf index (mod (1+ index) (length list)))
+      (callback (+ (now) 1) #'testing)))
 #+END_SRC
+
+Since closures let us keep track of state, we can make arpeggios instead of just playing random midi notes.
+
+* Patterns
+
+Though you can of course implement any behaviors you want using functions and cl-collider's scheduler as shown above, it does require a lot of bookkeeping. Calculating the frequency for each note, saving each synth in a variable, releasing it later, etcetera--and that's just for simple behavior like the above. You could, of course, define some functions and macros to make it easier, but there is another way.
+
+If you're using SuperCollider's built-in programming language, it comes with a library of sequencing functionality called "patterns". 

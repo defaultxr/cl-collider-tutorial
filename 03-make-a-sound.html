@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-11-12 Sun 18:21 -->
+<!-- 2018-01-19 Fri 22:18 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make a Sound</title>
@@ -15,15 +15,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org49a582a">1. First Sound</a></li>
-<li><a href="#orgd21d574">2. Change the Sound</a></li>
-<li><a href="#orgcd49465">3. UGens Controlling UGens</a></li>
+<li><a href="#org74bf8fa">1. First Sound</a></li>
+<li><a href="#orga3d3fd2">2. Change the Sound</a></li>
+<li><a href="#orgbde9823">3. UGens Controlling UGens</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org49a582a" class="outline-2">
-<h2 id="org49a582a"><span class="section-number-2">1</span> First Sound</h2>
+<div id="outline-container-org74bf8fa" class="outline-2">
+<h2 id="org74bf8fa"><span class="section-number-2">1</span> First Sound</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
@@ -48,8 +48,8 @@ In order to define a sound we use unit generators, or "UGens" for short. A unit 
 </div>
 </div>
 
-<div id="outline-container-orgd21d574" class="outline-2">
-<h2 id="orgd21d574"><span class="section-number-2">2</span> Change the Sound</h2>
+<div id="outline-container-orga3d3fd2" class="outline-2">
+<h2 id="orga3d3fd2"><span class="section-number-2">2</span> Change the Sound</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
@@ -92,8 +92,8 @@ The <code>saw</code> UGen doesn't have a phase argument, so this time we only ha
 </div>
 </div>
 
-<div id="outline-container-orgcd49465" class="outline-2">
-<h2 id="orgcd49465"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
+<div id="outline-container-orgbde9823" class="outline-2">
+<h2 id="orgbde9823"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 It's also possible to control the parameters of one UGen with another:
@@ -105,7 +105,7 @@ It's also possible to control the parameters of one UGen with another:
 </div>
 
 <p>
-In this case, instead of providing a number for the saw's frequency, we supply a <code>sin-osc</code>. The <code>sin-osc</code> is set to have a frequency of <code>0.5</code>. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of <code>sin-osc</code> is from <code>-1</code> to <code>1</code>, multiplying it by 150 changes its range to <code>-150</code> to <code>150</code>. Then adding 300 produces the final range of <code>150</code> to <code>450</code>. That means that the <code>saw</code>'s frequency is being modulated from 150 to 450.
+In this case, instead of providing a number for the saw's frequency, we supply a <code>sin-osc</code>. The <code>sin-osc</code> is set to have a frequency of <code>0.5</code>. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of <code>sin-osc</code> is from <code>-1</code> to <code>1</code>, multiplying it by 150 changes its range to <code>-150</code> to <code>150</code>. Then adding 300 produces the final range of <code>150</code> to <code>450</code>; thus the <code>saw</code>'s frequency is being modulated from 150 to 450.
 </p>
 
 <p>
@@ -132,7 +132,7 @@ Note that not all UGens are available in both control- and audio-rate versions. 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2017-11-12 Sun 18:21</p>
+<p class="date">Last updated: 2018-01-19 Fri 22:18</p>
 </div>
 </body>
 </html>

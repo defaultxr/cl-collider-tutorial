@@ -48,7 +48,7 @@ It's also possible to control the parameters of one UGen with another:
   (proxy :foo (saw.ar (sin-osc.kr 0.5 0 150 300) 0.2))
 #+END_SRC
 
-In this case, instead of providing a number for the saw's frequency, we supply a ~sin-osc~. The ~sin-osc~ is set to have a frequency of ~0.5~. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of ~sin-osc~ is from ~-1~ to ~1~, multiplying it by 150 changes its range to ~-150~ to ~150~. Then adding 300 produces the final range of ~150~ to ~450~. That means that the ~saw~'s frequency is being modulated from 150 to 450.
+In this case, instead of providing a number for the saw's frequency, we supply a ~sin-osc~. The ~sin-osc~ is set to have a frequency of ~0.5~. The mul is set to 150, which multiplies the sine wave's output by 150. Then, since the add argument is 300, 300 is added. Since the default range of ~sin-osc~ is from ~-1~ to ~1~, multiplying it by 150 changes its range to ~-150~ to ~150~. Then adding 300 produces the final range of ~150~ to ~450~; thus the ~saw~'s frequency is being modulated from 150 to 450.
 
 If we want to actually start having fun, we can give ourselves more immediate control over the UGen by using the ~mouse-y~ UGen for one of its parameters:
 
