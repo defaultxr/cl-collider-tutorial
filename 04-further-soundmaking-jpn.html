@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2017-08-03 Thu 17:09 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Further Soundmaking</title>
+<meta name="generator" content="Org mode">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Further Soundmaking</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc1996fe">1. <code>defsynth</code></a></li>
+<li><a href="#orgf90c5ea">2. Best Practices</a></li>
+<li><a href="#org31a28ca">3. More UGens</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc1996fe" class="outline-2">
+<h2 id="orgc1996fe"><span class="section-number-2">1</span> <code>defsynth</code></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+We've been using the <code>proxy</code> macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
+</p>
+
+<p>
+<code>proxy</code> is good for testing out sounds, but once we've made something that we want to use, we define it with <code>defsynth</code>. Here's a basic example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(defsynth drum ((freq 3000))
+  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (perc 0.001 0.1) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+         (sig (lpf.ar (white-noise.ar) (* freq env))))
+    (out.ar 0 (pan2.ar sig 0 0.2))))
+</pre>
+</div>
+
+<p>
+It's not the most exciting drum sound of all time, but now at least you can re-trigger it. To do so, just evaluate <code>(drum 3000)</code>.
+</p>
+
+<p>
+Notice that <code>defsynth</code> is very similar to <code>defun</code>. With <code>defsynth</code> you provide the name of the synth (<code>drum</code>), its parameters (<code>(freq 3000)</code>), and the body, which describes how it generates its sound.
+</p>
+
+<p>
+In the case of this synth, we create two variables, <code>env</code> and <code>sig</code>. <code>env</code> is set to an envelope generator UGen, <code>env-gen.kr</code>, which takes an envelope specification and generates a control signal from that specification. <code>(perc 0.001 0.1)</code> is the function generating the specification; its first parameter is the time in seconds to rise from <code>0</code> to <code>1</code>, and the second parameter is the time to fall back to <code>0</code>. The <code>:act :free</code> keywords for <code>env-gen.kr</code> specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
+</p>
+
+<p>
+The signal (<code>sig</code>) being generated is white noise (<code>white-noise.ar</code>) with its high frequencies dampened by the <code>lpf</code> low pass filter. The filter's frequency (<code>lpf</code>'s second argument) is the envelope generator multiplied by the synth's <code>freq</code> argument. Since the <code>perc</code> function generates an envelope that goes from <code>0</code> to <code>1</code> and then to <code>0</code> again, multiplying it by frequency is a simple way to change the brightness of the sound. Try the <code>drum</code> function with different arguments, from <code>20</code> to <code>10000</code> to get a feel for how it affects the sound.
+</p>
+
+<p>
+The last line of the synth definition contains the <code>out.ar</code> UGen. When we use the <code>proxy</code> function, this UGen is automatically inserted for us for convenience, but when we define a synth manually, we have to specify it. <code>out</code>'s first argument is the index of the bus that you want to write to&#x2013;in this case we just use <code>0</code> since we want the sound to go to our speakers. <code>out</code>'s second argument is a UGen or list of UGens that are generating the sound. Up to this point, we've only been generating mono (single channel) sounds. The <code>pan2</code> UGen accepts a mono signal as input (<code>sig</code> in our case) and converts it into a stereo signal based on its second argument, which specifies the panning position (here we use <code>0</code> to position it centrally). Finally, <code>pan2</code>'s third argument is an amplitude input, so we multiply the overall volume of the synth by <code>0.2</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf90c5ea" class="outline-2">
+<h2 id="orgf90c5ea"><span class="section-number-2">2</span> Best Practices</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+If you're going to make music with cl-collider, you're likely to end up writing a lot of ~defsynth~s. Because of this, it may be a good idea to use a template system for your editor. For example, Emacs users can use skeleton or yasnippet. Both of these allow you to create a template and easily insert it into a file so you don't have to do as much manual typing.
+</p>
+
+<p>
+You may want to use something like the following as your basic template synth:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(defsynth newsynth ((gate 1) (freq 440) (amp 0.5) (pan 0) (out 0))
+  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (adsr 0.001 0.1 0.5 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+         (sig (saw.ar freq)))
+    (out.ar out (pan2.ar sig pan (* amp env)))))
+</pre>
+</div>
+
+<p>
+This is a good synthdef to start from because it includes most of what you'll need to get started: standard arguments, an envelope that frees the synth when complete, and of course, UGens to generate and output sound.
+</p>
+
+<p>
+<code>gate</code>, <code>freq</code>, <code>amp</code>, <code>pan</code>, and <code>out</code> are all fairly common and standard arguments for synthdefs. <code>gate</code> is used to tell the synth whether it should play or release. If you were playing on a piano, <code>gate</code> would be <code>1</code> when you press a key, and would become <code>0</code> when you release the key. Because we provide <code>gate</code> to the <code>env-gen</code>, the envelope will start when the gate is 1 and will proceed to the release section when the gate becomes 0. Then, when the release section ends, the envelope will free itself.
+</p>
+
+<p>
+<code>freq</code> is the standard argument name for sending pitch information to a synthdef. If you want to control the pitch of a synth using a midi note number instead, you can use the <code>midicps</code> function to convert the midi note number to a frequency. Like so:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(newsynth 1 (midicps 40) 0.5 0 0)
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org31a28ca" class="outline-2">
+<h2 id="org31a28ca"><span class="section-number-2">3</span> More UGens</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2017-08-03 Thu 17:09</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

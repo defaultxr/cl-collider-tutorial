@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2018-01-19 Fri 21:54 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Effects</title>
+<meta name="generator" content="Org mode">
+</head>
+<body>
+<div id="content">
+<header>
+<h1 class="title">Effects</h1>
+</header><p>
+To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5))
+  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3))))
+         (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="color: #859900;">:level-scale</span> freq))
+         (sig (sin-osc.ar fenv 0 (* env 0.2)))
+         (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
+         (sig (leak-dc.ar sig)))
+    (detect-silence.ar sig 1.0e-4 <span style="color: #859900;">:time</span> delay <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>)
+    (out.ar 0 (pan2.ar sig 0 amp))))
+</pre>
+</div>
+
+<p>
+In the above synth, our source sound is simply a sine wave sweep from the <code>freq</code> to 0&#x2013;the <code>env-gen</code>'s <code>level-scale</code> argument allows us to easily multiply the envelope by the frequency to get the sweep. Our <code>sin-osc</code> uses the frequency envelope as its frequency input and <code>0</code> as its phase. Its <code>mul</code> is <code>0.2</code> multiplied by our amplitude envelope <code>env</code>.
+</p>
+
+<p>
+Below that, we apply the delay effect. An easy way to make a delay in SuperCollider is to use a comb filter&#x2013;in this case, <code>comb-c</code>&#x2013;which is basically the same thing as a normal delay. <code>comb-c</code>'s arguments are:
+</p>
+
+<ul class="org-ul">
+<li>The input. In our case, <code>sig</code>, which is the sine sweep.</li>
+<li>The maximum delay time. This is used by SuperCollider to allocate memory for the delay when the synth is created. For a simple use-case like this, we can just provide the delay time itself. If you were going to modulate the delay time, this would need to be set to the highest time you expect to use, because this argument cannot be modulated after the synth has been created.</li>
+<li>The delay time. The actual amount of time between each repeat of the delay. This can be modulated.</li>
+<li>The decay time. This is basically the amount of time that it takes for the delays to fade out to silence.</li>
+<li>The standard <code>mul</code> and <code>add</code> arguments.</li>
+</ul>
+
+<p>
+Our last step of processing for the signal is to send it through the <code>leak-dc</code> UGen. SuperCollider's comb filters can sometimes produce a DC offset, which is basically a part of the signal that is silent but not centered at 0. It's often a good idea to send them through <code>leak-dc</code> UGen in order to remove this offset.
+</p>
+
+<p>
+It also helps the <code>detect-silence</code> UGen below, which, as the name suggests, is used to detect silence. When silence is detected by its input, it outputs a <code>1</code>, and when the input is not silence it outputs <code>0</code>. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here&#x2013;hence the <code>:act :free</code> keyword argument. We also set its <code>time</code> argument to our <code>delay</code>, to make sure if our delay time is too long, <code>detect-silence</code> won't free the synth before the first delay actually occurs.
+</p>
+
+<p>
+Finally, 
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="date">Last updated: 2018-01-19 Fri 21:54</p>
+</div>
+</body>
+</html>

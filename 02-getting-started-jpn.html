@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2017-08-03 Thu 15:48 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Started</title>
+<meta name="generator" content="Org mode">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Getting Started</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0cc3dc3">1. Requirements</a>
+<ul>
+<li><a href="#org5b3cb52">1.1. SuperCollider</a></li>
+<li><a href="#org4f2bf8d">1.2. Emacs</a></li>
+<li><a href="#orge18c84a">1.3. SBCL</a></li>
+<li><a href="#orgf863b9c">1.4. Slime</a></li>
+<li><a href="#org4d335a2">1.5. Quicklisp</a></li>
+<li><a href="#org7ece130">1.6. cl-collider</a></li>
+<li><a href="#orge537339">1.7. scheduler</a></li>
+</ul>
+</li>
+<li><a href="#orga443ede">2. Setting Up</a></li>
+<li><a href="#org8472328">3. Starting Up</a></li>
+</ul>
+</div>
+</div>
+<p>
+This chapter gives an explanation of the requirements for this guide, as well as some information on how to set them up.
+</p>
+
+<div id="outline-container-org0cc3dc3" class="outline-2">
+<h2 id="org0cc3dc3"><span class="section-number-2">1</span> Requirements</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+To interact with SuperCollider, you will need the following software:
+</p>
+</div>
+
+<div id="outline-container-org5b3cb52" class="outline-3">
+<h3 id="org5b3cb52"><span class="section-number-3">1.1</span> SuperCollider</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+The <a href="https://supercollider.github.io/">SuperCollider</a> package provides scsynth, which is the SuperCollider sound server that we will be using. This is the program that actually produces sound.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4f2bf8d" class="outline-3">
+<h3 id="org4f2bf8d"><span class="section-number-3">1.2</span> Emacs</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+<a href="https://www.gnu.org/software/emacs/">Emacs</a> is a well-known text editor. It is specialized for writing Lisp code, and can even be extended using its own dialect of Lisp called Emacs Lisp or Elisp. Emacs is recommended because it has facilities to enhance writing and interacting with Lisp programs. It is possible to use another editor instead, but for the purposes of this guide we are assuming that Emacs is being used.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge18c84a" class="outline-3">
+<h3 id="orge18c84a"><span class="section-number-3">1.3</span> SBCL</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+<a href="https://www.sbcl.org/">SBCL</a> is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf863b9c" class="outline-3">
+<h3 id="orgf863b9c"><span class="section-number-3">1.4</span> Slime</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+<a href="https://common-lisp.net/project/slime/">Slime</a> is the "Superior Lisp Interaction Mode for Emacs". It provides many advanced features for interacting with a Lisp program.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4d335a2" class="outline-3">
+<h3 id="org4d335a2"><span class="section-number-3">1.5</span> Quicklisp</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+<a href="https://www.quicklisp.org/beta/">Quicklisp</a> is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7ece130" class="outline-3">
+<h3 id="org7ece130"><span class="section-number-3">1.6</span> cl-collider</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+<a href="https://github.com/byulparan/cl-collider">cl-collider</a> is the Lisp library that provides an interface to SuperCollider.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge537339" class="outline-3">
+<h3 id="orge537339"><span class="section-number-3">1.7</span> scheduler</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+<a href="https://github.com/byulparan/scheduler">scheduler</a> is the scheduling library for Lisp. It is used by cl-collider to accurately schedule musical events in time.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga443ede" class="outline-2">
+<h2 id="orga443ede"><span class="section-number-2">2</span> Setting Up</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
+</p>
+
+<p>
+Your package manager may provide Slime, but if not, it's possible to install it using Emacs' package manager. You can run the package manager in Emacs by typing <code>M-x list-packages RET</code>. Then use <code>C-s</code> to search for <code>slime</code>. With your cursor over <code>slime</code>, press <code>i</code> to mark it for installation, and then <code>x</code> to install it.
+</p>
+
+<p>
+<a href="https://www.quicklisp.org/beta/">The Quicklisp site</a> provides a guide on how to install it on Mac OS or Linux. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
+</p>
+
+<p>
+To install the <a href="https://github.com/byulparan/cl-collider">cl-collider</a> and <a href="https://github.com/byulparan/scheduler">scheduler</a> libraries, you just need to download them from their GitHub pages. If you aren't familiar with Git, you can download a zip of each library by clicking the green "Clone or download" button on the project page, and then click "Download ZIP". After downloading, extract the zip files and put the respective folders in your Quicklisp <code>local-projects</code> directory. Typically this is created in <code>$HOME/quicklisp/local-projects</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8472328" class="outline-2">
+<h2 id="org8472328"><span class="section-number-2">3</span> Starting Up</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Once you've successfully installed all of the above software, start Emacs, open a new lisp file using <code>C-x C-f FILENAME.lisp RET</code> where FILENAME is the name you want to give to your file. Then, you can start slime using <code>M-x slime RET</code>. If all goes well, you should see a Lisp REPL that looks something like this:
+</p>
+
+<pre class="example">
+CL-USER&gt;
+</pre>
+
+<p>
+So far, so good. Position your cursor after the <code>&gt;</code> and then type the following Lisp expressions, one at a time. After each expression, you may see some output before getting a prompt back again.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(ql:quickload <span style="color: #859900;">:sc</span>)
+
+(<span style="color: #859900;">in-package</span> <span style="color: #859900;">:sc-user</span>)
+
+(setf *s* (make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #859900;">:port</span> 4444))
+
+(server-boot *s*)
+</pre>
+</div>
+
+<p>
+Once you run that last line, you're ready to make sound!
+</p>
+
+<p>
+For reference, here's an example of what it might look like when you run these expressions:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">CL-USER&gt; (ql:quickload <span style="color: #859900;">:sc</span>)
+To load <span style="color: #2aa198;">"sc"</span>:
+  Load 1 ASDF system:
+    sc
+<span style="color: #586e75; font-style: italic;">; </span><span style="color: #586e75; font-style: italic;">Loading "sc"</span>
+..
+(<span style="color: #859900;">:SC</span>)
+CL-USER&gt; (<span style="color: #859900;">in-package</span> <span style="color: #859900;">:sc-user</span>)
+#&lt;PACKAGE <span style="color: #2aa198;">"SC-USER"</span>&gt;
+SC-USER&gt; (setf *s* (make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #859900;">:port</span> 4444))
+#&lt;SC-SYNTH localhost-127.0.0.1:4444&gt;
+SC-USER&gt; (server-boot *s*)
+VST_PATH not set, defaulting to /home/modula/vst:/usr/local/lib/vst:/usr/lib/vst
+Found 278 LADSPA plugins
+JackDriver: client name is 'SuperCollider'
+SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
+SuperCollider 3 server ready.
+Zeroconf: failed to create client: Daemon not running
+#&lt;SC-SYNTH localhost-127.0.0.1:4444&gt;
+JackDriver: max output latency 11.6 ms
+SC-USER&gt; 
+</pre>
+</div>
+
+<p>
+&#x2026;Of course, it may be slightly different for you. As long as you don't get any errors, you're good to go.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2017-08-03 Thu 15:48</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
