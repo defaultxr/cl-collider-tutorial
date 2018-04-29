@@ -4,10 +4,10 @@ Up to this point, we've been testing sounds by playing them manually using their
 
 * ~callback~
 
-cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
+cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a basic synth that we can play around with:
 
 #+BEGIN_SRC lisp
-  (defsynth simple (&key (gate 1) (freq 440) (pan 0) (amp 0.5))
+  (defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
     (let* ((env (env-gen.kr (asr 0.01 1 0.1) :gate gate :act :free))
            (sig (sin-osc.ar freq 0 0.2)))
       (out.ar 0 (pan2.ar sig pan (* env amp)))))
@@ -17,14 +17,14 @@ Then, we can define a function to start playing this synth:
 
 #+BEGIN_SRC lisp
   (defun testing ()
-    (let ((syn (simple :freq (midicps (+ 30 (random 40))))))
+    (let ((syn (synth 'simple :freq (midicps (+ 30 (random 40))))))
       (callback (+ (now) 0.7) #'release syn))
     (callback (+ (now) 1) #'testing))
 #+END_SRC
 
-The first thing the ~testing~ function does is start a new ~simple~ synth. Calling ~simple~ returns a ~node~ object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the ~midicps~ function.
+The first thing the ~testing~ function does is start a new ~simple~ synth. Calling ~(synth 'simple)~ returns a ~node~ object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the ~midicps~ function.
 
-Below that, we use the ~callback~ function to schedule the release of the synth 0.7 seconds in the future. The ~now~ function returns the current time, so adding 0.7 to it means "0.7 seconds from now". ~callback~ effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case ~release~), and (optionally) the arguments to that function. Here we provide the node returned by ~simple~ so it will be released.
+Below that, we use the ~callback~ function to schedule the release of the synth 0.7 seconds in the future. The ~now~ function returns the current time, so adding 0.7 to it means "0.7 seconds from now". ~callback~ effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case ~release~), and (optionally) the arguments to that function. Here we provide the node returned by ~synth~ so it will be released.
 
 After that, we use ~callback~ again to re-schedule the ~testing~ function. That way, we continue to hear notes playing. To give some space between notes, we schedule it to trigger again after one second.
 
@@ -38,16 +38,16 @@ Once you define that function, you can call it using ~(testing)~ and you should 
 Another example; if we want multiple notes simultaneously:
 
 #+BEGIN_SRC lisp
-  (defun testing ()
-    (let* ((note (+ 40 (random 40)))
+  (defun testing-2 ()
+    (let* ((note (+ 30 (random 40)))
            (syns (loop :for i :in '(0 12 24)
-                    :collect (simple :freq (midicps (+ i note))))))
+                    :collect (synth 'simple :freq (midicps (+ i note))))))
       (loop :for i :in syns
          :do (callback (+ (now) 0.7) #'release i)))
-    (callback (+ (now) 1) #'testing))
+    (callback (+ (now) 1) #'testing-2))
 #+END_SRC
 
-This version of ~testing~ generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
+This function generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
 
 * Closures
 
@@ -56,14 +56,14 @@ Using closures, we can write functions that perform different actions each time 
 #+BEGIN_SRC lisp
   (let ((index 0)
         (list (list 0 2 4 6)))
-    (defun testing ()
-      (let* ((note (+ 40 (nth index list)))
+    (defun testing-3 ()
+      (let* ((note (+ 30 (nth index list)))
              (syns (loop :for i :in '(0 12 24)
-                      :collect (simple :freq (midicps (+ i note))))))
+                      :collect (synth 'simple :freq (midicps (+ i note))))))
         (loop :for i :in syns
            :do (callback (+ (now) 0.7) #'release i)))
       (setf index (mod (1+ index) (length list)))
-      (callback (+ (now) 1) #'testing)))
+      (callback (+ (now) 1) #'testing-3)))
 #+END_SRC
 
 Since closures let us keep track of state, we can make arpeggios instead of just playing random midi notes.
@@ -72,4 +72,52 @@ Since closures let us keep track of state, we can make arpeggios instead of just
 
 Though you can of course implement any behaviors you want using functions and cl-collider's scheduler as shown above, it does require a lot of bookkeeping. Calculating the frequency for each note, saving each synth in a variable, releasing it later, etcetera--and that's just for simple behavior like the above. You could, of course, define some functions and macros to make it easier, but there is another way.
 
-If you're using SuperCollider's built-in programming language, it comes with a library of sequencing functionality called "patterns". 
+If you're using SuperCollider's built-in programming language, it comes with a library of sequencing functionality called "patterns". These can be used to create musical sequences much more easily than manually writing functions like we've done above. SuperCollider's patterns language is designed to make it simple to express musical behaviors and specify synth parameters for each musical event. There are many kinds of patterns that can be used to generate everything from static sequences that sound the same every time, to totally algorithmic or random patterns that result in constantly-changing outputs. Patterns can even be combined to easily create more complex behaviors.
+
+cl-collider doesn't have a patterns system built in, but there is a library called [[https://github.com/defaultxr/cl-patterns][cl-patterns]] which re-creates much of its functionality in Lisp. It's beyond the scope of this tutorial to describe cl-patterns in-depth, but here are a few examples to show what can be done with it:
+
+#+BEGIN_SRC lisp
+  (pbind :pdef :testing
+         :instrument :simple
+         :midinote (pwhite 30 70)
+         :dur 1
+         :legato 0.7)
+#+END_SRC
+
+This pattern produces the same output as our original ~testing~ function above. The most obvious advantage is that it's much more obvious what the code is supposed to do; each key specifies its value directly rather than being entangled in the definition of the behavior. Instead of having to write ~(+ 30 (random 40))~ to get values from ~30~ to ~70~, we can just use the ~pwhite~ pattern as ~(pwhite 30 70)~ to get values within that range.
+
+Another advantage of using cl-patterns is that all patterns are automatically synchronized to a tempo. If the tempo is changed, all patterns will automatically use the new tempo value and will stay in sync, without us needing to update their code or remember to multiply the duration and release time by the tempo.
+
+Here's an example of how ~testing-2~ would be rewritten as a pattern:
+
+#+BEGIN_SRC lisp
+  (pbind :pdef :testing-2
+         :instrument :simple
+         :midinote (pwhite 30 70)
+         :midinote (p+ (pk :midinote) (list 0 12 24))
+         :dur 1
+         :legato 0.7)
+#+END_SRC
+
+# FIX this when cl-patterns supports multichannel expansion.
+
+(Note that this example doesn't work as of this writing, since cl-patterns doesn't yet support the use of lists to create multiple synths in one event.)
+
+As you can see, it's nearly the same as our first pattern; we only had to add one additional line to produce two additional notes per event. The additional notes are automatically handled and released when necessary just as expected.
+
+And finally, here's how our last function, ~testing-3~, would look as a pattern:
+
+#+BEGIN_SRC lisp
+  (pbind :pdef :testing-3
+         :instrument :simple
+         :midinote (p+ 40 (pseq '(0 2 4 6)))
+         :midinote (p+ (pk :midinote) (list 0 12 24))
+         :dur 1
+         :legato 0.7)
+#+END_SRC
+
+(Note again that this example will not work in the current verison of cl-patterns, for the same reason as the previous.)
+
+As you can see, we don't need to create a closure to keep track of state; the ~pseq~ pattern does that for us, allowing us to focus more on the behavior we want and less on how to implement it.
+
+As mentioned before, a full explanation of how cl-patterns works is beyond the scope of this document, but the project's [[https://github.com/defaultxr/cl-patterns][repo]] includes plenty of documentation that should help to get you started.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-19 Fri 21:54 -->
+<!-- 2018-04-29 Sun 17:18 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Effects</title>
@@ -11,19 +11,31 @@
 <div id="content">
 <header>
 <h1 class="title">Effects</h1>
-</header><p>
+</header><nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgdddc293">1. Effects Embedded in the Synths</a></li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orgdddc293" class="outline-2">
+<h2 id="orgdddc293"><span class="section-number-2">1</span> Effects Embedded in the Synths</h2>
+<div class="outline-text-2" id="text-1">
+<p>
 To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5))
+<pre class="src src-lisp">(defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5) (out 0))
   (<span style="color: #859900;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3))))
          (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="color: #859900;">:level-scale</span> freq))
          (sig (sin-osc.ar fenv 0 (* env 0.2)))
          (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
          (sig (leak-dc.ar sig)))
     (detect-silence.ar sig 1.0e-4 <span style="color: #859900;">:time</span> delay <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>)
-    (out.ar 0 (pan2.ar sig 0 amp))))
+    (out.ar out (pan2.ar sig 0 amp))))
 </pre>
 </div>
 
@@ -52,11 +64,13 @@ It also helps the <code>detect-silence</code> UGen below, which, as the name sug
 </p>
 
 <p>
-Finally, 
+Finally, we use <code>pan2</code> to turn our mono signal <code>sig</code> into a stereo signal, and send it to the synth's output with <code>out.ar</code>. 
 </p>
 </div>
+</div>
+</div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-01-19 Fri 21:54</p>
+<p class="date">Last updated: 2018-04-29 Sun 17:18</p>
 </div>
 </body>
 </html>

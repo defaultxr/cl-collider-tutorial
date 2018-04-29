@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-19 Fri 21:54 -->
+<!-- 2018-04-29 Sun 17:58 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sequencing</title>
@@ -15,9 +15,9 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9e123b6">1. <code>callback</code></a></li>
-<li><a href="#org0554049">2. Closures</a></li>
-<li><a href="#orgb699d7b">3. Patterns</a></li>
+<li><a href="#org38cee9f">1. <code>callback</code></a></li>
+<li><a href="#orgbface71">2. Closures</a></li>
+<li><a href="#orgc7fdc0f">3. Patterns</a></li>
 </ul>
 </div>
 </nav>
@@ -25,15 +25,15 @@
 Up to this point, we've been testing sounds by playing them manually using their functions defined by <code>defsynth</code>, or by using <code>proxy</code>. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
 </p>
 
-<div id="outline-container-org9e123b6" class="outline-2">
-<h2 id="org9e123b6"><span class="section-number-2">1</span> <code>callback</code></h2>
+<div id="outline-container-org38cee9f" class="outline-2">
+<h2 id="org38cee9f"><span class="section-number-2">1</span> <code>callback</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
-cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a simple synth that we can play around with:
+cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a basic synth that we can play around with:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth simple (<span style="color: #b58900;">&amp;key</span> (gate 1) (freq 440) (pan 0) (amp 0.5))
+<pre class="src src-lisp">(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
   (<span style="color: #859900;">let*</span> ((env (env-gen.kr (asr 0.01 1 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
          (sig (sin-osc.ar freq 0 0.2)))
     (out.ar 0 (pan2.ar sig pan (* env amp)))))
@@ -46,18 +46,18 @@ Then, we can define a function to start playing this synth:
 
 <div class="org-src-container">
 <pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-  (<span style="color: #859900;">let</span> ((syn (simple <span style="color: #859900;">:freq</span> (midicps (+ 30 (random 40))))))
+  (<span style="color: #859900;">let</span> ((syn (synth 'simple <span style="color: #859900;">:freq</span> (midicps (+ 30 (random 40))))))
     (callback (+ (now) 0.7) #'release syn))
   (callback (+ (now) 1) #'testing))
 </pre>
 </div>
 
 <p>
-The first thing the <code>testing</code> function does is start a new <code>simple</code> synth. Calling <code>simple</code> returns a <code>node</code> object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the <code>midicps</code> function.
+The first thing the <code>testing</code> function does is start a new <code>simple</code> synth. Calling <code>(synth 'simple)</code> returns a <code>node</code> object representing the synth playing on the server. Here we provide the frequency to the synth by generating a random MIDI note number and converting it to a frequency with the <code>midicps</code> function.
 </p>
 
 <p>
-Below that, we use the <code>callback</code> function to schedule the release of the synth 0.7 seconds in the future. The <code>now</code> function returns the current time, so adding 0.7 to it means "0.7 seconds from now". <code>callback</code> effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case <code>release</code>), and (optionally) the arguments to that function. Here we provide the node returned by <code>simple</code> so it will be released.
+Below that, we use the <code>callback</code> function to schedule the release of the synth 0.7 seconds in the future. The <code>now</code> function returns the current time, so adding 0.7 to it means "0.7 seconds from now". <code>callback</code> effectively causes a function to run at a specified time using cl-collider's scheduler. Respectively, its arguments are: when to run the function, the function to run (in this case <code>release</code>), and (optionally) the arguments to that function. Here we provide the node returned by <code>synth</code> so it will be released.
 </p>
 
 <p>
@@ -79,24 +79,24 @@ Another example; if we want multiple notes simultaneously:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-  (<span style="color: #859900;">let*</span> ((note (+ 40 (random 40)))
+<pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing-2</span> ()
+  (<span style="color: #859900;">let*</span> ((note (+ 30 (random 40)))
          (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
-                  <span style="color: #859900;">:collect</span> (simple <span style="color: #859900;">:freq</span> (midicps (+ i note))))))
+                  <span style="color: #859900;">:collect</span> (synth 'simple <span style="color: #859900;">:freq</span> (midicps (+ i note))))))
     (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> syns
        <span style="color: #859900;">:do</span> (callback (+ (now) 0.7) #'release i)))
-  (callback (+ (now) 1) #'testing))
+  (callback (+ (now) 1) #'testing-2))
 </pre>
 </div>
 
 <p>
-This version of <code>testing</code> generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
+This function generates a random MIDI note, then creates two more synths that play at the same time as the first, but one and two octaves higher. This gives a chord or organ-like sound. Of course, you could just put more UGens in the synthdef itself and get the same effect if you so choose. It would certainly be easier, since you can just rely on cl-collider's multi-channel expansion in synthdefs.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0554049" class="outline-2">
-<h2 id="org0554049"><span class="section-number-2">2</span> Closures</h2>
+<div id="outline-container-orgbface71" class="outline-2">
+<h2 id="orgbface71"><span class="section-number-2">2</span> Closures</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Using closures, we can write functions that perform different actions each time they're called:
@@ -105,14 +105,14 @@ Using closures, we can write functions that perform different actions each time 
 <div class="org-src-container">
 <pre class="src src-lisp">(<span style="color: #859900;">let</span> ((index 0)
       (list (list 0 2 4 6)))
-  (<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-    (<span style="color: #859900;">let*</span> ((note (+ 40 (nth index list)))
+  (<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing-3</span> ()
+    (<span style="color: #859900;">let*</span> ((note (+ 30 (nth index list)))
            (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
-                    <span style="color: #859900;">:collect</span> (simple <span style="color: #859900;">:freq</span> (midicps (+ i note))))))
+                    <span style="color: #859900;">:collect</span> (synth 'simple <span style="color: #859900;">:freq</span> (midicps (+ i note))))))
       (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> syns
          <span style="color: #859900;">:do</span> (callback (+ (now) 0.7) #'release i)))
     (setf index (mod (1+ index) (length list)))
-    (callback (+ (now) 1) #'testing)))
+    (callback (+ (now) 1) #'testing-3)))
 </pre>
 </div>
 
@@ -122,21 +122,90 @@ Since closures let us keep track of state, we can make arpeggios instead of just
 </div>
 </div>
 
-<div id="outline-container-orgb699d7b" class="outline-2">
-<h2 id="orgb699d7b"><span class="section-number-2">3</span> Patterns</h2>
+<div id="outline-container-orgc7fdc0f" class="outline-2">
+<h2 id="orgc7fdc0f"><span class="section-number-2">3</span> Patterns</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Though you can of course implement any behaviors you want using functions and cl-collider's scheduler as shown above, it does require a lot of bookkeeping. Calculating the frequency for each note, saving each synth in a variable, releasing it later, etcetera&#x2013;and that's just for simple behavior like the above. You could, of course, define some functions and macros to make it easier, but there is another way.
 </p>
 
 <p>
-If you're using SuperCollider's built-in programming language, it comes with a library of sequencing functionality called "patterns". 
+If you're using SuperCollider's built-in programming language, it comes with a library of sequencing functionality called "patterns". These can be used to create musical sequences much more easily than manually writing functions like we've done above. SuperCollider's patterns language is designed to make it simple to express musical behaviors and specify synth parameters for each musical event. There are many kinds of patterns that can be used to generate everything from static sequences that sound the same every time, to totally algorithmic or random patterns that result in constantly-changing outputs. Patterns can even be combined to easily create more complex behaviors.
+</p>
+
+<p>
+cl-collider doesn't have a patterns system built in, but there is a library called <a href="https://github.com/defaultxr/cl-patterns">cl-patterns</a> which re-creates much of its functionality in Lisp. It's beyond the scope of this tutorial to describe cl-patterns in-depth, but here are a few examples to show what can be done with it:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(pbind <span style="color: #859900;">:pdef</span> <span style="color: #859900;">:testing</span>
+       <span style="color: #859900;">:instrument</span> <span style="color: #859900;">:simple</span>
+       <span style="color: #859900;">:midinote</span> (pwhite 30 70)
+       <span style="color: #859900;">:dur</span> 1
+       <span style="color: #859900;">:legato</span> 0.7)
+</pre>
+</div>
+
+<p>
+This pattern produces the same output as our original <code>testing</code> function above. The most obvious advantage is that it's much more obvious what the code is supposed to do; each key specifies its value directly rather than being entangled in the definition of the behavior. Instead of having to write <code>(+ 30 (random 40))</code> to get values from <code>30</code> to <code>70</code>, we can just use the <code>pwhite</code> pattern as <code>(pwhite 30 70)</code> to get values within that range.
+</p>
+
+<p>
+Another advantage of using cl-patterns is that all patterns are automatically synchronized to a tempo. If the tempo is changed, all patterns will automatically use the new tempo value and will stay in sync, without us needing to update their code or remember to multiply the duration and release time by the tempo.
+</p>
+
+<p>
+Here's an example of how <code>testing-2</code> would be rewritten as a pattern:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(pbind <span style="color: #859900;">:pdef</span> <span style="color: #859900;">:testing-2</span>
+       <span style="color: #859900;">:instrument</span> <span style="color: #859900;">:simple</span>
+       <span style="color: #859900;">:midinote</span> (pwhite 30 70)
+       <span style="color: #859900;">:midinote</span> (p+ (pk <span style="color: #859900;">:midinote</span>) (list 0 12 24))
+       <span style="color: #859900;">:dur</span> 1
+       <span style="color: #859900;">:legato</span> 0.7)
+</pre>
+</div>
+
+<p>
+(Note that this example doesn't work as of this writing, since cl-patterns doesn't yet support the use of lists to create multiple synths in one event.)
+</p>
+
+<p>
+As you can see, it's nearly the same as our first pattern; we only had to add one additional line to produce two additional notes per event. The additional notes are automatically handled and released when necessary just as expected.
+</p>
+
+<p>
+And finally, here's how our last function, <code>testing-3</code>, would look as a pattern:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(pbind <span style="color: #859900;">:pdef</span> <span style="color: #859900;">:testing-3</span>
+       <span style="color: #859900;">:instrument</span> <span style="color: #859900;">:simple</span>
+       <span style="color: #859900;">:midinote</span> (p+ 40 (pseq '(0 2 4 6)))
+       <span style="color: #859900;">:midinote</span> (p+ (pk <span style="color: #859900;">:midinote</span>) (list 0 12 24))
+       <span style="color: #859900;">:dur</span> 1
+       <span style="color: #859900;">:legato</span> 0.7)
+</pre>
+</div>
+
+<p>
+(Note again that this example will not work in the current verison of cl-patterns, for the same reason as the previous.)
+</p>
+
+<p>
+As you can see, we don't need to create a closure to keep track of state; the <code>pseq</code> pattern does that for us, allowing us to focus more on the behavior we want and less on how to implement it.
+</p>
+
+<p>
+As mentioned before, a full explanation of how cl-patterns works is beyond the scope of this document, but the project's <a href="https://github.com/defaultxr/cl-patterns">repo</a> includes plenty of documentation that should help to get you started.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-01-19 Fri 21:54</p>
+<p class="date">Last updated: 2018-04-29 Sun 17:58</p>
 </div>
 </body>
 </html>

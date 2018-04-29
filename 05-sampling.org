@@ -41,3 +41,17 @@ You might also notice the ~.ir~ on the end of ~buf-rate-scale~. ~.ir~ specifies 
 Finally, the ~act~ parameter specifies what action should be taken when ~play-buf~ finishes playing the sound. In our case, we provide ~:free~ so that the synth will stop playing and be freed. Without this, the synth would continue running in the background and continue using CPU resources even though it's making no sound. 
 
 Of course, you may want to have the sound loop instead, in which case ~act~ would be left to its default value, so no special action is taken when the sound reaches its end. You would also have to provide ~play-buf~'s ~loop~ parameter a value of ~1~.
+
+To actually play the ~sample~ synth, we'll want to make sure that we've saved the reference to the file we opened with ~buffer-read~ to a variable:
+
+#+BEGIN_SRC lisp
+(defvar *file* (buffer-read "/path/to/your/file.wav"))
+#+END_SRC
+
+Then, we can start the ~sample~ synth like so:
+
+#+BEGIN_SRC lisp
+(synth 'sample :bufnum *file*)
+#+END_SRC
+
+As mentioned above, since ~play-buf~'s ~:act~ argument is set to ~:free~, the synth will automatically be freed when the sample finishes playing. Of course, if we had set the sample to loop, then it would continue looping indefinitely, or until we stop it manually. Because there is no ~:gate~ argument, the ~release~ function would have no effect, so we would have to call ~stop~ instead, to force it to stop.

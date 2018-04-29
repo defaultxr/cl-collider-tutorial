@@ -1,16 +1,18 @@
 #+TITLE: Effects
 
+* Effects Embedded in the Synths
+
 To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
 
 #+BEGIN_SRC lisp
-  (defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5))
+  (defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5) (out 0))
     (let* ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3))))
            (fenv (env-gen.kr (env (list 1 0) (list time)) :level-scale freq))
            (sig (sin-osc.ar fenv 0 (* env 0.2)))
            (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
            (sig (leak-dc.ar sig)))
       (detect-silence.ar sig 1.0e-4 :time delay :act :free)
-      (out.ar 0 (pan2.ar sig 0 amp))))
+      (out.ar out (pan2.ar sig 0 amp))))
 #+END_SRC
 
 In the above synth, our source sound is simply a sine wave sweep from the ~freq~ to 0--the ~env-gen~'s ~level-scale~ argument allows us to easily multiply the envelope by the frequency to get the sweep. Our ~sin-osc~ uses the frequency envelope as its frequency input and ~0~ as its phase. Its ~mul~ is ~0.2~ multiplied by our amplitude envelope ~env~.
@@ -27,4 +29,4 @@ Our last step of processing for the signal is to send it through the ~leak-dc~ U
 
 It also helps the ~detect-silence~ UGen below, which, as the name suggests, is used to detect silence. When silence is detected by its input, it outputs a ~1~, and when the input is not silence it outputs ~0~. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here--hence the ~:act :free~ keyword argument. We also set its ~time~ argument to our ~delay~, to make sure if our delay time is too long, ~detect-silence~ won't free the synth before the first delay actually occurs.
 
-Finally, 
+Finally, we use ~pan2~ to turn our mono signal ~sig~ into a stereo signal, and send it to the synth's output with ~out.ar~. 

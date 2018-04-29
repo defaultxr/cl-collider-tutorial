@@ -1,7 +1,7 @@
 #+TITLE: Contents
 #+OPTIONS: toc:nil
 
-0. [@0] [[file:00-contents.org][Contents]]
+0. [@0] [[file:index.org][Contents]]
 
 1. [[file:01-introduction.org][Introduction]]
 

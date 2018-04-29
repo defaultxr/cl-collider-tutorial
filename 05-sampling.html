@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2017-11-12 Sun 18:20 -->
+<!-- 2018-04-29 Sun 18:09 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sampling</title>
@@ -15,8 +15,8 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc39dec9">1. Loading Sounds</a></li>
-<li><a href="#org1ab2d26">2. Playing Sounds</a></li>
+<li><a href="#org6b8dcf4">1. Loading Sounds</a></li>
+<li><a href="#orgbf02029">2. Playing Sounds</a></li>
 </ul>
 </div>
 </nav>
@@ -24,8 +24,8 @@
 In addition to its powerful library of oscillators and sound generators, SuperCollider also gives us the ability to use recorded sounds in our synths. In SuperCollider, a recorded sound is stored in a buffer object on the server. A buffer is effectively an array of numbers which can be of any length and can have one or more channels. It's possible to load a sound into a buffer from your hard drive, but it's also possible to record the output of a synth or UGen into a buffer directly on the server. A buffer can be played back normally, or you can control its rate and the playhead position with a UGen.
 </p>
 
-<div id="outline-container-orgc39dec9" class="outline-2">
-<h2 id="orgc39dec9"><span class="section-number-2">1</span> Loading Sounds</h2>
+<div id="outline-container-org6b8dcf4" class="outline-2">
+<h2 id="org6b8dcf4"><span class="section-number-2">1</span> Loading Sounds</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To load a sound from the drive, use the <code>buffer-read</code> function, like so:
@@ -42,8 +42,8 @@ This should be pretty self-explanatory; the only required parameter to <code>buf
 </div>
 </div>
 
-<div id="outline-container-org1ab2d26" class="outline-2">
-<h2 id="org1ab2d26"><span class="section-number-2">2</span> Playing Sounds</h2>
+<div id="outline-container-orgbf02029" class="outline-2">
+<h2 id="orgbf02029"><span class="section-number-2">2</span> Playing Sounds</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Once you've loaded a sound, you'll probably want to play it. Here's an example SynthDef which illustrates the UGens you'd use to do that:
@@ -93,11 +93,33 @@ Finally, the <code>act</code> parameter specifies what action should be taken wh
 <p>
 Of course, you may want to have the sound loop instead, in which case <code>act</code> would be left to its default value, so no special action is taken when the sound reaches its end. You would also have to provide <code>play-buf</code>'s <code>loop</code> parameter a value of <code>1</code>.
 </p>
+
+<p>
+To actually play the <code>sample</code> synth, we'll want to make sure that we've saved the reference to the file we opened with <code>buffer-read</code> to a variable:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">*file*</span> (buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span>))
+</pre>
+</div>
+
+<p>
+Then, we can start the <code>sample</code> synth like so:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(synth 'sample <span style="color: #859900;">:bufnum</span> *file*)
+</pre>
+</div>
+
+<p>
+As mentioned above, since <code>play-buf</code>'s <code>:act</code> argument is set to <code>:free</code>, the synth will automatically be freed when the sample finishes playing. Of course, if we had set the sample to loop, then it would continue looping indefinitely, or until we stop it manually. Because there is no <code>:gate</code> argument, the <code>release</code> function would have no effect, so we would have to call <code>stop</code> instead, to force it to stop.
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2017-11-12 Sun 18:20</p>
+<p class="date">Last updated: 2018-04-29 Sun 18:09</p>
 </div>
 </body>
 </html>
