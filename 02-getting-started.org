@@ -24,9 +24,6 @@ The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth
 ** cl-collider
 [[https://github.com/byulparan/cl-collider][cl-collider]] is the Lisp library that provides an interface to SuperCollider.
 
-** scheduler
-[[https://github.com/byulparan/scheduler][scheduler]] is the scheduling library for Lisp. It is used by cl-collider to accurately schedule musical events in time.
-
 * Setting Up
 It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
 
@@ -34,7 +31,7 @@ Your package manager may provide Slime, but if not, it's possible to install it 
 
 [[https://www.quicklisp.org/beta/][The Quicklisp site]] provides a guide on how to install it on Mac OS or Linux. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
 
-To install the [[https://github.com/byulparan/cl-collider][cl-collider]] and [[https://github.com/byulparan/scheduler][scheduler]] libraries, you just need to download them from their GitHub pages. If you aren't familiar with Git, you can download a zip of each library by clicking the green "Clone or download" button on the project page, and then click "Download ZIP". After downloading, extract the zip files and put the respective folders in your Quicklisp ~local-projects~ directory. Typically this is created in ~$HOME/quicklisp/local-projects~.
+Since [[https://github.com/byulparan/cl-collider][cl-collider]] is now available in Quicklisp, all you have to do to install it is type the following once Quicklisp is loaded in your Lisp image: ~(ql:quickload :cl-collider)~ . This will download and install the library and all of its dependencies, and then make it available for use in your Lisp session.
 
 * Starting Up
 

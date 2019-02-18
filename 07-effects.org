@@ -1,6 +1,6 @@
 #+TITLE: Effects
 
-* Effects Embedded in the Synths
+* Embedding Effects in Synths
 
 To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
 
@@ -30,3 +30,40 @@ Our last step of processing for the signal is to send it through the ~leak-dc~ U
 It also helps the ~detect-silence~ UGen below, which, as the name suggests, is used to detect silence. When silence is detected by its input, it outputs a ~1~, and when the input is not silence it outputs ~0~. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here--hence the ~:act :free~ keyword argument. We also set its ~time~ argument to our ~delay~, to make sure if our delay time is too long, ~detect-silence~ won't free the synth before the first delay actually occurs.
 
 Finally, we use ~pan2~ to turn our mono signal ~sig~ into a stereo signal, and send it to the synth's output with ~out.ar~. 
+
+* Effects as Their Own Nodes
+
+Most of the time, it's preferred to run just one instance of an effect which multiple notes or synths would all be routed through. For example, having a separate reverb for each instance of a synth would not only cause unnecessarily high CPU usage, but it would also be more likely to result in audio clipping or other unwanted sound artifacts.
+
+To convert the previous example to such a configuration, we can use the ~proxy~ macro as introduced in [[file:03-make-a-sound.org][chapter 3]]:
+
+#+BEGIN_SRC lisp
+    (defsynth echokick ((freq 440) (time 0.25) (amp 0.5) (out 0))
+      (let* ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) :act :free))
+             (fenv (env-gen.kr (env (list 1 0) (list time)) :level-scale freq))
+             (sig (sin-osc.ar fenv 0 (* env 0.2))))
+        (out.ar out (pan2.ar sig 0 amp))))
+
+  (defparameter *echo-bus* (bus-audio :chanls 2))
+
+  (proxy :echo
+         (let* ((sig (in.ar *echo-bus* 2))
+                (delay 0.2)
+                (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
+                (sig (leak-dc.ar sig)))
+           (out.ar 0 sig)))
+#+END_SRC
+
+Though buses have been mentioned before in this tutorial, they haven't been fully explained. In SuperCollider, and thus cl-collider, there is the concept of a "bus" which is basically a location in memory that can be written to or read to, similar to a buffer, but meant to be done continuously. A bus lets us do things like sending audio from one synth (or multiple) to another. Thus buses allow us to do things like implement effects that multiple synths can have their output processed by.
+
+Here we define the ~*echo-bus*~ variable, which is a two-channel audio bus. Aside from audio buses, SuperCollider also supports control buses which are generally used for lower-frequency signals like LFOs that don't need as much processing power, similar to the ~.ar~/~.kr~ UGen dichotomy.
+
+Aside from the bus, it should also be noted that we don't use ~detect-silence~ anymore. We don't use it in the synth since there is no built-in delay and our volume envelope lasts the full length of the sound. And we don't use it in our proxy either since we want it to continue running even if it's silent.
+
+With those three expressions evaluated, the synth is defined, the bus created, and the echo effect is running. To play the ~echokick~ through the effect, just make sure the synth's ~out~ parameter is set to the bus that the effect is reading from:
+
+#+BEGIN_SRC lisp
+  (synth :echokick :out *echo-bus*)
+#+END_SRC
+
+

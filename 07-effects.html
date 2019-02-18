@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-04-29 Sun 17:18 -->
+<!-- 2019-02-18 Mon 03:48 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Effects</title>
@@ -15,13 +15,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgdddc293">1. Effects Embedded in the Synths</a></li>
+<li><a href="#org3cf1106">1. Embedding Effects in Synths</a></li>
+<li><a href="#org527e869">2. Effects as Their Own Nodes</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-orgdddc293" class="outline-2">
-<h2 id="orgdddc293"><span class="section-number-2">1</span> Effects Embedded in the Synths</h2>
+<div id="outline-container-org3cf1106" class="outline-2">
+<h2 id="org3cf1106"><span class="section-number-2">1</span> Embedding Effects in Synths</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
@@ -68,9 +69,61 @@ Finally, we use <code>pan2</code> to turn our mono signal <code>sig</code> into 
 </p>
 </div>
 </div>
+
+<div id="outline-container-org527e869" class="outline-2">
+<h2 id="org527e869"><span class="section-number-2">2</span> Effects as Their Own Nodes</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Most of the time, it's preferred to run just one instance of an effect which multiple notes or synths would all be routed through. For example, having a separate reverb for each instance of a synth would not only cause unnecessarily high CPU usage, but it would also be more likely to result in audio clipping or other unwanted sound artifacts.
+</p>
+
+<p>
+To convert the previous example to such a configuration, we can use the <code>proxy</code> macro as introduced in <a href="03-make-a-sound.html">chapter 3</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">  (defsynth echokick ((freq 440) (time 0.25) (amp 0.5) (out 0))
+    (<span style="color: #859900;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+           (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="color: #859900;">:level-scale</span> freq))
+           (sig (sin-osc.ar fenv 0 (* env 0.2))))
+      (out.ar out (pan2.ar sig 0 amp))))
+
+(<span style="color: #859900;">defparameter</span> <span style="color: #268bd2;">*echo-bus*</span> (bus-audio <span style="color: #859900;">:chanls</span> 2))
+
+(proxy <span style="color: #859900;">:echo</span>
+       (<span style="color: #859900;">let*</span> ((sig (in.ar *echo-bus* 2))
+              (delay 0.2)
+              (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
+              (sig (leak-dc.ar sig)))
+         (out.ar 0 sig)))
+</pre>
+</div>
+
+<p>
+Though buses have been mentioned before in this tutorial, they haven't been fully explained. In SuperCollider, and thus cl-collider, there is the concept of a "bus" which is basically a location in memory that can be written to or read to, similar to a buffer, but meant to be done continuously. A bus lets us do things like sending audio from one synth (or multiple) to another. Thus buses allow us to do things like implement effects that multiple synths can have their output processed by.
+</p>
+
+<p>
+Here we define the <code>*echo-bus*</code> variable, which is a two-channel audio bus. Aside from audio buses, SuperCollider also supports control buses which are generally used for lower-frequency signals like LFOs that don't need as much processing power, similar to the <code>.ar~/</code>.kr~ UGen dichotomy.
+</p>
+
+<p>
+Aside from the bus, it should also be noted that we don't use <code>detect-silence</code> anymore. We don't use it in the synth since there is no built-in delay and our volume envelope lasts the full length of the sound. And we don't use it in our proxy either since we want it to continue running even if it's silent.
+</p>
+
+<p>
+With those three expressions evaluated, the synth is defined, the bus created, and the echo effect is running. To play the <code>echokick</code> through the effect, just make sure the synth's <code>out</code> parameter is set to the bus that the effect is reading from:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(synth <span style="color: #859900;">:echokick</span> <span style="color: #859900;">:out</span> *echo-bus*)
+</pre>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-04-29 Sun 17:18</p>
+<p class="date">Last updated: 2019-02-18 Mon 03:48</p>
 </div>
 </body>
 </html>
