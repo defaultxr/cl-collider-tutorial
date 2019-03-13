@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-01-19 Fri 22:18 -->
+<!-- 2019-03-12 Tue 18:43 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make a Sound</title>
@@ -15,15 +15,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org74bf8fa">1. First Sound</a></li>
-<li><a href="#orga3d3fd2">2. Change the Sound</a></li>
-<li><a href="#orgbde9823">3. UGens Controlling UGens</a></li>
+<li><a href="#org49cc5a0">1. First Sound</a></li>
+<li><a href="#orgf1698a5">2. Change the Sound</a></li>
+<li><a href="#org8d859fc">3. UGens Controlling UGens</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org74bf8fa" class="outline-2">
-<h2 id="org74bf8fa"><span class="section-number-2">1</span> First Sound</h2>
+<div id="outline-container-org49cc5a0" class="outline-2">
+<h2 id="org49cc5a0"><span class="section-number-2">1</span> First Sound</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
@@ -48,8 +48,8 @@ In order to define a sound we use unit generators, or "UGens" for short. A unit 
 </div>
 </div>
 
-<div id="outline-container-orga3d3fd2" class="outline-2">
-<h2 id="orga3d3fd2"><span class="section-number-2">2</span> Change the Sound</h2>
+<div id="outline-container-orgf1698a5" class="outline-2">
+<h2 id="orgf1698a5"><span class="section-number-2">2</span> Change the Sound</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
@@ -92,8 +92,8 @@ The <code>saw</code> UGen doesn't have a phase argument, so this time we only ha
 </div>
 </div>
 
-<div id="outline-container-orgbde9823" class="outline-2">
-<h2 id="orgbde9823"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
+<div id="outline-container-org8d859fc" class="outline-2">
+<h2 id="org8d859fc"><span class="section-number-2">3</span> UGens Controlling UGens</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 It's also possible to control the parameters of one UGen with another:
@@ -122,7 +122,7 @@ After evaluating this code, try moving your mouse up and down. You should hear t
 </p>
 
 <p>
-By now you may have noticed that some of the UGens we've been using have had <code>.kr</code> instead of <code>.ar</code>. As mentioned before, <code>ar</code> specifies to run the UGen at audio rate. <code>kr</code>, on the other hand, is for control rate, which means that the server processes that UGen less often, and thus uses less CPU power. Generally you would want to use <code>.kr</code> when the signal that the UGen is processing or generating isn't going to be heard, and doesn't exceed frequencies around 30Hz.
+By now you may have noticed that some of the UGens we've been using have had <code>.kr</code> instead of <code>.ar</code>. As mentioned before, <code>ar</code> specifies to run the UGen at audio rate. <code>kr</code>, on the other hand, is for control rate, which means that the server processes that UGen less often, and thus uses less CPU power on them. Generally you would want to use <code>.kr</code> when the signal that the UGen is processing or generating isn't going to be heard directly, and doesn't exceed frequencies around 30Hz.
 </p>
 
 <p>
@@ -132,7 +132,7 @@ Note that not all UGens are available in both control- and audio-rate versions. 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-01-19 Fri 22:18</p>
+<p class="date">Last updated: 2019-03-12 Tue 18:43</p>
 </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-04-29 Sun 18:07 -->
+<!-- 2019-03-12 Tue 19:47 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Further Soundmaking</title>
@@ -15,15 +15,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org54cfb00">1. <code>defsynth</code></a></li>
-<li><a href="#org86c246d">2. Best Practices</a></li>
-<li><a href="#org93a5a83">3. More UGens</a></li>
+<li><a href="#orge9fc312">1. <code>defsynth</code></a></li>
+<li><a href="#org89808df">2. Best Practices</a></li>
+<li><a href="#org3ca65cc">3. More UGens</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org54cfb00" class="outline-2">
-<h2 id="org54cfb00"><span class="section-number-2">1</span> <code>defsynth</code></h2>
+<div id="outline-container-orge9fc312" class="outline-2">
+<h2 id="orge9fc312"><span class="section-number-2">1</span> <code>defsynth</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 We've been using the <code>proxy</code> macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
@@ -35,7 +35,7 @@ We've been using the <code>proxy</code> macro to define and redefine sounds, but
 
 <div class="org-src-container">
 <pre class="src src-lisp">(defsynth drum ((freq 3000))
-  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (perc 0.001 0.1) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
+  (<span style="color: #859900;">let*</span> ((env (env-gen.ar (perc 0.001 0.1) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
          (sig (lpf.ar (white-noise.ar) (* freq env))))
     (out.ar 0 (pan2.ar sig 0 0.2))))
 </pre>
@@ -50,7 +50,7 @@ Notice that <code>defsynth</code> is very similar to <code>defun</code>. With <c
 </p>
 
 <p>
-In the case of this synth, we create two variables, <code>env</code> and <code>sig</code>. <code>env</code> is set to an envelope generator UGen, <code>env-gen.kr</code>, which takes an envelope specification and generates a control signal from that specification. <code>(perc 0.001 0.1)</code> is the function generating the specification; its first parameter is the time in seconds to rise from <code>0</code> to <code>1</code>, and the second parameter is the time to fall back to <code>0</code>. The <code>:act :free</code> keywords for <code>env-gen.kr</code> specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
+In the case of this synth, we create two variables, <code>env</code> and <code>sig</code>. <code>env</code> is bound to an envelope generator UGen, <code>env-gen.ar</code>, which takes an envelope specification and generates an audio signal from that specification. <code>(perc 0.001 0.1)</code> is the function generating the specification; its first parameter is the time in seconds to rise from <code>0</code> to <code>1</code>, and the second parameter is the time to fall back to <code>0</code>. The <code>:act :free</code> keywords for <code>env-gen</code> specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
 </p>
 
 <p>
@@ -63,8 +63,8 @@ The last line of the synth definition contains the <code>out.ar</code> UGen. Whe
 </div>
 </div>
 
-<div id="outline-container-org86c246d" class="outline-2">
-<h2 id="org86c246d"><span class="section-number-2">2</span> Best Practices</h2>
+<div id="outline-container-org89808df" class="outline-2">
+<h2 id="org89808df"><span class="section-number-2">2</span> Best Practices</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 If you're going to make music with cl-collider, you're likely to end up writing a lot of ~defsynth~s. Because of this, it may be a good idea to use a template system for your editor. For example, Emacs users can use skeleton or yasnippet. Both of these allow you to create a template and easily insert it into a file so you don't have to do as much manual typing.
@@ -114,12 +114,12 @@ Since the synth will sustain until we specifically tell it to release, we save t
 </div>
 </div>
 
-<div id="outline-container-org93a5a83" class="outline-2">
-<h2 id="org93a5a83"><span class="section-number-2">3</span> More UGens</h2>
+<div id="outline-container-org3ca65cc" class="outline-2">
+<h2 id="org3ca65cc"><span class="section-number-2">3</span> More UGens</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-04-29 Sun 18:07</p>
+<p class="date">Last updated: 2019-03-12 Tue 19:47</p>
 </div>
 </body>
 </html>

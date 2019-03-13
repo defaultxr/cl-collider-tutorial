@@ -8,7 +8,7 @@ We've been using the ~proxy~ macro to define and redefine sounds, but this limit
 
 #+BEGIN_SRC lisp
   (defsynth drum ((freq 3000))
-    (let* ((env (env-gen.kr (perc 0.001 0.1) :act :free))
+    (let* ((env (env-gen.ar (perc 0.001 0.1) :act :free))
            (sig (lpf.ar (white-noise.ar) (* freq env))))
       (out.ar 0 (pan2.ar sig 0 0.2))))
 #+END_SRC
@@ -17,7 +17,7 @@ It's not the most exciting drum sound of all time, but now at least you can re-t
 
 Notice that ~defsynth~ is very similar to ~defun~. With ~defsynth~ you provide the name of the synth (~drum~), its parameters (~(freq 3000)~), and the body, which describes how it generates its sound.
 
-In the case of this synth, we create two variables, ~env~ and ~sig~. ~env~ is set to an envelope generator UGen, ~env-gen.kr~, which takes an envelope specification and generates a control signal from that specification. ~(perc 0.001 0.1)~ is the function generating the specification; its first parameter is the time in seconds to rise from ~0~ to ~1~, and the second parameter is the time to fall back to ~0~. The ~:act :free~ keywords for ~env-gen.kr~ specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
+In the case of this synth, we create two variables, ~env~ and ~sig~. ~env~ is bound to an envelope generator UGen, ~env-gen.ar~, which takes an envelope specification and generates an audio signal from that specification. ~(perc 0.001 0.1)~ is the function generating the specification; its first parameter is the time in seconds to rise from ~0~ to ~1~, and the second parameter is the time to fall back to ~0~. The ~:act :free~ keywords for ~env-gen~ specify that once the envelope has reached its end, the synth will be removed from the server, freeing up CPU resources.
 
 The signal (~sig~) being generated is white noise (~white-noise.ar~) with its high frequencies dampened by the ~lpf~ low pass filter. The filter's frequency (~lpf~'s second argument) is the envelope generator multiplied by the synth's ~freq~ argument. Since the ~perc~ function generates an envelope that goes from ~0~ to ~1~ and then to ~0~ again, multiplying it by frequency is a simple way to change the brightness of the sound. Try the ~synth~ function with different values for its ~:freq~ key, from ~20~ to ~10000~ to get a feel for how it affects the sound.
 
