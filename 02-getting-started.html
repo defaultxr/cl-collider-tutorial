@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2019-01-13 Sun 17:15 -->
+<!-- 2019-04-24 Wed 18:08 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Getting Started</title>
@@ -15,18 +15,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7f0dfd7">1. Requirements</a>
+<li><a href="#orgd3ce518">1. Requirements</a>
 <ul>
-<li><a href="#orgcfbc8ec">1.1. SuperCollider</a></li>
-<li><a href="#orgd368993">1.2. Emacs</a></li>
-<li><a href="#org56b0478">1.3. SBCL</a></li>
-<li><a href="#org94c363f">1.4. Slime</a></li>
-<li><a href="#orgbb27465">1.5. Quicklisp</a></li>
-<li><a href="#orgf9cf2b2">1.6. cl-collider</a></li>
+<li><a href="#orgb52bc14">1.1. SuperCollider</a></li>
+<li><a href="#org75a3bbf">1.2. Emacs</a></li>
+<li><a href="#orgc812ce5">1.3. SBCL</a></li>
+<li><a href="#org9f781c3">1.4. Slime</a></li>
+<li><a href="#org5cd8a75">1.5. Quicklisp</a></li>
+<li><a href="#org789ecc4">1.6. cl-collider</a></li>
 </ul>
 </li>
-<li><a href="#org2efabdd">2. Setting Up</a></li>
-<li><a href="#orgf1348c7">3. Starting Up</a></li>
+<li><a href="#orgabaa1e8">2. Setting Up</a></li>
+<li><a href="#orgf5ebeed">3. Starting Up</a></li>
 </ul>
 </div>
 </nav>
@@ -34,16 +34,16 @@
 This chapter gives an explanation of the requirements for this guide, as well as some information on how to set them up.
 </p>
 
-<div id="outline-container-org7f0dfd7" class="outline-2">
-<h2 id="org7f0dfd7"><span class="section-number-2">1</span> Requirements</h2>
+<div id="outline-container-orgd3ce518" class="outline-2">
+<h2 id="orgd3ce518"><span class="section-number-2">1</span> Requirements</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To interact with SuperCollider, you will need the following software:
 </p>
 </div>
 
-<div id="outline-container-orgcfbc8ec" class="outline-3">
-<h3 id="orgcfbc8ec"><span class="section-number-3">1.1</span> SuperCollider</h3>
+<div id="outline-container-orgb52bc14" class="outline-3">
+<h3 id="orgb52bc14"><span class="section-number-3">1.1</span> SuperCollider</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 The <a href="https://supercollider.github.io/">SuperCollider</a> package provides scsynth, which is the SuperCollider sound server that we will be using. This is the program that actually produces sound.
@@ -51,8 +51,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgd368993" class="outline-3">
-<h3 id="orgd368993"><span class="section-number-3">1.2</span> Emacs</h3>
+<div id="outline-container-org75a3bbf" class="outline-3">
+<h3 id="org75a3bbf"><span class="section-number-3">1.2</span> Emacs</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 <a href="https://www.gnu.org/software/emacs/">Emacs</a> is a well-known text editor. It is specialized for writing Lisp code, and can even be extended using its own dialect of Lisp called Emacs Lisp or Elisp. Emacs is recommended because it has facilities to enhance writing and interacting with Lisp programs. It is possible to use another editor instead, but for the purposes of this guide we are assuming that Emacs is being used.
@@ -60,8 +60,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-org56b0478" class="outline-3">
-<h3 id="org56b0478"><span class="section-number-3">1.3</span> SBCL</h3>
+<div id="outline-container-orgc812ce5" class="outline-3">
+<h3 id="orgc812ce5"><span class="section-number-3">1.3</span> SBCL</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 <a href="https://www.sbcl.org/">SBCL</a> is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
@@ -69,8 +69,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-org94c363f" class="outline-3">
-<h3 id="org94c363f"><span class="section-number-3">1.4</span> Slime</h3>
+<div id="outline-container-org9f781c3" class="outline-3">
+<h3 id="org9f781c3"><span class="section-number-3">1.4</span> Slime</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 <a href="https://common-lisp.net/project/slime/">Slime</a> is the "Superior Lisp Interaction Mode for Emacs". It provides many advanced features for interacting with a Lisp program.
@@ -78,8 +78,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgbb27465" class="outline-3">
-<h3 id="orgbb27465"><span class="section-number-3">1.5</span> Quicklisp</h3>
+<div id="outline-container-org5cd8a75" class="outline-3">
+<h3 id="org5cd8a75"><span class="section-number-3">1.5</span> Quicklisp</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 <a href="https://www.quicklisp.org/beta/">Quicklisp</a> is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
@@ -87,8 +87,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgf9cf2b2" class="outline-3">
-<h3 id="orgf9cf2b2"><span class="section-number-3">1.6</span> cl-collider</h3>
+<div id="outline-container-org789ecc4" class="outline-3">
+<h3 id="org789ecc4"><span class="section-number-3">1.6</span> cl-collider</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
 <a href="https://github.com/byulparan/cl-collider">cl-collider</a> is the Lisp library that provides an interface to SuperCollider.
@@ -97,8 +97,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-org2efabdd" class="outline-2">
-<h2 id="org2efabdd"><span class="section-number-2">2</span> Setting Up</h2>
+<div id="outline-container-orgabaa1e8" class="outline-2">
+<h2 id="orgabaa1e8"><span class="section-number-2">2</span> Setting Up</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
@@ -118,8 +118,8 @@ Since <a href="https://github.com/byulparan/cl-collider">cl-collider</a> is now 
 </div>
 </div>
 
-<div id="outline-container-orgf1348c7" class="outline-2">
-<h2 id="orgf1348c7"><span class="section-number-2">3</span> Starting Up</h2>
+<div id="outline-container-orgf5ebeed" class="outline-2">
+<h2 id="orgf5ebeed"><span class="section-number-2">3</span> Starting Up</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Once you've successfully installed all of the above software, start Emacs, open a new lisp file using <code>C-x C-f FILENAME.lisp RET</code> where FILENAME is the name you want to give to your file. Then, you can start slime using <code>M-x slime RET</code>. If all goes well, you should see a Lisp REPL that looks something like this:
@@ -134,7 +134,7 @@ So far, so good. Position your cursor after the <code>&gt;</code> and then type 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(ql:quickload <span style="color: #859900;">:sc</span>)
+<pre class="src src-lisp">(ql:quickload <span style="color: #859900;">:cl-collider</span>)
 
 (<span style="color: #859900;">in-package</span> <span style="color: #859900;">:sc-user</span>)
 
@@ -153,19 +153,19 @@ For reference, here's an example of what it might look like when you run these e
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">CL-USER&gt; (ql:quickload <span style="color: #859900;">:sc</span>)
+<pre class="src src-lisp">CL-USER&gt; (ql:quickload <span style="color: #859900;">:cl-collider</span>)
 To load <span style="color: #2aa198;">"sc"</span>:
   Load 1 ASDF system:
     sc
-<span style="color: #586e75; font-style: italic;">; </span><span style="color: #586e75; font-style: italic;">Loading "sc"</span>
+<span style="color: #586e75; font-style: italic;">; </span><span style="color: #586e75; font-style: italic;">Loading "cl-collider"</span>
 ..
-(<span style="color: #859900;">:SC</span>)
+(<span style="color: #859900;">:CL-COLLIDER</span>)
 CL-USER&gt; (<span style="color: #859900;">in-package</span> <span style="color: #859900;">:sc-user</span>)
 #&lt;PACKAGE <span style="color: #2aa198;">"SC-USER"</span>&gt;
 SC-USER&gt; (setf *s* (make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #859900;">:port</span> 4444))
 #&lt;SC-SYNTH localhost-127.0.0.1:4444&gt;
 SC-USER&gt; (server-boot *s*)
-VST_PATH not set, defaulting to /home/modula/vst:/usr/local/lib/vst:/usr/lib/vst
+VST_PATH not set, defaulting to /home/user/vst:/usr/local/lib/vst:/usr/lib/vst
 Found 278 LADSPA plugins
 JackDriver: client name is 'SuperCollider'
 SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
@@ -184,7 +184,7 @@ SC-USER&gt;
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2019-01-13 Sun 17:15</p>
+<p class="date">Last updated: 2019-04-24 Wed 18:08</p>
 </div>
 </body>
 </html>

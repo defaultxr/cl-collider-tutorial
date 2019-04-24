@@ -44,7 +44,7 @@ Once you've successfully installed all of the above software, start Emacs, open 
 So far, so good. Position your cursor after the ~>~ and then type the following Lisp expressions, one at a time. After each expression, you may see some output before getting a prompt back again.
 
 #+BEGIN_SRC lisp
-  (ql:quickload :sc)
+  (ql:quickload :cl-collider)
 
   (in-package :sc-user)
 
@@ -58,19 +58,19 @@ Once you run that last line, you're ready to make sound!
 For reference, here's an example of what it might look like when you run these expressions:
 
 #+BEGIN_SRC lisp
-  CL-USER> (ql:quickload :sc)
+  CL-USER> (ql:quickload :cl-collider)
   To load "sc":
     Load 1 ASDF system:
       sc
-  ; Loading "sc"
+  ; Loading "cl-collider"
   ..
-  (:SC)
+  (:CL-COLLIDER)
   CL-USER> (in-package :sc-user)
   #<PACKAGE "SC-USER">
   SC-USER> (setf *s* (make-external-server "localhost" :port 4444))
   #<SC-SYNTH localhost-127.0.0.1:4444>
   SC-USER> (server-boot *s*)
-  VST_PATH not set, defaulting to /home/modula/vst:/usr/local/lib/vst:/usr/lib/vst
+  VST_PATH not set, defaulting to /home/user/vst:/usr/local/lib/vst:/usr/lib/vst
   Found 278 LADSPA plugins
   JackDriver: client name is 'SuperCollider'
   SC_AudioDriver: sample rate = 44100.000000, driver's block size = 256
