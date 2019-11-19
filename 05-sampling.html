@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-04-29 Sun 18:09 -->
+<!-- 2019-11-18 Mon 16:35 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sampling</title>
@@ -15,8 +15,8 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6b8dcf4">1. Loading Sounds</a></li>
-<li><a href="#orgbf02029">2. Playing Sounds</a></li>
+<li><a href="#org2bd0184">1. Loading Sounds</a></li>
+<li><a href="#org217885f">2. Playing Sounds</a></li>
 </ul>
 </div>
 </nav>
@@ -24,15 +24,15 @@
 In addition to its powerful library of oscillators and sound generators, SuperCollider also gives us the ability to use recorded sounds in our synths. In SuperCollider, a recorded sound is stored in a buffer object on the server. A buffer is effectively an array of numbers which can be of any length and can have one or more channels. It's possible to load a sound into a buffer from your hard drive, but it's also possible to record the output of a synth or UGen into a buffer directly on the server. A buffer can be played back normally, or you can control its rate and the playhead position with a UGen.
 </p>
 
-<div id="outline-container-org6b8dcf4" class="outline-2">
-<h2 id="org6b8dcf4"><span class="section-number-2">1</span> Loading Sounds</h2>
+<div id="outline-container-org2bd0184" class="outline-2">
+<h2 id="org2bd0184"><span class="section-number-2">1</span> Loading Sounds</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To load a sound from the drive, use the <code>buffer-read</code> function, like so:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span>)
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -42,28 +42,32 @@ This should be pretty self-explanatory; the only required parameter to <code>buf
 </div>
 </div>
 
-<div id="outline-container-orgbf02029" class="outline-2">
-<h2 id="orgbf02029"><span class="section-number-2">2</span> Playing Sounds</h2>
+<div id="outline-container-org217885f" class="outline-2">
+<h2 id="org217885f"><span class="section-number-2">2</span> Playing Sounds</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Once you've loaded a sound, you'll probably want to play it. Here's an example SynthDef which illustrates the UGens you'd use to do that:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth <span style="color: #859900;">:sample</span> ((bufnum 0) (rate 1) (start 0) (amp 0.5) (out 0))
-  (<span style="color: #859900;">let</span> ((sig (play-buf.ar 2 bufnum (* rate (buf-rate-scale.ir bufnum))
-                          <span style="color: #859900;">:start-pos</span> (* start (buf-frames.ir bufnum))
-                          <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>)))
-    (out.ar out (* amp sig))))
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>defsynth <span style="color: #268bd2;">:sample</span> <span style="color: #d33682;">(</span><span style="color: #859900;">(</span>buffer 0<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>rate 1<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>start 0<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>amp 0.5<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>out 0<span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+  <span style="color: #d33682;">(</span><span style="color: #859900;">let</span> <span style="color: #859900;">(</span><span style="color: #cb4b16;">(</span>sig <span style="color: #6c71c4;">(</span>play-buf.ar 2 buffer <span style="color: #b58900;">(</span>* rate <span style="color: #35a69c;">(</span>buf-rate-scale.ir buffer<span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span>
+                          <span style="color: #268bd2;">:start-pos</span> <span style="color: #b58900;">(</span>* start <span style="color: #35a69c;">(</span>buf-frames.ir buffer<span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span>
+                          <span style="color: #268bd2;">:act</span> <span style="color: #268bd2;">:free</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
+    <span style="color: #859900;">(</span>out.ar out <span style="color: #cb4b16;">(</span>* amp sig<span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
 <p>
-For this synth, we use <code>bufnum</code> as a parameter so we can specify the buffer to play when the synth is started. We call it <code>bufnum</code> because the server only sees buffer numbers, not the buffer object that <code>buffer-read</code> returns to represent the buffer. <code>bufnum</code> is also fairly standardized and some libraries expect synths that use buffers to have that as the parameter name.
+Typically, to tell the synth what buffer we want it to play, we would usually add a <code>buffer</code> or <code>bufnum</code> parameter to the synthdef. These are fairly standard names for buffer parameters in synths, and some libraries may expect a buffer to be passed to a synth via a parameter with one of these names. So in general, it's probably a good idea to get in the habit of using one of the two in your buffer-playing synthdefs. For this synth, we've added a <code>buffer</code> parameter.
 </p>
 
 <p>
-After <code>bufnum</code>, we provide a parameter for the playback rate. <code>rate</code> is the number to multiply the buffer's original speed by. So <code>1</code> would play the buffer back at its normal speed, while <code>2</code> would play it twice as fast, and <code>0.5</code> would play it half as fast.
+One thing to note is that we don't actually send the buffer object itself to the synth. In SuperCollider, each buffer has a ID number. The server will only understand these IDs, and any other names or objects will likely result in an error. Fortunately, cl-collider (as well as the official SuperCollider client) automatically translates buffer objects to buffer IDs in most functions, so you usually don't have to do it manually. If you do, however, keep in mind that cl-collider's <code>bufnum</code> function is what is used to get a buffer's ID number.
+</p>
+
+<p>
+After the <code>buffer</code> parameter, we provide another for the playback rate. <code>rate</code> is the number to multiply the buffer's original speed by. So <code>1</code> would play the buffer back at its normal speed, <code>2</code> would play it twice as fast (and one octave higher), and <code>0.5</code> would play it half as fast (one octave lower).
 </p>
 
 <p>
@@ -75,7 +79,7 @@ The body of the SynthDef is fairly simple; the main UGen is <code>play-buf</code
 </p>
 
 <p>
-The second argument to <code>play-buf</code> is the buffer number. After that, the playback rate. Here we multiply our <code>rate</code> parameter by <code>(buf-rate-scale.ir bufnum)</code>. <code>buf-rate-scale</code> is a UGen that outputs a number that we can multiply by in order to play a sample at its original speed regardless of the original file's sampling rate. If we just supplied our <code>rate</code> parameter directly, any sample that you load would play at the wrong speed if it doesn't match the sampling rate of the server itself.
+The second argument to <code>play-buf</code> is the buffer number. After that, the playback rate. Here we multiply our <code>rate</code> parameter by <code>(buf-rate-scale.ir buffer)</code>. <code>buf-rate-scale</code> is a UGen that outputs a number that we can multiply by in order to play a sample at its original speed regardless of the original file's sampling rate. If we just supplied our <code>rate</code> parameter directly, any sample that you load would play at the wrong speed if it doesn't match the sampling rate of the server itself.
 </p>
 
 <p>
@@ -99,7 +103,7 @@ To actually play the <code>sample</code> synth, we'll want to make sure that we'
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">*file*</span> (buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span>))
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900;">defvar</span> <span style="color: #6c71c4;">*file*</span> <span style="color: #d33682;">(</span>buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -108,7 +112,7 @@ Then, we can start the <code>sample</code> synth like so:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(synth 'sample <span style="color: #859900;">:bufnum</span> *file*)
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>synth 'sample <span style="color: #268bd2;">:buffer</span> *file*<span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -119,7 +123,7 @@ As mentioned above, since <code>play-buf</code>'s <code>:act</code> argument is 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-04-29 Sun 18:09</p>
+<p class="date">Last updated: 2019-11-18 Mon 16:35</p>
 </div>
 </body>
 </html>

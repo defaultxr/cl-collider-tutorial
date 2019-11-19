@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-04-29 Sun 17:58 -->
+<!-- 2019-11-18 Mon 16:35 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sequencing</title>
@@ -15,9 +15,9 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org38cee9f">1. <code>callback</code></a></li>
-<li><a href="#orgbface71">2. Closures</a></li>
-<li><a href="#orgc7fdc0f">3. Patterns</a></li>
+<li><a href="#org75d5384">1. <code>callback</code></a></li>
+<li><a href="#orga4119cb">2. Closures</a></li>
+<li><a href="#org952eb59">3. Patterns</a></li>
 </ul>
 </div>
 </nav>
@@ -25,18 +25,18 @@
 Up to this point, we've been testing sounds by playing them manually using their functions defined by <code>defsynth</code>, or by using <code>proxy</code>. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
 </p>
 
-<div id="outline-container-org38cee9f" class="outline-2">
-<h2 id="org38cee9f"><span class="section-number-2">1</span> <code>callback</code></h2>
+<div id="outline-container-org75d5384" class="outline-2">
+<h2 id="org75d5384"><span class="section-number-2">1</span> <code>callback</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 cl-collider comes with a built in method of sequencing sounds. It's fairly simple and easy to learn, as it is basically just a few functions and macros that allow sounds (or other functions) to be triggered automatically at some point in the future. Let's take a look. First, we'll define a basic synth that we can play around with:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth simple ((gate 1) (freq 440) (pan 0) (amp 0.5))
-  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (asr 0.01 1 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
-         (sig (sin-osc.ar freq 0 0.2)))
-    (out.ar 0 (pan2.ar sig pan (* env amp)))))
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>defsynth simple <span style="color: #d33682;">(</span><span style="color: #859900;">(</span>gate 1<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>freq 440<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>pan 0<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>amp 0.5<span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+  <span style="color: #d33682;">(</span><span style="color: #859900;">let*</span> <span style="color: #859900;">(</span><span style="color: #cb4b16;">(</span>env <span style="color: #6c71c4;">(</span>env-gen.kr <span style="color: #b58900;">(</span>asr 0.01 1 0.1<span style="color: #b58900;">)</span> <span style="color: #268bd2;">:gate</span> gate <span style="color: #268bd2;">:act</span> <span style="color: #268bd2;">:free</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span>
+         <span style="color: #cb4b16;">(</span>sig <span style="color: #6c71c4;">(</span>sin-osc.ar freq 0 0.2<span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
+    <span style="color: #859900;">(</span>out.ar 0 <span style="color: #cb4b16;">(</span>pan2.ar sig pan <span style="color: #6c71c4;">(</span>* env amp<span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -45,10 +45,10 @@ Then, we can define a function to start playing this synth:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-  (<span style="color: #859900;">let</span> ((syn (synth 'simple <span style="color: #859900;">:freq</span> (midicps (+ 30 (random 40))))))
-    (callback (+ (now) 0.7) #'release syn))
-  (callback (+ (now) 1) #'testing))
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> <span style="color: #d33682;">()</span>
+  <span style="color: #d33682;">(</span><span style="color: #859900;">let</span> <span style="color: #859900;">(</span><span style="color: #cb4b16;">(</span>syn <span style="color: #6c71c4;">(</span>synth 'simple <span style="color: #268bd2;">:freq</span> <span style="color: #b58900;">(</span>midicps <span style="color: #35a69c;">(</span>+ 30 <span style="color: #a2b6da;">(</span>random 40<span style="color: #a2b6da;">)</span><span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
+    <span style="color: #859900;">(</span>callback <span style="color: #cb4b16;">(</span>+ <span style="color: #6c71c4;">(</span>now<span style="color: #6c71c4;">)</span> 0.7<span style="color: #cb4b16;">)</span> #'release syn<span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+  <span style="color: #d33682;">(</span>callback <span style="color: #859900;">(</span>+ <span style="color: #cb4b16;">(</span>now<span style="color: #cb4b16;">)</span> 1<span style="color: #859900;">)</span> #'testing<span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -69,8 +69,8 @@ Once you define that function, you can call it using <code>(testing)</code> and 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> ()
-  nil)
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing</span> <span style="color: #d33682;">()</span>
+  nil<span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -79,13 +79,13 @@ Another example; if we want multiple notes simultaneously:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing-2</span> ()
-  (<span style="color: #859900;">let*</span> ((note (+ 30 (random 40)))
-         (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
-                  <span style="color: #859900;">:collect</span> (synth 'simple <span style="color: #859900;">:freq</span> (midicps (+ i note))))))
-    (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> syns
-       <span style="color: #859900;">:do</span> (callback (+ (now) 0.7) #'release i)))
-  (callback (+ (now) 1) #'testing-2))
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing-2</span> <span style="color: #d33682;">()</span>
+  <span style="color: #d33682;">(</span><span style="color: #859900;">let*</span> <span style="color: #859900;">(</span><span style="color: #cb4b16;">(</span>note <span style="color: #6c71c4;">(</span>+ 30 <span style="color: #b58900;">(</span>random 40<span style="color: #b58900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span>
+         <span style="color: #cb4b16;">(</span>syns <span style="color: #6c71c4;">(</span><span style="color: #859900;">loop</span> <span style="color: #268bd2;">:for</span> i <span style="color: #268bd2;">:in</span> '<span style="color: #b58900;">(</span>0 12 24<span style="color: #b58900;">)</span>
+                  <span style="color: #268bd2;">:collect</span> <span style="color: #b58900;">(</span>synth 'simple <span style="color: #268bd2;">:freq</span> <span style="color: #35a69c;">(</span>midicps <span style="color: #a2b6da;">(</span>+ i note<span style="color: #a2b6da;">)</span><span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
+    <span style="color: #859900;">(</span><span style="color: #859900;">loop</span> <span style="color: #268bd2;">:for</span> i <span style="color: #268bd2;">:in</span> syns
+       <span style="color: #268bd2;">:do</span> <span style="color: #cb4b16;">(</span>callback <span style="color: #6c71c4;">(</span>+ <span style="color: #b58900;">(</span>now<span style="color: #b58900;">)</span> 0.7<span style="color: #6c71c4;">)</span> #'release i<span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+  <span style="color: #d33682;">(</span>callback <span style="color: #859900;">(</span>+ <span style="color: #cb4b16;">(</span>now<span style="color: #cb4b16;">)</span> 1<span style="color: #859900;">)</span> #'testing-2<span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -95,24 +95,24 @@ This function generates a random MIDI note, then creates two more synths that pl
 </div>
 </div>
 
-<div id="outline-container-orgbface71" class="outline-2">
-<h2 id="orgbface71"><span class="section-number-2">2</span> Closures</h2>
+<div id="outline-container-orga4119cb" class="outline-2">
+<h2 id="orga4119cb"><span class="section-number-2">2</span> Closures</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Using closures, we can write functions that perform different actions each time they're called:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">let</span> ((index 0)
-      (list (list 0 2 4 6)))
-  (<span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing-3</span> ()
-    (<span style="color: #859900;">let*</span> ((note (+ 30 (nth index list)))
-           (syns (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> '(0 12 24)
-                    <span style="color: #859900;">:collect</span> (synth 'simple <span style="color: #859900;">:freq</span> (midicps (+ i note))))))
-      (<span style="color: #859900;">loop</span> <span style="color: #859900;">:for</span> i <span style="color: #859900;">:in</span> syns
-         <span style="color: #859900;">:do</span> (callback (+ (now) 0.7) #'release i)))
-    (setf index (mod (1+ index) (length list)))
-    (callback (+ (now) 1) #'testing-3)))
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900;">let</span> <span style="color: #d33682;">(</span><span style="color: #859900;">(</span>index 0<span style="color: #859900;">)</span>
+      <span style="color: #859900;">(</span>list <span style="color: #cb4b16;">(</span>list 0 2 4 6<span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+  <span style="color: #d33682;">(</span><span style="color: #859900;">defun</span> <span style="color: #268bd2;">testing-3</span> <span style="color: #859900;">()</span>
+    <span style="color: #859900;">(</span><span style="color: #859900;">let*</span> <span style="color: #cb4b16;">(</span><span style="color: #6c71c4;">(</span>note <span style="color: #b58900;">(</span>+ 30 <span style="color: #35a69c;">(</span>nth index list<span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span><span style="color: #6c71c4;">)</span>
+           <span style="color: #6c71c4;">(</span>syns <span style="color: #b58900;">(</span><span style="color: #859900;">loop</span> <span style="color: #268bd2;">:for</span> i <span style="color: #268bd2;">:in</span> '<span style="color: #35a69c;">(</span>0 12 24<span style="color: #35a69c;">)</span>
+                    <span style="color: #268bd2;">:collect</span> <span style="color: #35a69c;">(</span>synth 'simple <span style="color: #268bd2;">:freq</span> <span style="color: #a2b6da;">(</span>midicps <span style="color: #9cb6ad;">(</span>+ i note<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span>
+      <span style="color: #cb4b16;">(</span><span style="color: #859900;">loop</span> <span style="color: #268bd2;">:for</span> i <span style="color: #268bd2;">:in</span> syns
+         <span style="color: #268bd2;">:do</span> <span style="color: #6c71c4;">(</span>callback <span style="color: #b58900;">(</span>+ <span style="color: #35a69c;">(</span>now<span style="color: #35a69c;">)</span> 0.7<span style="color: #b58900;">)</span> #'release i<span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
+    <span style="color: #859900;">(</span>setf index <span style="color: #cb4b16;">(</span>mod <span style="color: #6c71c4;">(</span>1+ index<span style="color: #6c71c4;">)</span> <span style="color: #6c71c4;">(</span>length list<span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
+    <span style="color: #859900;">(</span>callback <span style="color: #cb4b16;">(</span>+ <span style="color: #6c71c4;">(</span>now<span style="color: #6c71c4;">)</span> 1<span style="color: #cb4b16;">)</span> #'testing-3<span style="color: #859900;">)</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -122,8 +122,8 @@ Since closures let us keep track of state, we can make arpeggios instead of just
 </div>
 </div>
 
-<div id="outline-container-orgc7fdc0f" class="outline-2">
-<h2 id="orgc7fdc0f"><span class="section-number-2">3</span> Patterns</h2>
+<div id="outline-container-org952eb59" class="outline-2">
+<h2 id="org952eb59"><span class="section-number-2">3</span> Patterns</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Though you can of course implement any behaviors you want using functions and cl-collider's scheduler as shown above, it does require a lot of bookkeeping. Calculating the frequency for each note, saving each synth in a variable, releasing it later, etcetera&#x2013;and that's just for simple behavior like the above. You could, of course, define some functions and macros to make it easier, but there is another way.
@@ -138,11 +138,11 @@ cl-collider doesn't have a patterns system built in, but there is a library call
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(pbind <span style="color: #859900;">:pdef</span> <span style="color: #859900;">:testing</span>
-       <span style="color: #859900;">:instrument</span> <span style="color: #859900;">:simple</span>
-       <span style="color: #859900;">:midinote</span> (pwhite 30 70)
-       <span style="color: #859900;">:dur</span> 1
-       <span style="color: #859900;">:legato</span> 0.7)
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>pbind <span style="color: #268bd2;">:pdef</span> <span style="color: #268bd2;">:testing</span>
+       <span style="color: #268bd2;">:instrument</span> <span style="color: #268bd2;">:simple</span>
+       <span style="color: #268bd2;">:midinote</span> <span style="color: #d33682;">(</span>pwhite 30 70<span style="color: #d33682;">)</span>
+       <span style="color: #268bd2;">:dur</span> 1
+       <span style="color: #268bd2;">:legato</span> 0.7<span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -159,12 +159,12 @@ Here's an example of how <code>testing-2</code> would be rewritten as a pattern:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(pbind <span style="color: #859900;">:pdef</span> <span style="color: #859900;">:testing-2</span>
-       <span style="color: #859900;">:instrument</span> <span style="color: #859900;">:simple</span>
-       <span style="color: #859900;">:midinote</span> (pwhite 30 70)
-       <span style="color: #859900;">:midinote</span> (p+ (pk <span style="color: #859900;">:midinote</span>) (list 0 12 24))
-       <span style="color: #859900;">:dur</span> 1
-       <span style="color: #859900;">:legato</span> 0.7)
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>pbind <span style="color: #268bd2;">:pdef</span> <span style="color: #268bd2;">:testing-2</span>
+       <span style="color: #268bd2;">:instrument</span> <span style="color: #268bd2;">:simple</span>
+       <span style="color: #268bd2;">:midinote</span> <span style="color: #d33682;">(</span>pwhite 30 70<span style="color: #d33682;">)</span>
+       <span style="color: #268bd2;">:midinote</span> <span style="color: #d33682;">(</span>p+ <span style="color: #859900;">(</span>pk <span style="color: #268bd2;">:midinote</span><span style="color: #859900;">)</span> <span style="color: #859900;">(</span>list 0 12 24<span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+       <span style="color: #268bd2;">:dur</span> 1
+       <span style="color: #268bd2;">:legato</span> 0.7<span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -181,12 +181,12 @@ And finally, here's how our last function, <code>testing-3</code>, would look as
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(pbind <span style="color: #859900;">:pdef</span> <span style="color: #859900;">:testing-3</span>
-       <span style="color: #859900;">:instrument</span> <span style="color: #859900;">:simple</span>
-       <span style="color: #859900;">:midinote</span> (p+ 40 (pseq '(0 2 4 6)))
-       <span style="color: #859900;">:midinote</span> (p+ (pk <span style="color: #859900;">:midinote</span>) (list 0 12 24))
-       <span style="color: #859900;">:dur</span> 1
-       <span style="color: #859900;">:legato</span> 0.7)
+<pre class="src src-lisp"><span style="color: #268bd2;">(</span>pbind <span style="color: #268bd2;">:pdef</span> <span style="color: #268bd2;">:testing-3</span>
+       <span style="color: #268bd2;">:instrument</span> <span style="color: #268bd2;">:simple</span>
+       <span style="color: #268bd2;">:midinote</span> <span style="color: #d33682;">(</span>p+ 40 <span style="color: #859900;">(</span>pseq <span style="color: #cb4b16;">(</span>list 0 2 4 6<span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+       <span style="color: #268bd2;">:midinote</span> <span style="color: #d33682;">(</span>p+ <span style="color: #859900;">(</span>pk <span style="color: #268bd2;">:midinote</span><span style="color: #859900;">)</span> <span style="color: #859900;">(</span>list 0 12 24<span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
+       <span style="color: #268bd2;">:dur</span> 1
+       <span style="color: #268bd2;">:legato</span> 0.7<span style="color: #268bd2;">)</span>
 </pre>
 </div>
 
@@ -205,7 +205,7 @@ As mentioned before, a full explanation of how cl-patterns works is beyond the s
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2018-04-29 Sun 17:58</p>
+<p class="date">Last updated: 2019-11-18 Mon 16:35</p>
 </div>
 </body>
 </html>

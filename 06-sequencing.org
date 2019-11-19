@@ -110,7 +110,7 @@ And finally, here's how our last function, ~testing-3~, would look as a pattern:
 #+BEGIN_SRC lisp
   (pbind :pdef :testing-3
          :instrument :simple
-         :midinote (p+ 40 (pseq '(0 2 4 6)))
+         :midinote (p+ 40 (pseq (list 0 2 4 6)))
          :midinote (p+ (pk :midinote) (list 0 12 24))
          :dur 1
          :legato 0.7)

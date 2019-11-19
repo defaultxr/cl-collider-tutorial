@@ -16,7 +16,7 @@ The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth
 [[https://www.sbcl.org/][SBCL]] is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
 
 ** Slime
-[[https://common-lisp.net/project/slime/][Slime]] is the "Superior Lisp Interaction Mode for Emacs". It provides many advanced features for interacting with a Lisp program.
+[[https://common-lisp.net/project/slime/][Slime]] is the "Superior Lisp Interaction Mode for Emacs". It is effectively the link between Emacs and the Lisp processs, however it also provides many more advanced features for interacting with a Lisp program.
 
 ** Quicklisp
 [[https://www.quicklisp.org/beta/][Quicklisp]] is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
@@ -25,9 +25,30 @@ The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth
 [[https://github.com/byulparan/cl-collider][cl-collider]] is the Lisp library that provides an interface to SuperCollider.
 
 * Setting Up
+
+To set up a basic environment for writing Lisp, there are two options you should consider. First, if you're already familiar with Emacs or want to start from scratch, you may prefer simply adapting your current configuration to work with Lisp; see "Vanilla Emacs", below, for more information on that. It should be noted, however, that setting up EMacs and Lisp from scratch is already considered to be a somewhat involved process, and is thus not recommended for beginners.
+
+Instead, if you're not familiar with Emacs, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, Slime, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
+
+** Portacle
+
+Portacle's [[https://portacle.github.io/][official site]] describes it like so:
+
+#+BEGIN_QUOTE
+Portacle is a complete IDE for Common Lisp that you can take with you on a USB stick. It is multi-platform and can be run on Windows, OS X, and Linux. Since it does not require any complicated installation process, it is set up and running in no time.
+
+It lends itself very well both to absolute beginners of Lisp that just need a good starting point, as well as advanced users that want to minimise the time spent getting everything ready.
+#+END_QUOTE
+
+If you're using Linux, your distribution's standard package manager may already have a package for Portacle available, and it's recommended you start off by trying that one first. Alternatively, if it doesn't, or if you're on another OS, you can download and install the package from Portacle's official site.
+
+Once you've installed it, you'll want to continue by installing SuperCollider. Again, install it from your OS's official package manager if possible. Otherwise, SuperCollider's [[https://supercollider.github.io/download][official site]] may have a package that works.
+
+** Vanilla Emacs
+
 It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
 
-Your package manager may provide Slime, but if not, it's possible to install it using Emacs' package manager. You can run the package manager in Emacs by typing ~M-x list-packages RET~. Then use ~C-s~ to search for ~slime~. With your cursor over ~slime~, press ~i~ to mark it for installation, and then ~x~ to install it.
+Your package manager may provide Slime, but if not, it's possible to install it using Emacs' standard package manager. You can run the package manager in Emacs by typing ~M-x list-packages RET~. Then use ~C-s~ to search for ~slime~. With your cursor over ~slime~, press ~i~ to mark it for installation, and then ~x~ to install it.
 
 [[https://www.quicklisp.org/beta/][The Quicklisp site]] provides a guide on how to install it on Mac OS or Linux. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
 
@@ -81,4 +102,4 @@ For reference, here's an example of what it might look like when you run these e
   SC-USER> 
 #+END_SRC
 
-...Of course, it may be slightly different for you. As long as you don't get any errors, you're good to go.
+...Of course, it may be slightly different for you. As long as you don't get any errors, you should be good to go. In the next chapter, we'll take it for a spin, and make our first sound.
