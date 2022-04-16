@@ -25,9 +25,9 @@ Below that, we apply the delay effect. An easy way to make a delay in SuperColli
 - The decay time. This is basically the amount of time that it takes for the delays to fade out to silence.
 - The standard ~mul~ and ~add~ arguments.
 
-Our last step of processing for the signal is to send it through the ~leak-dc~ UGen. SuperCollider's comb filters can sometimes produce a DC offset, which is basically a part of the signal that is silent but not centered at 0. It's often a good idea to send them through ~leak-dc~ UGen in order to remove this offset.
+Our last step of processing for the signal is to send it through the ~leak-dc~ UGen, which removes what is known as a "DC offset" that some of SuperCollider's comb filters can occasionally produce. A DC offset is basically a very low frequency that causes the audio waveform to not be centered on zero, potentially resulting in clipping or audio filters misbehaving later in the signal path.
 
-It also helps the ~detect-silence~ UGen below, which, as the name suggests, is used to detect silence. When silence is detected by its input, it outputs a ~1~, and when the input is not silence it outputs ~0~. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here--hence the ~:act :free~ keyword argument. We also set its ~time~ argument to our ~delay~, to make sure if our delay time is too long, ~detect-silence~ won't free the synth before the first delay actually occurs.
+One such UGen that can misbehave with a DC offset is ~detect-silence~, which, as the name suggests, is used to detect silence, but may not detect silence if its input has a DC offset. When silence is detected by ~detect-silence~, it outputs a ~1~, and when the input is not silence it outputs ~0~. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here--hence the ~:act :free~ keyword argument. We also set its ~time~ argument to our ~delay~, to make sure if our delay time is too long, ~detect-silence~ won't free the synth before the first delay actually occurs.
 
 Finally, we use ~pan2~ to turn our mono signal ~sig~ into a stereo signal, and send it to the synth's output with ~out.ar~. 
 

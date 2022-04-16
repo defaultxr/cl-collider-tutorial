@@ -13,7 +13,7 @@ The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth
 [[https://www.gnu.org/software/emacs/][Emacs]] is a well-known text editor. It is specialized for writing Lisp code, and can even be extended using its own dialect of Lisp called Emacs Lisp or Elisp. Emacs is recommended because it has facilities to enhance writing and interacting with Lisp programs. It is possible to use another editor instead, but for the purposes of this guide we are assuming that Emacs is being used.
 
 ** SBCL
-[[https://www.sbcl.org/][SBCL]] is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
+[[https://www.sbcl.org/][SBCL]] is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code. Many other Lisp compilers exist, but SBCL is a good choice to start off with because it is fast and well-supported.
 
 ** Slime
 [[https://common-lisp.net/project/slime/][Slime]] is the "Superior Lisp Interaction Mode for Emacs". It is effectively the link between Emacs and the Lisp processs, however it also provides many more advanced features for interacting with a Lisp program.
@@ -26,9 +26,9 @@ The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth
 
 * Setting Up
 
-To set up a basic environment for writing Lisp, there are two options you should consider. First, if you're already familiar with Emacs or want to start from scratch, you may prefer simply adapting your current configuration to work with Lisp; see "Vanilla Emacs", below, for more information on that. It should be noted, however, that setting up EMacs and Lisp from scratch is already considered to be a somewhat involved process, and is thus not recommended for beginners.
+To set up a basic environment for writing Lisp, there are two options you should consider. First, if you're already familiar with Emacs or want to start from scratch, you may prefer simply adapting your current configuration to work with Lisp; see "Vanilla Emacs", below, for more information on that. It should be noted, however, that setting up Emacs and Lisp from scratch is already considered to be a somewhat involved process, and is thus not recommended for people unfamiliar with Emacs.
 
-Instead, if you're not familiar with Emacs, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, Slime, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
+Instead, if that's the case for you, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, Slime, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
 
 ** Portacle
 

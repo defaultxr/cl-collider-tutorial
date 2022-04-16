@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2019-11-18 Mon 16:35 -->
+<!-- 2020-04-22 Wed 15:39 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Getting Started</title>
@@ -15,23 +15,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge5f00f7">1. Requirements</a>
+<li><a href="#orga72c5b4">1. Requirements</a>
 <ul>
-<li><a href="#org8d84655">1.1. SuperCollider</a></li>
-<li><a href="#orgd20b9f3">1.2. Emacs</a></li>
-<li><a href="#orgec62eda">1.3. SBCL</a></li>
-<li><a href="#orgeeac5e0">1.4. Slime</a></li>
-<li><a href="#orgcb686c2">1.5. Quicklisp</a></li>
-<li><a href="#orgb522b0b">1.6. cl-collider</a></li>
+<li><a href="#orge783023">1.1. SuperCollider</a></li>
+<li><a href="#org9ea6e91">1.2. Emacs</a></li>
+<li><a href="#orga915d91">1.3. SBCL</a></li>
+<li><a href="#orgd93e513">1.4. Slime</a></li>
+<li><a href="#orgcc137ac">1.5. Quicklisp</a></li>
+<li><a href="#org4dba891">1.6. cl-collider</a></li>
 </ul>
 </li>
-<li><a href="#org88429a0">2. Setting Up</a>
+<li><a href="#org8c627ff">2. Setting Up</a>
 <ul>
-<li><a href="#orgf577d1c">2.1. Portacle</a></li>
-<li><a href="#org6b2f5e1">2.2. Vanilla Emacs</a></li>
+<li><a href="#org66ed14b">2.1. Portacle</a></li>
+<li><a href="#org1b64b2a">2.2. Vanilla Emacs</a></li>
 </ul>
 </li>
-<li><a href="#org4bdc405">3. Starting Up</a></li>
+<li><a href="#org14dad14">3. Starting Up</a></li>
 </ul>
 </div>
 </nav>
@@ -39,16 +39,16 @@
 This chapter gives an explanation of the requirements for this guide, as well as some information on how to set them up.
 </p>
 
-<div id="outline-container-orge5f00f7" class="outline-2">
-<h2 id="orge5f00f7"><span class="section-number-2">1</span> Requirements</h2>
+<div id="outline-container-orga72c5b4" class="outline-2">
+<h2 id="orga72c5b4"><span class="section-number-2">1</span> Requirements</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To interact with SuperCollider, you will need the following software:
 </p>
 </div>
 
-<div id="outline-container-org8d84655" class="outline-3">
-<h3 id="org8d84655"><span class="section-number-3">1.1</span> SuperCollider</h3>
+<div id="outline-container-orge783023" class="outline-3">
+<h3 id="orge783023"><span class="section-number-3">1.1</span> SuperCollider</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 The <a href="https://supercollider.github.io/">SuperCollider</a> package provides scsynth, which is the SuperCollider sound server that we will be using. This is the program that actually produces sound.
@@ -56,8 +56,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgd20b9f3" class="outline-3">
-<h3 id="orgd20b9f3"><span class="section-number-3">1.2</span> Emacs</h3>
+<div id="outline-container-org9ea6e91" class="outline-3">
+<h3 id="org9ea6e91"><span class="section-number-3">1.2</span> Emacs</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 <a href="https://www.gnu.org/software/emacs/">Emacs</a> is a well-known text editor. It is specialized for writing Lisp code, and can even be extended using its own dialect of Lisp called Emacs Lisp or Elisp. Emacs is recommended because it has facilities to enhance writing and interacting with Lisp programs. It is possible to use another editor instead, but for the purposes of this guide we are assuming that Emacs is being used.
@@ -65,17 +65,17 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgec62eda" class="outline-3">
-<h3 id="orgec62eda"><span class="section-number-3">1.3</span> SBCL</h3>
+<div id="outline-container-orga915d91" class="outline-3">
+<h3 id="orga915d91"><span class="section-number-3">1.3</span> SBCL</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
-<a href="https://www.sbcl.org/">SBCL</a> is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code.
+<a href="https://www.sbcl.org/">SBCL</a> is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code. Many other Lisp compilers exist, but SBCL is a good choice to start off with because it is fast and well-supported.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgeeac5e0" class="outline-3">
-<h3 id="orgeeac5e0"><span class="section-number-3">1.4</span> Slime</h3>
+<div id="outline-container-orgd93e513" class="outline-3">
+<h3 id="orgd93e513"><span class="section-number-3">1.4</span> Slime</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 <a href="https://common-lisp.net/project/slime/">Slime</a> is the "Superior Lisp Interaction Mode for Emacs". It is effectively the link between Emacs and the Lisp processs, however it also provides many more advanced features for interacting with a Lisp program.
@@ -83,8 +83,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgcb686c2" class="outline-3">
-<h3 id="orgcb686c2"><span class="section-number-3">1.5</span> Quicklisp</h3>
+<div id="outline-container-orgcc137ac" class="outline-3">
+<h3 id="orgcc137ac"><span class="section-number-3">1.5</span> Quicklisp</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 <a href="https://www.quicklisp.org/beta/">Quicklisp</a> is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
@@ -92,8 +92,8 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-orgb522b0b" class="outline-3">
-<h3 id="orgb522b0b"><span class="section-number-3">1.6</span> cl-collider</h3>
+<div id="outline-container-org4dba891" class="outline-3">
+<h3 id="org4dba891"><span class="section-number-3">1.6</span> cl-collider</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
 <a href="https://github.com/byulparan/cl-collider">cl-collider</a> is the Lisp library that provides an interface to SuperCollider.
@@ -102,20 +102,20 @@ The <a href="https://supercollider.github.io/">SuperCollider</a> package provide
 </div>
 </div>
 
-<div id="outline-container-org88429a0" class="outline-2">
-<h2 id="org88429a0"><span class="section-number-2">2</span> Setting Up</h2>
+<div id="outline-container-org8c627ff" class="outline-2">
+<h2 id="org8c627ff"><span class="section-number-2">2</span> Setting Up</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-To set up a basic environment for writing Lisp, there are two options you should consider. First, if you're already familiar with Emacs or want to start from scratch, you may prefer simply adapting your current configuration to work with Lisp; see "Vanilla Emacs", below, for more information on that. It should be noted, however, that setting up EMacs and Lisp from scratch is already considered to be a somewhat involved process, and is thus not recommended for beginners.
+To set up a basic environment for writing Lisp, there are two options you should consider. First, if you're already familiar with Emacs or want to start from scratch, you may prefer simply adapting your current configuration to work with Lisp; see "Vanilla Emacs", below, for more information on that. It should be noted, however, that setting up Emacs and Lisp from scratch is already considered to be a somewhat involved process, and is thus not recommended for people unfamiliar with Emacs.
 </p>
 
 <p>
-Instead, if you're not familiar with Emacs, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, Slime, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
+Instead, if that's the case for you, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, Slime, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
 </p>
 </div>
 
-<div id="outline-container-orgf577d1c" class="outline-3">
-<h3 id="orgf577d1c"><span class="section-number-3">2.1</span> Portacle</h3>
+<div id="outline-container-org66ed14b" class="outline-3">
+<h3 id="org66ed14b"><span class="section-number-3">2.1</span> Portacle</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Portacle's <a href="https://portacle.github.io/">official site</a> describes it like so:
@@ -141,8 +141,8 @@ Once you've installed it, you'll want to continue by installing SuperCollider. A
 </div>
 </div>
 
-<div id="outline-container-org6b2f5e1" class="outline-3">
-<h3 id="org6b2f5e1"><span class="section-number-3">2.2</span> Vanilla Emacs</h3>
+<div id="outline-container-org1b64b2a" class="outline-3">
+<h3 id="org1b64b2a"><span class="section-number-3">2.2</span> Vanilla Emacs</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
@@ -163,8 +163,8 @@ Since <a href="https://github.com/byulparan/cl-collider">cl-collider</a> is now 
 </div>
 </div>
 
-<div id="outline-container-org4bdc405" class="outline-2">
-<h2 id="org4bdc405"><span class="section-number-2">3</span> Starting Up</h2>
+<div id="outline-container-org14dad14" class="outline-2">
+<h2 id="org14dad14"><span class="section-number-2">3</span> Starting Up</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Once you've successfully installed all of the above software, start Emacs, open a new lisp file using <code>C-x C-f FILENAME.lisp RET</code> where FILENAME is the name you want to give to your file. Then, you can start slime using <code>M-x slime RET</code>. If all goes well, you should see a Lisp REPL that looks something like this:
@@ -181,7 +181,7 @@ So far, so good. Position your cursor after the <code>&gt;</code> and then type 
 <div class="org-src-container">
 <pre class="src src-lisp"><span style="color: #268bd2;">(</span>ql:quickload <span style="color: #268bd2;">:cl-collider</span><span style="color: #268bd2;">)</span>
 
-<span style="color: #268bd2;">(</span><span style="color: #859900;">in-package</span> <span style="color: #268bd2;">:sc-user</span><span style="color: #268bd2;">)</span>
+<span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">in-package</span> <span style="color: #268bd2;">:sc-user</span><span style="color: #268bd2;">)</span>
 
 <span style="color: #268bd2;">(</span>setf *s* <span style="color: #d33682;">(</span>make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #268bd2;">:port</span> 4444<span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 
@@ -205,7 +205,7 @@ To load <span style="color: #2aa198;">"sc"</span>:
 <span style="color: #405A61;">; </span><span style="color: #405A61;">Loading "cl-collider"</span>
 ..
 <span style="color: #268bd2;">(</span><span style="color: #268bd2;">:CL-COLLIDER</span><span style="color: #268bd2;">)</span>
-CL-USER&gt; <span style="color: #268bd2;">(</span><span style="color: #859900;">in-package</span> <span style="color: #268bd2;">:sc-user</span><span style="color: #268bd2;">)</span>
+CL-USER&gt; <span style="color: #268bd2;">(</span><span style="color: #859900; font-weight: bold;">in-package</span> <span style="color: #268bd2;">:sc-user</span><span style="color: #268bd2;">)</span>
 #&lt;PACKAGE <span style="color: #2aa198;">"SC-USER"</span>&gt;
 SC-USER&gt; <span style="color: #268bd2;">(</span>setf *s* <span style="color: #d33682;">(</span>make-external-server <span style="color: #2aa198;">"localhost"</span> <span style="color: #268bd2;">:port</span> 4444<span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
 #&lt;SC-SYNTH localhost-127.0.0.1:4444&gt;
@@ -229,7 +229,7 @@ SC-USER&gt;
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2019-11-18 Mon 16:35</p>
+<p class="date">Last updated: 2020-04-22 Wed 15:39</p>
 </div>
 </body>
 </html>

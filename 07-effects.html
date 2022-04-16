@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2019-02-18 Mon 03:48 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2022-04-16 Sat 02:16 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Effects</title>
-<meta name="generator" content="Org mode">
+<meta name="generator" content="Org Mode" />
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <header>
 <h1 class="title">Effects</h1>
-</header><nav id="table-of-contents">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3cf1106">1. Embedding Effects in Synths</a></li>
-<li><a href="#org527e869">2. Effects as Their Own Nodes</a></li>
+<li><a href="#org0e26519">1. Embedding Effects in Synths</a></li>
+<li><a href="#org48ff6f8">2. Effects as Their Own Nodes</a></li>
 </ul>
 </div>
 </nav>
 
-<div id="outline-container-org3cf1106" class="outline-2">
-<h2 id="org3cf1106"><span class="section-number-2">1</span> Embedding Effects in Synths</h2>
+<div id="outline-container-org0e26519" class="outline-2">
+<h2 id="org0e26519"><span class="section-number-2">1.</span> Embedding Effects in Synths</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
@@ -30,12 +30,12 @@ To make our music more interesting, we may want to use effects to our sounds. Fo
 
 <div class="org-src-container">
 <pre class="src src-lisp">(defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5) (out 0))
-  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3))))
-         (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="color: #859900;">:level-scale</span> freq))
+  (<span style="font-weight: bold;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3))))
+         (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="font-weight: bold;">:level-scale</span> freq))
          (sig (sin-osc.ar fenv 0 (* env 0.2)))
          (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
          (sig (leak-dc.ar sig)))
-    (detect-silence.ar sig 1.0e-4 <span style="color: #859900;">:time</span> delay <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>)
+    (detect-silence.ar sig 1.0e-4 <span style="font-weight: bold;">:time</span> delay <span style="font-weight: bold;">:act</span> <span style="font-weight: bold;">:free</span>)
     (out.ar out (pan2.ar sig 0 amp))))
 </pre>
 </div>
@@ -57,11 +57,11 @@ Below that, we apply the delay effect. An easy way to make a delay in SuperColli
 </ul>
 
 <p>
-Our last step of processing for the signal is to send it through the <code>leak-dc</code> UGen. SuperCollider's comb filters can sometimes produce a DC offset, which is basically a part of the signal that is silent but not centered at 0. It's often a good idea to send them through <code>leak-dc</code> UGen in order to remove this offset.
+Our last step of processing for the signal is to send it through the <code>leak-dc</code> UGen, which removes what is known as a "DC offset" that some of SuperCollider's comb filters can occasionally produce. A DC offset is basically a very low frequency that causes the audio waveform to not be centered on zero, potentially resulting in clipping or audio filters misbehaving later in the signal path.
 </p>
 
 <p>
-It also helps the <code>detect-silence</code> UGen below, which, as the name suggests, is used to detect silence. When silence is detected by its input, it outputs a <code>1</code>, and when the input is not silence it outputs <code>0</code>. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here&#x2013;hence the <code>:act :free</code> keyword argument. We also set its <code>time</code> argument to our <code>delay</code>, to make sure if our delay time is too long, <code>detect-silence</code> won't free the synth before the first delay actually occurs.
+One such UGen that can misbehave with a DC offset is <code>detect-silence</code>, which, as the name suggests, is used to detect silence, but may not detect silence if its input has a DC offset. When silence is detected by <code>detect-silence</code>, it outputs a <code>1</code>, and when the input is not silence it outputs <code>0</code>. However, it can also be used to automatically free the synth when silence is detected, which is what we're using it for here&#x2013;hence the <code>:act :free</code> keyword argument. We also set its <code>time</code> argument to our <code>delay</code>, to make sure if our delay time is too long, <code>detect-silence</code> won't free the synth before the first delay actually occurs.
 </p>
 
 <p>
@@ -70,8 +70,8 @@ Finally, we use <code>pan2</code> to turn our mono signal <code>sig</code> into 
 </div>
 </div>
 
-<div id="outline-container-org527e869" class="outline-2">
-<h2 id="org527e869"><span class="section-number-2">2</span> Effects as Their Own Nodes</h2>
+<div id="outline-container-org48ff6f8" class="outline-2">
+<h2 id="org48ff6f8"><span class="section-number-2">2.</span> Effects as Their Own Nodes</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Most of the time, it's preferred to run just one instance of an effect which multiple notes or synths would all be routed through. For example, having a separate reverb for each instance of a synth would not only cause unnecessarily high CPU usage, but it would also be more likely to result in audio clipping or other unwanted sound artifacts.
@@ -83,15 +83,15 @@ To convert the previous example to such a configuration, we can use the <code>pr
 
 <div class="org-src-container">
 <pre class="src src-lisp">  (defsynth echokick ((freq 440) (time 0.25) (amp 0.5) (out 0))
-    (<span style="color: #859900;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
-           (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="color: #859900;">:level-scale</span> freq))
+    (<span style="font-weight: bold;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) <span style="font-weight: bold;">:act</span> <span style="font-weight: bold;">:free</span>))
+           (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="font-weight: bold;">:level-scale</span> freq))
            (sig (sin-osc.ar fenv 0 (* env 0.2))))
       (out.ar out (pan2.ar sig 0 amp))))
 
-(<span style="color: #859900;">defparameter</span> <span style="color: #268bd2;">*echo-bus*</span> (bus-audio <span style="color: #859900;">:chanls</span> 2))
+(<span style="font-weight: bold;">defparameter</span> <span style="font-weight: bold; font-style: italic;">*echo-bus*</span> (bus-audio <span style="font-weight: bold;">:chanls</span> 2))
 
-(proxy <span style="color: #859900;">:echo</span>
-       (<span style="color: #859900;">let*</span> ((sig (in.ar *echo-bus* 2))
+(proxy <span style="font-weight: bold;">:echo</span>
+       (<span style="font-weight: bold;">let*</span> ((sig (in.ar *echo-bus* 2))
               (delay 0.2)
               (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
               (sig (leak-dc.ar sig)))
@@ -116,14 +116,14 @@ With those three expressions evaluated, the synth is defined, the bus created, a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(synth <span style="color: #859900;">:echokick</span> <span style="color: #859900;">:out</span> *echo-bus*)
+<pre class="src src-lisp">(synth <span style="font-weight: bold;">:echokick</span> <span style="font-weight: bold;">:out</span> *echo-bus*)
 </pre>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2019-02-18 Mon 03:48</p>
+<p class="date">Last updated: 2022-04-16 Sat 02:15</p>
 </div>
 </body>
 </html>
