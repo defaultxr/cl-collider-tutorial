@@ -27,7 +27,7 @@ Evaluating the new snippet should result in the sound output being replaced with
 If you want to stop the sound, add 'nil' to the body parameter:
 
 #+BEGIN_SRC lisp
-  (proxy :foo)
+  (proxy :foo nil) 
 #+END_SRC
 
 To restart the sound, just add the body back into the proxy and re-evaluate.
