@@ -24,7 +24,7 @@ If we want to change the sound being generated, we can simply edit the body of t
 
 Evaluating the new snippet should result in the sound output being replaced with another sine wave of a lower pitch.
 
-If you want to stop the sound, you can simply remove the body to the proxy. It will default to ~nil~ which stops the sound:
+If you want to stop the sound, add 'nil' to the body parameter:
 
 #+BEGIN_SRC lisp
   (proxy :foo)
