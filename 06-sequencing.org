@@ -99,10 +99,6 @@ Here's an example of how ~testing-2~ would be rewritten as a pattern:
          :legato 0.7)
 #+END_SRC
 
-# FIX this when cl-patterns supports multichannel expansion.
-
-(Note that this example doesn't work as of this writing, since cl-patterns doesn't yet support the use of lists to create multiple synths in one event.)
-
 As you can see, it's nearly the same as our first pattern; we only had to add one additional line to produce two additional notes per event. The additional notes are automatically handled and released when necessary just as expected.
 
 And finally, here's how our last function, ~testing-3~, would look as a pattern:
