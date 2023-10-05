@@ -1,5 +1,38 @@
 #+TITLE: Other Libraries
 
-* cl-patterns
+* [[https://github.com/defaultxr/cl-patterns][cl-patterns]]
 
-* Incudine
+cl-patterns is a music sequencing library for Common Lisp. It is heavily inspired by the Patterns system in SuperCollider, but aims to improve upon it. A few notable differences are:
+
+- More consistent argument order.
+  SuperCollider patterns:
+  #+begin_src sclang
+    Pseq(list, repeats)
+    Pstutter(repeats, pattern)
+  #+end_src
+
+  cl-patterns:
+  #+begin_src lisp
+    (pseq list repeats)
+    (pstutter pattern repeats)
+  #+end_src
+
+- More introspectable and configurable.
+
+- Differing terminology: a SuperCollider pattern generates a ~Stream~ of results, while a cl-patterns pattern generates a ~pstream~ of outputs.
+
+- cl-patterns supports additional backends; for example, it can be used with SuperCollider/cl-collider, but it can also be used with Incudine.
+
+See cl-patterns' [[https://github.com/defaultxr/cl-patterns/blob/master/doc/sc-differences.org][sc-differences.org]] for more ways it differs from SuperCollider's patterns.
+
+* [[https://incudine.sourceforge.net/][Incudine]]
+
+Incudine is a music and digital signal processing programming environment for Common Lisp. It is similar to SuperCollider in that it is a real time audio synthesis server with a large feature set, however it also differs from SC in several ways. Here are a few examples:
+
+- Designed from the start to be used with Common Lisp.
+- Allows user-definable "virtual UGens" to be written in Common Lisp. cl-collider supports "embeddable synthdefs" functionality, which is similar.
+- Differing terminology: for example, what SuperCollider calls "SynthDefs", Incudine calls "DSPs".
+- Built-in LV2 (Linux audio plugin) support.
+- Built-in LADSPA (Linux audio plugin) support. SuperCollider requires the sc3-plugins package to be installed for this.
+- Built-in FluidSynth (soundfont) support.
+- GPL 2.0 license instead of GPL 3.0.
