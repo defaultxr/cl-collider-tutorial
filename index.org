@@ -1,5 +1,9 @@
-#+TITLE: Contents
+#+TITLE: cl-collider Tutorial
 #+OPTIONS: toc:nil
+
+This is a tutorial for [[https://github.com/byulparan/cl-collider][cl-collider]], a Common Lisp interface to the [[https://supercollider.github.io/][SuperCollider]] sound server.
+
+The tutorial is [[https://defaultxr.github.io/cl-collider-tutorial/][viewable online]], as is [[https://github.com/defaultxr/cl-collider-tutorial][its repo]].
 
 0. [@0] [[file:index.org][Contents]]
 
