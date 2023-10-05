@@ -1,0 +1,28 @@
+#+TITLE: cl-collider Tutorial
+#+DESCRIPTION: A tutorial for cl-collider, a Common Lisp interface to the SuperCollider synthesis server.
+
+This is a tutorial for [[https://github.com/byulparan/cl-collider][cl-collider]], a Common Lisp interface to the [[https://supercollider.github.io/][SuperCollider]] sound server.
+
+The tutorial is [[https://defaultxr.github.io/cl-collider-tutorial/][viewable online]], as is [[https://github.com/defaultxr/cl-collider-tutorial][its repo]].
+
+0. [@0] [[file:index.org][Contents]]
+
+1. [[file:01-introduction.org][Introduction]]
+
+2. [[file:02-getting-started.org][Getting Started]]
+
+3. [[file:03-make-a-sound.org][Make a Sound]]
+
+4. [[file:04-further-soundmaking.org][Further Soundmaking]]
+
+5. [[file:05-sampling.org][Sampling]]
+
+6. [[file:06-sequencing.org][Sequencing]]
+
+7. [[file:07-effects.org][Effects]]
+
+8. [[file:08-architecture.org][Architecture]]
+
+9. [[file:09-ugens.org][Appendix A: UGens]]
+
+10. [[file:10-other-libraries.org][Appendix B: Other Libraries]]
