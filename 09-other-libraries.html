@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-10-04 Wed 20:40 -->
+<!-- 2025-02-03 Mon 18:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Other Libraries</title>
 <meta name="author" content="modula t. worm" />
 <meta name="generator" content="Org Mode" />
+<link type='text/css' rel='stylesheet' href='css.css' />
 </head>
 <body>
+<div id="preamble" class="status">
+<nav>
+  <ol class="bar">
+    <li value="0"><a href="index.html">Contents</a></li>
+    <li><a href="01-introduction.html">Introduction</a></li>
+    <li><a href="02-getting-started.html">Getting Started</a></li>
+    <li><a href="03-make-a-sound.html">Make a Sound</a></li>
+    <li><a href="04-further-soundmaking.html">Further Soundmaking</a></li>
+    <li><a href="05-sampling.html">Sampling</a></li>
+    <li><a href="06-sequencing.html">Sequencing</a></li>
+    <li><a href="07-effects.html">Effects</a></li>
+    <li><a href="08-architecture.html">Architecture</a></li>
+    <li><a href="09-other-libraries.html">Other Libraries</a></li>
+  </ol>
+</nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Other Libraries</h1>
-</header><div id="outline-container-org4570dd9" class="outline-2">
-<h2 id="org4570dd9"><a href="https://github.com/defaultxr/cl-patterns">cl-patterns</a></h2>
-<div class="outline-text-2" id="text-org4570dd9">
+</header><div id="outline-container-org0c0bf30" class="outline-2">
+<h2 id="org0c0bf30"><a href="https://github.com/defaultxr/cl-patterns">cl-patterns</a></h2>
+<div class="outline-text-2" id="text-org0c0bf30">
 <p>
 cl-patterns is a music sequencing library for Common Lisp. It is heavily inspired by the Patterns system in SuperCollider, but aims to improve upon it. A few notable differences are:
 </p>
@@ -25,8 +42,8 @@ More consistent argument order.
 SuperCollider patterns:
 </p>
 <div class="org-src-container">
-<pre class="src src-sclang"><span style="color: #78DCE8;">Pseq</span><span style="color: #AB9DF2;">(</span>list,<span style="color: #383539;"> </span>repeats<span style="color: #AB9DF2;">)</span>
-<span style="color: #78DCE8;">Pstutter</span><span style="color: #AB9DF2;">(</span>repeats,<span style="color: #383539;"> </span>pattern<span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-sclang"><span class="org-type">Pseq</span><span class="org-rainbow-delimiters-depth-1">(</span>list,<span class="org-whitespace-space"> </span>repeats<span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-type">Pstutter</span><span class="org-rainbow-delimiters-depth-1">(</span>repeats,<span class="org-whitespace-space"> </span>pattern<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -34,8 +51,8 @@ SuperCollider patterns:
 cl-patterns:
 </p>
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>pseq<span style="color: #383539;"> </span>list<span style="color: #383539;"> </span>repeats<span style="color: #AB9DF2;">)</span>
-<span style="color: #AB9DF2;">(</span>pstutter<span style="color: #383539;"> </span>pattern<span style="color: #383539;"> </span>repeats<span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>pseq<span class="org-whitespace-space"> </span>list<span class="org-whitespace-space"> </span>repeats<span class="org-rainbow-delimiters-depth-1">)</span>
+<span class="org-rainbow-delimiters-depth-1">(</span>pstutter<span class="org-whitespace-space"> </span>pattern<span class="org-whitespace-space"> </span>repeats<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div></li>
 
@@ -51,9 +68,9 @@ See cl-patterns' <a href="https://github.com/defaultxr/cl-patterns/blob/master/d
 </p>
 </div>
 </div>
-<div id="outline-container-orga8d124c" class="outline-2">
-<h2 id="orga8d124c"><a href="https://incudine.sourceforge.net/">Incudine</a></h2>
-<div class="outline-text-2" id="text-orga8d124c">
+<div id="outline-container-org0e40b84" class="outline-2">
+<h2 id="org0e40b84"><a href="https://incudine.sourceforge.net/">Incudine</a></h2>
+<div class="outline-text-2" id="text-org0e40b84">
 <p>
 Incudine is a music and digital signal processing programming environment for Common Lisp. It is similar to SuperCollider in that it is a real time audio synthesis server with a large feature set, however it also differs from SC in several ways. Here are a few examples:
 </p>
@@ -71,7 +88,7 @@ Incudine is a music and digital signal processing programming environment for Co
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2023-10-04 Wed 20:40</p>
+<p class="date">Created: 2017-12-21 Thu 18:48. Updated: 2025-02-03 Mon 18:04.</p>
 </div>
 </body>
 </html>

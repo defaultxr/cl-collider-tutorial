@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2019-03-12 Tue 19:47 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2025-02-03 Mon 18:02 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Further Soundmaking</title>
-<meta name="generator" content="Org mode">
+<meta name="author" content="modula t. worm" />
+<meta name="generator" content="Org Mode" />
+<link type='text/css' rel='stylesheet' href='css.css' />
 </head>
 <body>
-<div id="content">
+<div id="preamble" class="status">
+<nav>
+  <ol class="bar">
+    <li value="0"><a href="index.html">Contents</a></li>
+    <li><a href="01-introduction.html">Introduction</a></li>
+    <li><a href="02-getting-started.html">Getting Started</a></li>
+    <li><a href="03-make-a-sound.html">Make a Sound</a></li>
+    <li><a href="04-further-soundmaking.html">Further Soundmaking</a></li>
+    <li><a href="05-sampling.html">Sampling</a></li>
+    <li><a href="06-sequencing.html">Sequencing</a></li>
+    <li><a href="07-effects.html">Effects</a></li>
+    <li><a href="08-architecture.html">Architecture</a></li>
+    <li><a href="09-other-libraries.html">Other Libraries</a></li>
+  </ol>
+</nav>
+</div>
+<div id="content" class="content">
 <header>
 <h1 class="title">Further Soundmaking</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orge9fc312">1. <code>defsynth</code></a></li>
-<li><a href="#org89808df">2. Best Practices</a></li>
-<li><a href="#org3ca65cc">3. More UGens</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-orge9fc312" class="outline-2">
-<h2 id="orge9fc312"><span class="section-number-2">1</span> <code>defsynth</code></h2>
-<div class="outline-text-2" id="text-1">
+</header><div id="outline-container-org7cee043" class="outline-2">
+<h2 id="org7cee043"><code>defsynth</code></h2>
+<div class="outline-text-2" id="text-org7cee043">
 <p>
 We've been using the <code>proxy</code> macro to define and redefine sounds, but this limits us to sounds that play continuously. Most music is made from sounds that are temporal and periodic, so we need a way to define a sound that can be re-triggered.
 </p>
@@ -34,10 +41,10 @@ We've been using the <code>proxy</code> macro to define and redefine sounds, but
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth drum ((freq 3000))
-  (<span style="color: #859900;">let*</span> ((env (env-gen.ar (perc 0.001 0.1) <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
-         (sig (lpf.ar (white-noise.ar) (* freq env))))
-    (out.ar 0 (pan2.ar sig 0 0.2))))
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>defsynth<span class="org-whitespace-space"> </span>drum<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span>freq<span class="org-whitespace-space"> </span>3000<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<span class="org-whitespace-space">  </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>env-gen.ar<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>perc<span class="org-whitespace-space"> </span>0.001<span class="org-whitespace-space"> </span>0.1<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-whitespace-space"> </span><span class="org-builtin">:act</span><span class="org-whitespace-space"> </span><span class="org-builtin">:free</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>lpf.ar<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>white-noise.ar<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>*<span class="org-whitespace-space"> </span>freq<span class="org-whitespace-space"> </span>env<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">    </span><span class="org-rainbow-delimiters-depth-3">(</span>out.ar<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-4">(</span>pan2.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -62,10 +69,9 @@ The last line of the synth definition contains the <code>out.ar</code> UGen. Whe
 </p>
 </div>
 </div>
-
-<div id="outline-container-org89808df" class="outline-2">
-<h2 id="org89808df"><span class="section-number-2">2</span> Best Practices</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgaff985f" class="outline-2">
+<h2 id="orgaff985f">Best Practices</h2>
+<div class="outline-text-2" id="text-orgaff985f">
 <p>
 If you're going to make music with cl-collider, you're likely to end up writing a lot of ~defsynth~s. Because of this, it may be a good idea to use a template system for your editor. For example, Emacs users can use skeleton or yasnippet. Both of these allow you to create a template and easily insert it into a file so you don't have to do as much manual typing.
 </p>
@@ -75,10 +81,10 @@ You may want to use something like the following as your basic template synth:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth newsynth ((gate 1) (freq 440) (amp 0.5) (pan 0) (out 0))
-  (<span style="color: #859900;">let*</span> ((env (env-gen.kr (adsr 0.001 0.1 0.5 0.1) <span style="color: #859900;">:gate</span> gate <span style="color: #859900;">:act</span> <span style="color: #859900;">:free</span>))
-         (sig (saw.ar freq)))
-    (out.ar out (pan2.ar sig pan (* amp env)))))
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>defsynth<span class="org-whitespace-space"> </span>newsynth<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span>gate<span class="org-whitespace-space"> </span>1<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>freq<span class="org-whitespace-space"> </span>440<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>amp<span class="org-whitespace-space"> </span>0.5<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>pan<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>out<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<span class="org-whitespace-space">  </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>env-gen.kr<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>adsr<span class="org-whitespace-space"> </span>0.001<span class="org-whitespace-space"> </span>0.1<span class="org-whitespace-space"> </span>0.5<span class="org-whitespace-space"> </span>0.1<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-whitespace-space"> </span><span class="org-builtin">:gate</span><span class="org-whitespace-space"> </span>gate<span class="org-whitespace-space"> </span><span class="org-builtin">:act</span><span class="org-whitespace-space"> </span><span class="org-builtin">:free</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>saw.ar<span class="org-whitespace-space"> </span>freq<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">    </span><span class="org-rainbow-delimiters-depth-3">(</span>out.ar<span class="org-whitespace-space"> </span>out<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-4">(</span>pan2.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>pan<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>*<span class="org-whitespace-space"> </span>amp<span class="org-whitespace-space"> </span>env<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -95,7 +101,7 @@ This is a good synthdef to start from because it includes most of what you'll ne
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #859900;">defparameter</span> <span style="color: #268bd2;">*ns*</span> (synth 'newsynth <span style="color: #859900;">:freq</span> (midicps 40)))
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defparameter</span><span class="org-whitespace-space"> </span><span class="org-variable-name">*ns*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>synth<span class="org-whitespace-space"> </span>'newsynth<span class="org-whitespace-space"> </span><span class="org-builtin">:freq</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>midicps<span class="org-whitespace-space"> </span>40<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -108,18 +114,17 @@ Since the synth will sustain until we specifically tell it to release, we save t
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(release *ns*)
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>release<span class="org-whitespace-space"> </span>*ns*<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 </div>
 </div>
-
-<div id="outline-container-org3ca65cc" class="outline-2">
-<h2 id="org3ca65cc"><span class="section-number-2">3</span> More UGens</h2>
+<div id="outline-container-org1c1fb5c" class="outline-2">
+<h2 id="org1c1fb5c">More UGens</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2019-03-12 Tue 19:47</p>
+<p class="date">Created: 2017-06-30 Fri 01:18. Updated: 2025-02-03 Mon 18:02.</p>
 </div>
 </body>
 </html>

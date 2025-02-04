@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-10-04 Wed 20:02 -->
+<!-- 2025-02-03 Mon 18:00 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Make a Sound</title>
 <meta name="author" content="modula t. worm" />
 <meta name="generator" content="Org Mode" />
+<link type='text/css' rel='stylesheet' href='css.css' />
 </head>
 <body>
+<div id="preamble" class="status">
+<nav>
+  <ol class="bar">
+    <li value="0"><a href="index.html">Contents</a></li>
+    <li><a href="01-introduction.html">Introduction</a></li>
+    <li><a href="02-getting-started.html">Getting Started</a></li>
+    <li><a href="03-make-a-sound.html">Make a Sound</a></li>
+    <li><a href="04-further-soundmaking.html">Further Soundmaking</a></li>
+    <li><a href="05-sampling.html">Sampling</a></li>
+    <li><a href="06-sequencing.html">Sequencing</a></li>
+    <li><a href="07-effects.html">Effects</a></li>
+    <li><a href="08-architecture.html">Architecture</a></li>
+    <li><a href="09-other-libraries.html">Other Libraries</a></li>
+  </ol>
+</nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Make a Sound</h1>
-</header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org823d5f3">First Sound</a></li>
-<li><a href="#orge17b6d6">Change the Sound</a></li>
-<li><a href="#org1e8c9b7">UGens Controlling UGens</a></li>
-</ul>
-</div>
-</nav>
-<div id="outline-container-org823d5f3" class="outline-2">
-<h2 id="org823d5f3">First Sound</h2>
-<div class="outline-text-2" id="text-org823d5f3">
+</header><div id="outline-container-orgbbeb400" class="outline-2">
+<h2 id="orgbbeb400">First Sound</h2>
+<div class="outline-text-2" id="text-orgbbeb400">
 <p>
 Once your Lisp and cl-collider environment is set up and loaded and the server booted, you can create sound! Here is the fastest way to make a sound with cl-collider:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>proxy<span style="color: #383539;"> </span><span style="color: #78DCE8;">:foo</span><span style="color: #383539;"> </span><span style="color: #78DCE8;">(</span>sin-osc.ar<span style="color: #383539;"> </span>440<span style="color: #383539;"> </span>0<span style="color: #383539;"> </span>0.2<span style="color: #78DCE8;">)</span><span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:foo</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>sin-osc.ar<span class="org-whitespace-space"> </span>440<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -47,15 +54,15 @@ In order to define a sound we use unit generators, or "UGens" for short. A unit 
 </p>
 </div>
 </div>
-<div id="outline-container-orge17b6d6" class="outline-2">
-<h2 id="orge17b6d6">Change the Sound</h2>
-<div class="outline-text-2" id="text-orge17b6d6">
+<div id="outline-container-org441d2c7" class="outline-2">
+<h2 id="org441d2c7">Change the Sound</h2>
+<div class="outline-text-2" id="text-org441d2c7">
 <p>
 If we want to change the sound being generated, we can simply edit the body of the <code>proxy</code>. For example, if we want to lower the frequency of the sin-osc, we can change the proxy to the following:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>proxy<span style="color: #383539;"> </span><span style="color: #78DCE8;">:foo</span><span style="color: #383539;"> </span><span style="color: #78DCE8;">(</span>sin-osc.ar<span style="color: #383539;"> </span>300<span style="color: #383539;"> </span>0<span style="color: #383539;"> </span>0.2<span style="color: #78DCE8;">)</span><span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:foo</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>sin-osc.ar<span class="org-whitespace-space"> </span>300<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -68,7 +75,7 @@ If you want to stop the sound, use <code>nil</code> for the body parameter:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>proxy<span style="color: #383539;"> </span><span style="color: #78DCE8;">:foo</span><span style="color: #383539;"> </span>nil<span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:foo</span><span class="org-whitespace-space"> </span>nil<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -81,7 +88,7 @@ Aside from <code>sin-osc</code>, SuperCollider provides many other kinds of unit
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>proxy<span style="color: #383539;"> </span><span style="color: #78DCE8;">:foo</span><span style="color: #383539;"> </span><span style="color: #78DCE8;">(</span>saw.ar<span style="color: #383539;"> </span>300<span style="color: #383539;"> </span>0.2<span style="color: #78DCE8;">)</span><span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:foo</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>saw.ar<span class="org-whitespace-space"> </span>300<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -90,15 +97,15 @@ The <code>saw</code> UGen doesn't have a phase argument, so this time we only ha
 </p>
 </div>
 </div>
-<div id="outline-container-org1e8c9b7" class="outline-2">
-<h2 id="org1e8c9b7">UGens Controlling UGens</h2>
-<div class="outline-text-2" id="text-org1e8c9b7">
+<div id="outline-container-orga156bbb" class="outline-2">
+<h2 id="orga156bbb">UGens Controlling UGens</h2>
+<div class="outline-text-2" id="text-orga156bbb">
 <p>
 It's also possible to control the parameters of one UGen with another:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>proxy<span style="color: #383539;"> </span><span style="color: #78DCE8;">:foo</span><span style="color: #383539;"> </span><span style="color: #78DCE8;">(</span>saw.ar<span style="color: #383539;"> </span><span style="color: #FC9867;">(</span>sin-osc.kr<span style="color: #383539;"> </span>0.5<span style="color: #383539;"> </span>0<span style="color: #383539;"> </span>150<span style="color: #383539;"> </span>300<span style="color: #FC9867;">)</span><span style="color: #383539;"> </span>0.2<span style="color: #78DCE8;">)</span><span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:foo</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>saw.ar<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>sin-osc.kr<span class="org-whitespace-space"> </span>0.5<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>150<span class="org-whitespace-space"> </span>300<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -111,7 +118,7 @@ If we want to actually start having fun, we can give ourselves more immediate co
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #AB9DF2;">(</span>proxy<span style="color: #383539;"> </span><span style="color: #78DCE8;">:foo</span><span style="color: #383539;"> </span><span style="color: #78DCE8;">(</span>saw.ar<span style="color: #383539;"> </span><span style="color: #FC9867;">(</span>mouse-y.kr<span style="color: #383539;"> </span>20<span style="color: #383539;"> </span>10000<span style="color: #383539;"> </span><span style="color: #78DCE8;">:exponential</span><span style="color: #FC9867;">)</span><span style="color: #383539;"> </span>0.2<span style="color: #78DCE8;">)</span><span style="color: #000000; background-color: #d0d040;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:foo</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>saw.ar<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>mouse-y.kr<span class="org-whitespace-space"> </span>20<span class="org-whitespace-space"> </span>10000<span class="org-whitespace-space"> </span><span class="org-builtin">:exponential</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -130,7 +137,7 @@ Note that not all UGens are available in both control- and audio-rate versions. 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2023-10-04 Wed 20:01</p>
+<p class="date">Created: 2017-06-13 Tue 02:48. Updated: 2025-02-03 Mon 18:00.</p>
 </div>
 </body>
 </html>

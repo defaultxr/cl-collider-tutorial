@@ -1,4 +1,5 @@
 #+TITLE: Getting Started
+#+DATE: <2017-06-13 Tue 02:48>
 
 This chapter gives an explanation of the requirements for this guide, as well as some information on how to set them up.
 
@@ -15,20 +16,20 @@ The [[https://supercollider.github.io/][SuperCollider]] package provides scsynth
 ** SBCL
 [[https://www.sbcl.org/][SBCL]] is Steel Bank Common Lisp, a compiler of Common Lisp code. It is the program that reads and evaluates your Lisp code. Many other Lisp compilers exist, but SBCL is a good choice to start off with because it is fast and well-supported.
 
-** Slime
-[[https://common-lisp.net/project/slime/][Slime]] is the "Superior Lisp Interaction Mode for Emacs". It is effectively the link between Emacs and the Lisp processs, however it also provides many more advanced features for interacting with a Lisp program.
+** SLIME
+[[https://common-lisp.net/project/slime/][SLIME]] is the "Superior Lisp Interaction Mode for Emacs". It is effectively the link between Emacs and the Lisp processs, however it also provides many more advanced features for interacting with a Lisp program.
 
 ** Quicklisp
-[[https://www.quicklisp.org/beta/][Quicklisp]] is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of the required dependencies for those libraries for you.
+[[https://www.quicklisp.org/beta/][Quicklisp]] is the de facto Common Lisp library manager. It can be used to install Common Lisp libraries, and will take care of installing their required dependencies as well.
 
 ** cl-collider
-[[https://github.com/byulparan/cl-collider][cl-collider]] is the Lisp library that provides an interface to SuperCollider.
+[[https://github.com/byulparan/cl-collider][cl-collider]] is the library providing an interface to interact with SuperCollider from Common Lisp.
 
 * Setting Up
 
 To set up a basic environment for writing Lisp, there are two options you should consider. First, if you're already familiar with Emacs or want to start from scratch, you may prefer simply adapting your current configuration to work with Lisp; see "Vanilla Emacs", below, for more information on that. It should be noted, however, that setting up Emacs and Lisp from scratch is already considered to be a somewhat involved process, and is thus not recommended for people unfamiliar with Emacs.
 
-Instead, if that's the case for you, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, Slime, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
+Instead, if that's the case for you, it's strongly suggested to simply use Portacle. Portacle is effectively a software bundle containing SBCL, SLIME, Quicklisp, and Emacs already preconfigured to work together. Using Portacle will generally get you up and running fairly quickly with little additional configuration needed on your end. In our case, the only additional configuration should be installing SuperCollider.
 
 ** Portacle
 
@@ -48,15 +49,13 @@ Once you've installed it, you'll want to continue by installing SuperCollider. A
 
 It's outside the scope of this guide to give detailed information on how to set all of these programs up, but if you're using a Linux-based operating system, your package manager most likely provides packages for SuperCollider, Emacs, and SBCL for you. Simply installing those packages should suffice.
 
-Your package manager may provide Slime, but if not, it's possible to install it using Emacs' standard package manager. You can run the package manager in Emacs by typing ~M-x list-packages RET~. Then use ~C-s~ to search for ~slime~. With your cursor over ~slime~, press ~i~ to mark it for installation, and then ~x~ to install it.
+Your package manager may provide SLIME, but if not, it's possible to install it using Emacs' standard package manager. You can run the package manager in Emacs by typing ~M-x list-packages RET~. Then use ~C-s~ to search for ~slime~. With your cursor over ~slime~, press ~i~ to mark it for installation, and then ~x~ to install it.
 
-[[https://www.quicklisp.org/beta/][The Quicklisp site]] provides a guide on how to install it on Mac OS or Linux. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
-
-Since [[https://github.com/byulparan/cl-collider][cl-collider]] is now available in Quicklisp, all you have to do to install it is type the following once Quicklisp is loaded in your Lisp image: ~(ql:quickload :cl-collider)~ . This will download and install the library and all of its dependencies, and then make it available for use in your Lisp session.
+[[https://www.quicklisp.org/beta/][The Quicklisp site]] provides a guide on how to install it on macOS or Linux, and installation on Windows is similar. It's a fairly simple process and most of the work is done for you just by running a few commands in the shell.
 
 * Starting Up
 
-Once you've successfully installed all of the above software, start Emacs, open a new lisp file using ~C-x C-f FILENAME.lisp RET~ where FILENAME is the name you want to give to your file. Then, you can start slime using ~M-x slime RET~. If all goes well, you should see a Lisp REPL that looks something like this:
+Once you've successfully installed all of the above software, start Emacs, open a new lisp file using ~C-x C-f FILENAME.lisp RET~ where FILENAME is the name you want to give to your file. Then, you can start SLIME using ~M-x slime RET~. If all goes well, you should see a Lisp REPL that looks something like this:
 
 #+BEGIN_SRC
   CL-USER>
@@ -65,16 +64,16 @@ Once you've successfully installed all of the above software, start Emacs, open 
 So far, so good. Position your cursor after the ~>~ and then type the following Lisp expressions, one at a time. After each expression, you may see some output before getting a prompt back again.
 
 #+BEGIN_SRC lisp
-  (ql:quickload :cl-collider)
+  (ql:quickload :cl-collider) ; Load cl-collider into Lisp, automatically installing it and its dependencies if needed.
 
-  (in-package :sc-user)
+  (in-package :sc-user) ; Enter the sc-user package, which contains the user-facing functions and variables exported by cl-collider.
 
-  (setf *s* (make-external-server "localhost" :port 4444))
+  (setf *s* (make-external-server "localhost" :port 4444)) ; Create the SuperCollider server object.
 
-  (server-boot *s*)
+  (server-boot *s*) ; Start the SuperCollider server.
 #+END_SRC
 
-Once you run that last line, you're ready to make sound!
+After the last line finishes executing, you're ready to make sound!
 
 For reference, here's an example of what it might look like when you run these expressions:
 
@@ -102,4 +101,4 @@ For reference, here's an example of what it might look like when you run these e
   SC-USER> 
 #+END_SRC
 
-...Of course, it may be slightly different for you. As long as you don't get any errors, you should be good to go. In the next chapter, we'll take it for a spin, and make our first sound.
+It's not an issue if the output looks a bit different for you; as long as you don't get any errors, you should be good to go. In the next chapter, we'll take it for a spin, and make our first sound.

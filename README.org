@@ -1,5 +1,5 @@
 #+TITLE: cl-collider Tutorial
-#+OPTIONS: toc:nil
+#+DATE: <2017-06-10 Sat 21:21>
 
 This is a tutorial for [[https://github.com/byulparan/cl-collider][cl-collider]], a Common Lisp interface to the [[https://supercollider.github.io/][SuperCollider]] sound server.
 

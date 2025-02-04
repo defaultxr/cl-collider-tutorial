@@ -1,4 +1,5 @@
 #+TITLE: Sampling
+#+DATE: <2017-07-25 Tue 03:48>
 
 In addition to its powerful library of oscillators and sound generators, SuperCollider also gives us the ability to use recorded sounds in our synths. In SuperCollider, a recorded sound is stored in a buffer object on the server. A buffer is effectively an array of numbers which can be of any length and can have one or more channels. It's possible to load a sound into a buffer from your hard drive, but it's also possible to record the output of a synth or UGen into a buffer directly on the server. A buffer can be played back normally, or you can control its rate and the playhead position with a UGen.
 

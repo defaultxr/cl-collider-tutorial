@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2019-03-12 Tue 19:56 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2025-02-03 Mon 18:04 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Architecture</title>
-<meta name="generator" content="Org mode">
+<meta name="author" content="modula t. worm" />
+<meta name="generator" content="Org Mode" />
+<link type='text/css' rel='stylesheet' href='css.css' />
 </head>
 <body>
-<div id="content">
+<div id="preamble" class="status">
+<nav>
+  <ol class="bar">
+    <li value="0"><a href="index.html">Contents</a></li>
+    <li><a href="01-introduction.html">Introduction</a></li>
+    <li><a href="02-getting-started.html">Getting Started</a></li>
+    <li><a href="03-make-a-sound.html">Make a Sound</a></li>
+    <li><a href="04-further-soundmaking.html">Further Soundmaking</a></li>
+    <li><a href="05-sampling.html">Sampling</a></li>
+    <li><a href="06-sequencing.html">Sequencing</a></li>
+    <li><a href="07-effects.html">Effects</a></li>
+    <li><a href="08-architecture.html">Architecture</a></li>
+    <li><a href="09-other-libraries.html">Other Libraries</a></li>
+  </ol>
+</nav>
+</div>
+<div id="content" class="content">
 <header>
 <h1 class="title">Architecture</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orga7e0590">1. Server Introspection</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-orga7e0590" class="outline-2">
-<h2 id="orga7e0590"><span class="section-number-2">1</span> Server Introspection</h2>
-<div class="outline-text-2" id="text-1">
+</header><div id="outline-container-org406c889" class="outline-2">
+<h2 id="org406c889">Server Introspection</h2>
+<div class="outline-text-2" id="text-org406c889">
 <p>
 In chapter 4, we saw that a synth can be manually released by supplying the <code>node</code> object returned by the <code>synth</code> function as the first argument to <code>release</code>. But what if we forgot to manually save the <code>node</code> in a variable? Fortunately, it's also possible to control nodes manually by providing their ID number in place of the node object. To find out the ID of a node running on the server, we can use the following code:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(server-query-all-nodes)
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>server-query-all-nodes<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -36,11 +45,12 @@ In chapter 4, we saw that a synth can be manually released by supplying the <cod
 This function doesn't return any results, but it causes the server to print out a list of all groups and nodes currently running, which would typically look similar to the following:
 </p>
 
-<pre class="example">
-NODE TREE Group 0
+<div class="org-src-container">
+<pre class="src src-nil">NODE TREE Group 0
    1 group
       1047 newsynth
 </pre>
+</div>
 
 <p>
 This output shows that there is one group running on the server (the default group with ID 1), and in that group is one instance of the "newsynth" synth, running with ID 1047. If we wanted to release this synth, we can simply supply its ID to the <code>release</code> function: <code>(release 1047)</code>. This also works with other functions for controlling synths on the server, such as <code>ctrl</code> or <code>free</code>.
@@ -51,14 +61,14 @@ Additionally, these functions will work with group IDs as well, in case you want
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(stop 1)
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>stop<span class="org-whitespace-space"> </span>1<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2019-03-12 Tue 19:56</p>
+<p class="date">Created: 2017-10-10 Tue 03:52. Updated: 2025-02-03 Mon 18:04.</p>
 </div>
 </body>
 </html>

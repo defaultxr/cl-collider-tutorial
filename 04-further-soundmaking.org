@@ -1,4 +1,5 @@
 #+TITLE: Further Soundmaking
+#+DATE: <2017-06-30 Fri 01:18>
 
 * ~defsynth~
 
@@ -51,7 +52,7 @@ We don't have to specify all of the arguments to ~newsynth~ since they all have 
 Since the synth will sustain until we specifically tell it to release, we save the result of calling the ~synth~ function to the ~*ns*~ variable. When we want to release it, we can just call ~release~ on ~*ns*~, like so:
 
 #+BEGIN_SRC lisp
-(release *ns*)
+  (release *ns*)
 #+END_SRC
 
 # FIX: describe other note conversion functions.

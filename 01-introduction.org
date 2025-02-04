@@ -1,22 +1,21 @@
 #+TITLE: Introduction
+#+DATE: <2017-06-10 Sat 22:39>
 
 * About this tutorial
 
 This tutorial is written as an introduction and overview of the [[https://github.com/byulparan/cl-collider][cl-collider]] library for Common Lisp. The format is based on the [[http://doc.sccode.org/Tutorials/Getting-Started/00-Getting-Started-With-SC.html][official SuperCollider tutorial]] and will cover similar topics, though it isn't a direct translation.
 
-cl-collider is a library for Common Lisp written by Park Sungmin and contributors as an interface to the [[https://supercollider.github.io/][SuperCollider]] ("SC") sound server. cl-collider is just one of many such interfaces that exist; other interfaces have already been written in languages such as Clojure ([[https://overtone.github.io/][Overtone]]), Javascript ([[https://github.com/crucialfelix/supercolliderjs][supercollider.js]]), etc. The "official" SuperCollider interface is through a language often referred to as sclang, which is provided with the SuperCollider package itself. The SuperCollider package also provides an integrated development environment ("SCIDE") which aims to make writing SuperCollider code in sclang easier.
+cl-collider is a library for Common Lisp written by Park Sungmin and contributors as an interface to the [[https://supercollider.github.io/][SuperCollider]] ("SC") sound server. cl-collider is just one of many such interfaces that exist; other interfaces have already been written in languages such as Clojure ([[https://overtone.github.io/][Overtone]]), Javascript ([[https://github.com/crucialfelix/supercolliderjs][supercollider.js]]), etc. SuperCollider's official interface is through its own language, sclang, which is provided with the SuperCollider package itself. The SuperCollider package also provides an integrated development environment ("SCIDE") which aims to make writing SuperCollider code in sclang easier.
 
-This tutorial will only be using the sound server provided by the SuperCollider package and will not utilize the language or the IDE. Therefore, this tutorial does not require previous experience with SuperCollider. Knowledge of Common Lisp is required, as teaching it is out of the scope of this document, but the next chapter does give basic information on how to set up a basic Lisp environment to work with cl-collider. Instead of SCIDE, we will be assuming use of Emacs as a text editor and development environment, but it is possible to use another editor such as Vim to write and interact with the Lisp process instead if you choose, and most of the information contained in this tutorial should be applicable regardless of the editor in use.
+This tutorial will only be using the sound server provided by the SuperCollider package and will not utilize the language or the IDE. Therefore, this tutorial does not require previous experience with SuperCollider. Knowledge of Common Lisp is required, as teaching it is out of the scope of this document, but the next chapter does give basic information on how to set up a basic Lisp environment to work with cl-collider. Instead of SCIDE, we will be assuming use of Emacs as a text editor and development environment, but it is possible to use other editors such as Vim to write and interact with the Lisp process instead if you choose, and most of the information contained in this tutorial should be applicable regardless of the editor in use.
 
 * Format of this tutorial
 
-This tutorial typically gives code examples like so:
+In this tutorial, you will see code snippets in monospace, with syntax highlighting, like so:
 
 #+BEGIN_SRC lisp
   (defun foo (a b)
     (+ a b))
 #+END_SRC
 
-Inline code will be colored as well: src_lisp[:exports code]{(defun foo () (+ a b))}.
-
-Keywords will be monospace: ~defun~
+Keywords and other code that appear inline in the text will also be in monospace, like so: ~defun~.

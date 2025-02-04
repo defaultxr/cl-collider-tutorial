@@ -1,4 +1,5 @@
 #+TITLE: Sequencing
+#+DATE: <2017-10-10 Tue 03:51>
 
 Up to this point, we've been testing sounds by playing them manually using their functions defined by ~defsynth~, or by using ~proxy~. However, it would be very difficult to play interesting music just by typing every sound we want to hear on the keyboard. Most synthesizers have methods of triggering notes automatically, either by connecting external hardware or software, or by using functionality built in to the synthesizer. Typically, we'd refer to the hardware or software controlling the synthesizer as a "sequencer".
 

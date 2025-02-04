@@ -1,4 +1,5 @@
 #+TITLE: Effects
+#+DATE: <2017-10-10 Tue 03:52>
 
 * Embedding Effects in Synths
 
@@ -38,11 +39,11 @@ Most of the time, it's preferred to run just one instance of an effect which mul
 To convert the previous example to such a configuration, we can use the ~proxy~ macro as introduced in [[file:03-make-a-sound.org][chapter 3]]:
 
 #+BEGIN_SRC lisp
-    (defsynth echokick ((freq 440) (time 0.25) (amp 0.5) (out 0))
-      (let* ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) :act :free))
-             (fenv (env-gen.kr (env (list 1 0) (list time)) :level-scale freq))
-             (sig (sin-osc.ar fenv 0 (* env 0.2))))
-        (out.ar out (pan2.ar sig 0 amp))))
+  (defsynth echokick ((freq 440) (time 0.25) (amp 0.5) (out 0))
+    (let* ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) :act :free))
+           (fenv (env-gen.kr (env (list 1 0) (list time)) :level-scale freq))
+           (sig (sin-osc.ar fenv 0 (* env 0.2))))
+      (out.ar out (pan2.ar sig 0 amp))))
 
   (defparameter *echo-bus* (bus-audio :chanls 2))
 
@@ -56,7 +57,7 @@ To convert the previous example to such a configuration, we can use the ~proxy~ 
 
 Though buses have been mentioned before in this tutorial, they haven't been fully explained. In SuperCollider, and thus cl-collider, there is the concept of a "bus" which is basically a location in memory that can be written to or read to, similar to a buffer, but meant to be done continuously. A bus lets us do things like sending audio from one synth (or multiple) to another. Thus buses allow us to do things like implement effects that multiple synths can have their output processed by.
 
-Here we define the ~*echo-bus*~ variable, which is a two-channel audio bus. Aside from audio buses, SuperCollider also supports control buses which are generally used for lower-frequency signals like LFOs that don't need as much processing power, similar to the ~.ar~/~.kr~ UGen dichotomy.
+Here we define the ~*echo-bus*~ variable, which is a two-channel audio bus. Aside from audio buses, SuperCollider also supports control buses which are generally used for lower-frequency signals like LFOs that don't need as much processing power, similar to the ~.ar~ / ~.kr~ UGen dichotomy.
 
 Aside from the bus, it should also be noted that we don't use ~detect-silence~ anymore. We don't use it in the synth since there is no built-in delay and our volume envelope lasts the full length of the sound. And we don't use it in our proxy either since we want it to continue running even if it's silent.
 
@@ -65,5 +66,3 @@ With those three expressions evaluated, the synth is defined, the bus created, a
 #+BEGIN_SRC lisp
   (synth :echokick :out *echo-bus*)
 #+END_SRC
-
-

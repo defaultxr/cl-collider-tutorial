@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2022-04-16 Sat 02:16 -->
+<!-- 2025-02-03 Mon 18:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Effects</title>
+<meta name="author" content="modula t. worm" />
 <meta name="generator" content="Org Mode" />
+<link type='text/css' rel='stylesheet' href='css.css' />
 </head>
 <body>
+<div id="preamble" class="status">
+<nav>
+  <ol class="bar">
+    <li value="0"><a href="index.html">Contents</a></li>
+    <li><a href="01-introduction.html">Introduction</a></li>
+    <li><a href="02-getting-started.html">Getting Started</a></li>
+    <li><a href="03-make-a-sound.html">Make a Sound</a></li>
+    <li><a href="04-further-soundmaking.html">Further Soundmaking</a></li>
+    <li><a href="05-sampling.html">Sampling</a></li>
+    <li><a href="06-sequencing.html">Sequencing</a></li>
+    <li><a href="07-effects.html">Effects</a></li>
+    <li><a href="08-architecture.html">Architecture</a></li>
+    <li><a href="09-other-libraries.html">Other Libraries</a></li>
+  </ol>
+</nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Effects</h1>
-</header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org0e26519">1. Embedding Effects in Synths</a></li>
-<li><a href="#org48ff6f8">2. Effects as Their Own Nodes</a></li>
-</ul>
-</div>
-</nav>
-
-<div id="outline-container-org0e26519" class="outline-2">
-<h2 id="org0e26519"><span class="section-number-2">1.</span> Embedding Effects in Synths</h2>
-<div class="outline-text-2" id="text-1">
+</header><div id="outline-container-org9144a74" class="outline-2">
+<h2 id="org9144a74">Embedding Effects in Synths</h2>
+<div class="outline-text-2" id="text-org9144a74">
 <p>
 To make our music more interesting, we may want to use effects to our sounds. For example, we could add a delay to make our sounds echo, or a reverb to make it sound like the music is being performed in a cave. Because SuperCollider is so open, we can simply add effects into the synth definition if we so choose. This is the most obvious and simple way of doing things:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(defsynth echokick ((freq 440) (time 0.25) (delay 0.2) (amp 0.5) (out 0))
-  (<span style="font-weight: bold;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3))))
-         (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="font-weight: bold;">:level-scale</span> freq))
-         (sig (sin-osc.ar fenv 0 (* env 0.2)))
-         (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
-         (sig (leak-dc.ar sig)))
-    (detect-silence.ar sig 1.0e-4 <span style="font-weight: bold;">:time</span> delay <span style="font-weight: bold;">:act</span> <span style="font-weight: bold;">:free</span>)
-    (out.ar out (pan2.ar sig 0 amp))))
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>defsynth<span class="org-whitespace-space"> </span>echokick<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span>freq<span class="org-whitespace-space"> </span>440<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>time<span class="org-whitespace-space"> </span>0.25<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>delay<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>amp<span class="org-whitespace-space"> </span>0.5<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>out<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<span class="org-whitespace-space">  </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>env-gen.kr<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>1<span class="org-whitespace-space"> </span>1<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>0.001<span class="org-whitespace-space"> </span>time<span class="org-whitespace-space"> </span>0.3<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>fenv<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>env-gen.kr<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>1<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>time<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-whitespace-space"> </span><span class="org-builtin">:level-scale</span><span class="org-whitespace-space"> </span>freq<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>sin-osc.ar<span class="org-whitespace-space"> </span>fenv<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>*<span class="org-whitespace-space"> </span>env<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>+<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>comb-c.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>*<span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span>25<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>leak-dc.ar<span class="org-whitespace-space"> </span>sig<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">    </span><span class="org-rainbow-delimiters-depth-3">(</span>detect-silence.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>1.0e-4<span class="org-whitespace-space"> </span><span class="org-builtin">:time</span><span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span><span class="org-builtin">:act</span><span class="org-whitespace-space"> </span><span class="org-builtin">:free</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">    </span><span class="org-rainbow-delimiters-depth-3">(</span>out.ar<span class="org-whitespace-space"> </span>out<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-4">(</span>pan2.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>amp<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -69,10 +77,9 @@ Finally, we use <code>pan2</code> to turn our mono signal <code>sig</code> into 
 </p>
 </div>
 </div>
-
-<div id="outline-container-org48ff6f8" class="outline-2">
-<h2 id="org48ff6f8"><span class="section-number-2">2.</span> Effects as Their Own Nodes</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgd299a1f" class="outline-2">
+<h2 id="orgd299a1f">Effects as Their Own Nodes</h2>
+<div class="outline-text-2" id="text-orgd299a1f">
 <p>
 Most of the time, it's preferred to run just one instance of an effect which multiple notes or synths would all be routed through. For example, having a separate reverb for each instance of a synth would not only cause unnecessarily high CPU usage, but it would also be more likely to result in audio clipping or other unwanted sound artifacts.
 </p>
@@ -82,20 +89,20 @@ To convert the previous example to such a configuration, we can use the <code>pr
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">  (defsynth echokick ((freq 440) (time 0.25) (amp 0.5) (out 0))
-    (<span style="font-weight: bold;">let*</span> ((env (env-gen.kr (env (list 0 1 1 0) (list 0.001 time 0.3)) <span style="font-weight: bold;">:act</span> <span style="font-weight: bold;">:free</span>))
-           (fenv (env-gen.kr (env (list 1 0) (list time)) <span style="font-weight: bold;">:level-scale</span> freq))
-           (sig (sin-osc.ar fenv 0 (* env 0.2))))
-      (out.ar out (pan2.ar sig 0 amp))))
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>defsynth<span class="org-whitespace-space"> </span>echokick<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span>freq<span class="org-whitespace-space"> </span>440<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>time<span class="org-whitespace-space"> </span>0.25<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>amp<span class="org-whitespace-space"> </span>0.5<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>out<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<span class="org-whitespace-space">  </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>env-gen.kr<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>1<span class="org-whitespace-space"> </span>1<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>0.001<span class="org-whitespace-space"> </span>time<span class="org-whitespace-space"> </span>0.3<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-whitespace-space"> </span><span class="org-builtin">:act</span><span class="org-whitespace-space"> </span><span class="org-builtin">:free</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>fenv<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>env-gen.kr<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>env<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>1<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>list<span class="org-whitespace-space"> </span>time<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-whitespace-space"> </span><span class="org-builtin">:level-scale</span><span class="org-whitespace-space"> </span>freq<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>sin-osc.ar<span class="org-whitespace-space"> </span>fenv<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>*<span class="org-whitespace-space"> </span>env<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">    </span><span class="org-rainbow-delimiters-depth-3">(</span>out.ar<span class="org-whitespace-space"> </span>out<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-4">(</span>pan2.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>amp<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
-(<span style="font-weight: bold;">defparameter</span> <span style="font-weight: bold; font-style: italic;">*echo-bus*</span> (bus-audio <span style="font-weight: bold;">:chanls</span> 2))
+<span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defparameter</span><span class="org-whitespace-space"> </span><span class="org-variable-name">*echo-bus*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>bus-audio<span class="org-whitespace-space"> </span><span class="org-builtin">:chanls</span><span class="org-whitespace-space"> </span>2<span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 
-(proxy <span style="font-weight: bold;">:echo</span>
-       (<span style="font-weight: bold;">let*</span> ((sig (in.ar *echo-bus* 2))
-              (delay 0.2)
-              (sig (+ sig (comb-c.ar sig delay delay (* delay 25))))
-              (sig (leak-dc.ar sig)))
-         (out.ar 0 sig)))
+<span class="org-rainbow-delimiters-depth-1">(</span>proxy<span class="org-whitespace-space"> </span><span class="org-builtin">:echo</span>
+<span class="org-whitespace-space">       </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>in.ar<span class="org-whitespace-space"> </span>*echo-bus*<span class="org-whitespace-space"> </span>2<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">              </span><span class="org-rainbow-delimiters-depth-4">(</span>delay<span class="org-whitespace-space"> </span>0.2<span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">              </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>+<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>comb-c.ar<span class="org-whitespace-space"> </span>sig<span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>*<span class="org-whitespace-space"> </span>delay<span class="org-whitespace-space"> </span>25<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span>
+<span class="org-whitespace-space">              </span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>leak-dc.ar<span class="org-whitespace-space"> </span>sig<span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">         </span><span class="org-rainbow-delimiters-depth-3">(</span>out.ar<span class="org-whitespace-space"> </span>0<span class="org-whitespace-space"> </span>sig<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -104,7 +111,7 @@ Though buses have been mentioned before in this tutorial, they haven't been full
 </p>
 
 <p>
-Here we define the <code>*echo-bus*</code> variable, which is a two-channel audio bus. Aside from audio buses, SuperCollider also supports control buses which are generally used for lower-frequency signals like LFOs that don't need as much processing power, similar to the <code>.ar~/</code>.kr~ UGen dichotomy.
+Here we define the <code>*echo-bus*</code> variable, which is a two-channel audio bus. Aside from audio buses, SuperCollider also supports control buses which are generally used for lower-frequency signals like LFOs that don't need as much processing power, similar to the <code>.ar</code> / <code>.kr</code> UGen dichotomy.
 </p>
 
 <p>
@@ -116,14 +123,14 @@ With those three expressions evaluated, the synth is defined, the bus created, a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp">(synth <span style="font-weight: bold;">:echokick</span> <span style="font-weight: bold;">:out</span> *echo-bus*)
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>synth<span class="org-whitespace-space"> </span><span class="org-builtin">:echokick</span><span class="org-whitespace-space"> </span><span class="org-builtin">:out</span><span class="org-whitespace-space"> </span>*echo-bus*<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2022-04-16 Sat 02:15</p>
+<p class="date">Created: 2017-10-10 Tue 03:52. Updated: 2025-02-03 Mon 18:04.</p>
 </div>
 </body>
 </html>

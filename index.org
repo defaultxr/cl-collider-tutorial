@@ -1,5 +1,5 @@
 #+TITLE: cl-collider Tutorial
-#+OPTIONS: toc:nil
+#+DATE: <2017-06-10 Sat 21:21>
 
 This is a tutorial for [[https://github.com/byulparan/cl-collider][cl-collider]], a Common Lisp interface to the [[https://supercollider.github.io/][SuperCollider]] sound server.
 
@@ -24,4 +24,3 @@ The tutorial is [[https://defaultxr.github.io/cl-collider-tutorial/][viewable on
 8. [[file:08-architecture.org][Architecture]]
 
 9. [[file:09-other-libraries.org][Appendix A: Other Libraries]]
-

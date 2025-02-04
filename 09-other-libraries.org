@@ -1,4 +1,5 @@
 #+TITLE: Other Libraries
+#+DATE: <2017-12-21 Thu 18:48>
 
 * [[https://github.com/defaultxr/cl-patterns][cl-patterns]]
 

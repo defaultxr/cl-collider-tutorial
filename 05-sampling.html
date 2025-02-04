@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2019-11-18 Mon 16:35 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 2025-02-03 Mon 18:03 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sampling</title>
-<meta name="generator" content="Org mode">
+<meta name="author" content="modula t. worm" />
+<meta name="generator" content="Org Mode" />
+<link type='text/css' rel='stylesheet' href='css.css' />
 </head>
 <body>
-<div id="content">
+<div id="preamble" class="status">
+<nav>
+  <ol class="bar">
+    <li value="0"><a href="index.html">Contents</a></li>
+    <li><a href="01-introduction.html">Introduction</a></li>
+    <li><a href="02-getting-started.html">Getting Started</a></li>
+    <li><a href="03-make-a-sound.html">Make a Sound</a></li>
+    <li><a href="04-further-soundmaking.html">Further Soundmaking</a></li>
+    <li><a href="05-sampling.html">Sampling</a></li>
+    <li><a href="06-sequencing.html">Sequencing</a></li>
+    <li><a href="07-effects.html">Effects</a></li>
+    <li><a href="08-architecture.html">Architecture</a></li>
+    <li><a href="09-other-libraries.html">Other Libraries</a></li>
+  </ol>
+</nav>
+</div>
+<div id="content" class="content">
 <header>
 <h1 class="title">Sampling</h1>
-</header><nav id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#org2bd0184">1. Loading Sounds</a></li>
-<li><a href="#org217885f">2. Playing Sounds</a></li>
-</ul>
-</div>
-</nav>
-<p>
+</header><p>
 In addition to its powerful library of oscillators and sound generators, SuperCollider also gives us the ability to use recorded sounds in our synths. In SuperCollider, a recorded sound is stored in a buffer object on the server. A buffer is effectively an array of numbers which can be of any length and can have one or more channels. It's possible to load a sound into a buffer from your hard drive, but it's also possible to record the output of a synth or UGen into a buffer directly on the server. A buffer can be played back normally, or you can control its rate and the playhead position with a UGen.
 </p>
-
-<div id="outline-container-org2bd0184" class="outline-2">
-<h2 id="org2bd0184"><span class="section-number-2">1</span> Loading Sounds</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-org49375c7" class="outline-2">
+<h2 id="org49375c7">Loading Sounds</h2>
+<div class="outline-text-2" id="text-org49375c7">
 <p>
 To load a sound from the drive, use the <code>buffer-read</code> function, like so:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #268bd2;">(</span>buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span><span style="color: #268bd2;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>buffer-read<span class="org-whitespace-space"> </span><span class="org-string">"/path/to/your/file.wav"</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -41,20 +49,19 @@ This should be pretty self-explanatory; the only required parameter to <code>buf
 </p>
 </div>
 </div>
-
-<div id="outline-container-org217885f" class="outline-2">
-<h2 id="org217885f"><span class="section-number-2">2</span> Playing Sounds</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-org40f8687" class="outline-2">
+<h2 id="org40f8687">Playing Sounds</h2>
+<div class="outline-text-2" id="text-org40f8687">
 <p>
 Once you've loaded a sound, you'll probably want to play it. Here's an example SynthDef which illustrates the UGens you'd use to do that:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #268bd2;">(</span>defsynth <span style="color: #268bd2;">:sample</span> <span style="color: #d33682;">(</span><span style="color: #859900;">(</span>buffer 0<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>rate 1<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>start 0<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>amp 0.5<span style="color: #859900;">)</span> <span style="color: #859900;">(</span>out 0<span style="color: #859900;">)</span><span style="color: #d33682;">)</span>
-  <span style="color: #d33682;">(</span><span style="color: #859900;">let</span> <span style="color: #859900;">(</span><span style="color: #cb4b16;">(</span>sig <span style="color: #6c71c4;">(</span>play-buf.ar 2 buffer <span style="color: #b58900;">(</span>* rate <span style="color: #35a69c;">(</span>buf-rate-scale.ir buffer<span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span>
-                          <span style="color: #268bd2;">:start-pos</span> <span style="color: #b58900;">(</span>* start <span style="color: #35a69c;">(</span>buf-frames.ir buffer<span style="color: #35a69c;">)</span><span style="color: #b58900;">)</span>
-                          <span style="color: #268bd2;">:act</span> <span style="color: #268bd2;">:free</span><span style="color: #6c71c4;">)</span><span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span>
-    <span style="color: #859900;">(</span>out.ar out <span style="color: #cb4b16;">(</span>* amp sig<span style="color: #cb4b16;">)</span><span style="color: #859900;">)</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>defsynth<span class="org-whitespace-space"> </span><span class="org-builtin">:sample</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-rainbow-delimiters-depth-3">(</span>buffer<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>rate<span class="org-whitespace-space"> </span>1<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>start<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>amp<span class="org-whitespace-space"> </span>0.5<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span>out<span class="org-whitespace-space"> </span>0<span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span>
+<span class="org-whitespace-space">  </span><span class="org-rainbow-delimiters-depth-2">(</span><span class="org-keyword">let</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-3">(</span><span class="org-rainbow-delimiters-depth-4">(</span>sig<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-5">(</span>play-buf.ar<span class="org-whitespace-space"> </span>2<span class="org-whitespace-space"> </span>buffer<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>*<span class="org-whitespace-space"> </span>rate<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>buf-rate-scale.ir<span class="org-whitespace-space"> </span>buffer<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span>
+<span class="org-whitespace-space">                          </span><span class="org-builtin">:start-pos</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-6">(</span>*<span class="org-whitespace-space"> </span>start<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-7">(</span>buf-frames.ir<span class="org-whitespace-space"> </span>buffer<span class="org-rainbow-delimiters-depth-7">)</span><span class="org-rainbow-delimiters-depth-6">)</span>
+<span class="org-whitespace-space">                          </span><span class="org-builtin">:act</span><span class="org-whitespace-space"> </span><span class="org-builtin">:free</span><span class="org-rainbow-delimiters-depth-5">)</span><span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span>
+<span class="org-whitespace-space">    </span><span class="org-rainbow-delimiters-depth-3">(</span>out.ar<span class="org-whitespace-space"> </span>out<span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-4">(</span>*<span class="org-whitespace-space"> </span>amp<span class="org-whitespace-space"> </span>sig<span class="org-rainbow-delimiters-depth-4">)</span><span class="org-rainbow-delimiters-depth-3">)</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -103,7 +110,7 @@ To actually play the <code>sample</code> synth, we'll want to make sure that we'
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #268bd2;">(</span><span style="color: #859900;">defvar</span> <span style="color: #6c71c4;">*file*</span> <span style="color: #d33682;">(</span>buffer-read <span style="color: #2aa198;">"/path/to/your/file.wav"</span><span style="color: #d33682;">)</span><span style="color: #268bd2;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span><span class="org-keyword">defvar</span><span class="org-whitespace-space"> </span><span class="org-variable-name">*file*</span><span class="org-whitespace-space"> </span><span class="org-rainbow-delimiters-depth-2">(</span>buffer-read<span class="org-whitespace-space"> </span><span class="org-string">"/path/to/your/file.wav"</span><span class="org-rainbow-delimiters-depth-2">)</span><span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -112,7 +119,7 @@ Then, we can start the <code>sample</code> synth like so:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #268bd2;">(</span>synth 'sample <span style="color: #268bd2;">:buffer</span> *file*<span style="color: #268bd2;">)</span>
+<pre class="src src-lisp"><span class="org-rainbow-delimiters-depth-1">(</span>synth<span class="org-whitespace-space"> </span>'sample<span class="org-whitespace-space"> </span><span class="org-builtin">:buffer</span><span class="org-whitespace-space"> </span>*file*<span class="org-rainbow-delimiters-depth-1">)</span>
 </pre>
 </div>
 
@@ -123,7 +130,7 @@ As mentioned above, since <code>play-buf</code>'s <code>:act</code> argument is 
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Last updated: 2019-11-18 Mon 16:35</p>
+<p class="date">Created: 2017-07-25 Tue 03:48. Updated: 2025-02-03 Mon 18:03.</p>
 </div>
 </body>
 </html>
