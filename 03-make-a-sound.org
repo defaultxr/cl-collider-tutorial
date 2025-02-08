@@ -62,3 +62,5 @@ After evaluating this code, try moving your mouse up and down. You should hear t
 By now you may have noticed that some of the UGens we've been using have had ~.kr~ instead of ~.ar~. As mentioned before, ~ar~ specifies to run the UGen at audio rate. ~kr~, on the other hand, is for control rate, which means that the server processes that UGen less often, and thus uses less CPU power on them. Generally you would want to use ~.kr~ when the signal that the UGen is processing or generating isn't going to be heard directly, and doesn't exceed frequencies around 30Hz.
 
 Note that not all UGens are available in both control- and audio-rate versions. ~mouse-x~ and ~mouse-y~, for example, only provide control rate output. So ~mouse-x.ar~ is invalid and would give you an error.
+
+[[file:02-getting-started.org][Previous: Getting Started]] / [[file:04-further-soundmaking.org][Next: Further Soundmaking]]

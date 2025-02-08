@@ -37,3 +37,5 @@ Incudine is a music and digital signal processing programming environment for Co
 - Built-in LADSPA (Linux audio plugin) support. SuperCollider requires the sc3-plugins package to be installed for this.
 - Built-in FluidSynth (soundfont) support.
 - GPL 2.0 license instead of GPL 3.0.
+
+[[file:08-architecture.org][Previous: Architecture]]

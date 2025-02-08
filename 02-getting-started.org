@@ -102,3 +102,5 @@ For reference, here's an example of what it might look like when you run these e
 #+END_SRC
 
 It's not an issue if the output looks a bit different for you; as long as you don't get any errors, you should be good to go. In the next chapter, we'll take it for a spin, and make our first sound.
+
+[[file:01-introduction.org][Previous: Introduction]] / [[file:03-make-a-sound.org][Next: Make a Sound]]

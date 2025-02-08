@@ -24,3 +24,5 @@ Additionally, these functions will work with group IDs as well, in case you want
 #+BEGIN_SRC lisp
 (stop 1)
 #+END_SRC
+
+[[file:07-effects.org][Previous: Effects]] / [[file:09-other-libraries.org][Next: Other Libraries]]

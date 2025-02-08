@@ -118,3 +118,5 @@ And finally, here's how our last function, ~testing-3~, would look as a pattern:
 As you can see, we don't need to create a closure to keep track of state; the ~pseq~ pattern does that for us, allowing us to focus more on the behavior we want and less on how to implement it.
 
 As mentioned before, a full explanation of how cl-patterns works is beyond the scope of this document, but the project's [[https://github.com/defaultxr/cl-patterns][repo]] includes plenty of documentation that should help to get you started.
+
+[[file:05-sampling.org][Previous: Sampling]] / [[file:07-effects.org][Next: Effects]]

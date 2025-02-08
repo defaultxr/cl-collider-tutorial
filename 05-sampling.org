@@ -58,3 +58,5 @@ Then, we can start the ~sample~ synth like so:
 #+END_SRC
 
 As mentioned above, since ~play-buf~'s ~:act~ argument is set to ~:free~, the synth will automatically be freed when the sample finishes playing. Of course, if we had set the sample to loop, then it would continue looping indefinitely, or until we stop it manually. Because there is no ~:gate~ argument, the ~release~ function would have no effect, so we would have to call ~stop~ instead, to force it to stop.
+
+[[file:04-further-soundmaking.org][Previous: Further Soundmaking]] / [[file:06-sequencing.org][Next: Sequencing]]

@@ -66,3 +66,5 @@ With those three expressions evaluated, the synth is defined, the bus created, a
 #+BEGIN_SRC lisp
   (synth :echokick :out *echo-bus*)
 #+END_SRC
+
+[[file:06-sequencing.org][Previous: Sequencing]] / [[file:08-architecture.org][Next: Architecture]]

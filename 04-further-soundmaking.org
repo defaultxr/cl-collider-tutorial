@@ -57,4 +57,8 @@ Since the synth will sustain until we specifically tell it to release, we save t
 
 # FIX: describe other note conversion functions.
 
-* More UGens
+# * More UGens
+
+# FIX: write this section.
+
+[[file:03-make-a-sound.org][Previous: Make a Sound]] / [[file:05-sampling.org][Next: Sampling]]

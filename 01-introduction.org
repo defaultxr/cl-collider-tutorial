@@ -19,3 +19,5 @@ In this tutorial, you will see code snippets in monospace, with syntax highlight
 #+END_SRC
 
 Keywords and other code that appear inline in the text will also be in monospace, like so: ~defun~.
+
+[[file:index.org][Previous: Contents]] / [[file:02-getting-started.org][Next: Getting Started]]
